@@ -22,14 +22,18 @@ setup_product()
 ptc.setupPloneSite()
 
 
-class ImagingTestCase(ptc.PloneTestCase):
-    """ base class for integration tests """
+class ImagingTestCaseMixin:
+    """ mixin for integration and functional tests """
 
     def getImage(self, name='image.gif'):
         return getData(name)
 
 
-class ImagingFunctionalTestCase(ptc.FunctionalTestCase):
+class ImagingTestCase(ptc.PloneTestCase, ImagingTestCaseMixin):
+    """ base class for integration tests """
+
+
+class ImagingFunctionalTestCase(ptc.FunctionalTestCase, ImagingTestCaseMixin):
     """ base class for functional tests """
 
     def getCredentials(self):

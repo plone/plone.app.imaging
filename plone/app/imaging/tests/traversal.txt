@@ -1,0 +1,22 @@
+A simple test the make sure the traversal adapter for image scales is
+working correctly.  First we have to create an image to start with:
+
+  >>> self.setRoles(('Manager',))
+  >>> data = self.getImage()
+  >>> portal.invokeFactory('Image', id='foo', title='Foo', image=data)
+  'foo'
+
+Then we can use a testbrowser to access the image itself and a scaled down
+version:
+
+  >>> browser = self.getBrowser()
+  >>> browser.open('http://nohost/plone/foo')
+  >>> browser.contents
+  'GIF89a...'
+  >>> len(browser.contents) == len(data)
+  True
+
+  >>> browser.open('http://nohost/plone/foo/image_thumb')
+  >>> browser.contents
+  '\x89PNG...'
+
