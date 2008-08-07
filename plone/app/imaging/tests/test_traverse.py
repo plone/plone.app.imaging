@@ -12,12 +12,6 @@ fallback_marker = []
 
 class BaseMockField:
 
-    def __init__(self, type):
-        self.type = type
-
-    def getType(self):
-        return self.type
-
     def getAvailableSizes(self, context):
         return dict(mini=1, maxi=2)
 
@@ -60,31 +54,31 @@ class TraverseTests(TestCase):
 
     def testWrongFieldType(self):
         context = MockContext()
-        context.field = BaseMockField('Other.Type')
+        context.field = BaseMockField()
         traverser = ImageTraverser(context, None)
         self.failUnless(traverser.publishTraverse(None, 'field') is fallback_marker)
 
     def testCorrectFieldType(self):
         context = MockContext()
-        context.field = MockField('Other.Type')
+        context.field = MockField()
         traverser = ImageTraverser(context, None)
         self.failUnless(traverser.publishTraverse(None, 'field') is data_marker)
 
     def testFullImage(self):
         context = MockContext()
-        context.field = MockField('Products.Archetypes.Field.ImageField')
+        context.field = MockField()
         traverser = ImageTraverser(context, None)
         self.failUnless(traverser.publishTraverse(None, 'field') is data_marker)
 
     def testUnknownScale(self):
         context = MockContext()
-        context.field = MockField('Products.Archetypes.Field.ImageField')
+        context.field = MockField()
         traverser = ImageTraverser(context, None)
         self.failUnless(traverser.publishTraverse(None, 'field_poster') is fallback_marker)
 
     def testKnownScale(self):
         context = MockContext()
-        context.field = MockField('Products.Archetypes.Field.ImageField')
+        context.field = MockField()
         traverser = ImageTraverser(context, None)
         self.failUnless(traverser.publishTraverse(None, 'field_mini') is data_marker)
 
