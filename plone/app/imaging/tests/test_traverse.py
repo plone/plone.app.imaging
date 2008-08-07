@@ -1,6 +1,5 @@
+from unittest import defaultTestLoader
 from unittest import TestCase
-from unittest import TestSuite
-from unittest import makeSuite
 from zope.interface.verify import verifyClass
 from zope.publisher.interfaces import IPublishTraverse
 from plone.app.imaging.traverse import ImageTraverser
@@ -91,7 +90,5 @@ class TraverseTests(TestCase):
 
 
 def test_suite():
-    suite = TestSuite()
-    suite.addTest(makeSuite(TraverseTests))
-    return suite
+    return defaultTestLoader.loadTestsFromName(__name__)
 
