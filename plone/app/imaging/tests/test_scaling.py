@@ -1,8 +1,20 @@
 from unittest import defaultTestLoader
 from plone.app.imaging.tests.base import ImagingTestCase
+from plone.app.imaging.traverse import ImageTraverser
 
 
 class ImageTraverseTests(ImagingTestCase):
+
+    def afterSetUp(self):
+        self.counter = 0        # wrap `publishTraverse` with a counter
+        self.original = ImageTraverser.publishTraverse
+        def publishTraverse(adapter, request, name):
+            self.counter += 1
+            return self.original(adapter, request, name)
+        ImageTraverser.publishTraverse = publishTraverse
+
+    def beforeTearDown(self):
+        ImageTraverser.publishTraverse = self.original
 
     def testImageThumb(self):
         data = self.getImage()
@@ -23,6 +35,8 @@ class ImageTraverseTests(ImagingTestCase):
         url = image.absolute_url() + '/image_thumb'
         tag = '<img src="%s" alt="foo" title="foo" height="%d" width="%d" />'
         self.assertEqual(thumb.tag(), tag % (url, height, width))
+        # make sure the traversal adapter was call in fact
+        self.assertEqual(self.counter, 2)
 
 
 def test_suite():
