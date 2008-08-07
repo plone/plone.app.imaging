@@ -3,7 +3,7 @@ from unittest import TestSuite
 from unittest import makeSuite
 from zope.interface.verify import verifyClass
 from zope.publisher.interfaces import IPublishTraverse
-from Products.Archetypes.traverse import ImageTraverser
+from plone.app.imaging.traverse import ImageTraverser
 from Products.Archetypes.atapi import ImageField
 
 data_marker = []
