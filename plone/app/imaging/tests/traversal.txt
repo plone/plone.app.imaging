@@ -16,7 +16,24 @@ version:
   >>> len(browser.contents) == len(data)
   True
 
+Let's analyse the image a little further:
+
+  >>> from PIL.Image import open
+  >>> from StringIO import StringIO
+  >>> image = open(StringIO(browser.contents))
+  >>> image.format
+  'GIF'
+  >>> image.size
+  (200, 200)
+
+Now check the scaled version:
+
   >>> browser.open('http://nohost/plone/foo/image_thumb')
   >>> browser.contents
   '\x89PNG...'
+  >>> image = open(StringIO(browser.contents))
+  >>> image.format
+  'PNG'
+  >>> image.size
+  (128, 128)
 
