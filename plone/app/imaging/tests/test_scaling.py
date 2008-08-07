@@ -1,6 +1,5 @@
 from unittest import defaultTestLoader
 from plone.app.imaging.tests.base import ImagingTestCase
-from plone.app.imaging.traverse import ImageTraverser
 
 
 class ImageTraverseTests(ImagingTestCase):
@@ -10,11 +9,11 @@ class ImageTraverseTests(ImagingTestCase):
         folder = self.folder
         image = folder[folder.invokeFactory('Image', id='foo', image=data)]
         # make sure traversing works as is and with scaling
-        traverser = ImageTraverser(image, None)
-        self.assertEqual(traverser.publishTraverse(None, 'image').data, data)
+        traverse = folder.REQUEST.traverseName
+        self.assertEqual(traverse(image, 'image').data, data)
         sizes = image.getField('image').getAvailableSizes(image)
         self.failUnless('thumb' in sizes.keys())
-        thumb = traverser.publishTraverse(None, 'image_thumb')
+        thumb = traverse(image, 'image_thumb')
         self.assertEqual(thumb.getContentType(), 'image/png')
         self.assertEqual(thumb.data[:4], '\x89PNG')
         width, height = sizes['thumb']
