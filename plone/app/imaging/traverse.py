@@ -24,6 +24,6 @@ class ImageTraverser(DefaultPublishTraverse):
             if scale in available or scale is None:
                 image = field.getScale(self.context, scale=scale)
                 if image is not None and not isinstance(image, basestring):
-                   return image
+                    return image
         return self.fallback(request, name)
 
