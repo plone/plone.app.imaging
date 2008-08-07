@@ -32,12 +32,14 @@ class ImagingTestCase(ptc.PloneTestCase):
 class ImagingFunctionalTestCase(ptc.FunctionalTestCase):
     """ base class for functional tests """
 
+    def getCredentials(self):
+        return '%s:%s' % (ptc.default_user, ptc.default_password)
+
     def getBrowser(self, loggedIn=True):
         """ instantiate and return a testbrowser for convenience """
         browser = Browser()
         if loggedIn:
-            user = ptc.default_user
-            pwd = ptc.default_password
-            browser.addHeader('Authorization', 'Basic %s:%s' % (user, pwd))
+            auth = 'Basic %s' % self.getCredentials()
+            browser.addHeader('Authorization', auth)
         return browser
 
