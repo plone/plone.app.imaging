@@ -1,4 +1,3 @@
-from zope.interface import Interface
 from zope.component import adapts
 from zope.publisher.interfaces import IRequest
 from Products.Archetypes.interfaces import IBaseObject
