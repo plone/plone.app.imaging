@@ -6,8 +6,8 @@ from plone.app.imaging.traverse import ImageTraverser
 from Products.Archetypes.atapi import ImageField
 
 
-data_marker = []
-fallback_marker = []
+data_marker = object()
+fallback_marker = object()
 
 
 class BaseMockField:
