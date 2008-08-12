@@ -1,8 +1,11 @@
 from zope.component import adapts
+from zope.interface import implements
 from zope.publisher.interfaces import IRequest
 from Products.Archetypes.interfaces import IBaseObject
-from Products.Archetypes.Field import ImageField, Image, HAS_PIL
+from Products.Archetypes.interfaces import IImageField
+from Products.Archetypes.Field import Image, HAS_PIL
 from ZPublisher.BaseRequest import DefaultPublishTraverse
+from plone.app.imaging.interfaces import IImageScaleHandler
 
 
 class ImageTraverser(DefaultPublishTraverse):
@@ -19,23 +22,40 @@ class ImageTraverser(DefaultPublishTraverse):
         else:
             fieldname, scale = name, None
         field = schema.get(fieldname)
-        if field is not None and isinstance(field, ImageField):
-            instance = self.context
-            available = field.getAvailableSizes(instance)
-            if scale in available or scale is None:
-                image = field.getScale(instance, scale=scale)
-                if not image:       # create the scale if it doesn't exist
-                    width, height = available[scale]
-                    image = self.createScale(field, scale, width, height)
-                    self.storeScale(field, image)
-                    image = field.getScale(instance, scale=scale)
-                if image is not None and not isinstance(image, basestring):
-                    return image
+        handler = IImageScaleHandler(field, None)
+        if handler is not None:
+            image = handler.getScale(self.context, scale)
+            if image is not None:
+                return image
         return self.fallback(request, name)
 
-    def createScale(self, field, scale, width, height):
+
+class DefaultImageScaleHandler(object):
+    """ default handler for creating and storing scaled version of images """
+    implements(IImageScaleHandler)
+    adapts(IImageField)
+
+    def __init__(self, context):
+        self.context = context
+
+    def getScale(self, instance, scale):
+        """ return scaled and aq-wrapped version for given image data """
+        field = self.context
+        available = field.getAvailableSizes(instance)
+        if scale in available or scale is None:
+            image = field.getScale(instance, scale=scale)
+            if not image:       # create the scale if it doesn't exist
+                width, height = available[scale]
+                image = self.createScale(instance, scale, width, height)
+                self.storeScale(instance, image)
+                image = field.getScale(instance, scale=scale)
+            if image is not None and not isinstance(image, basestring):
+                return image
+        return None
+
+    def createScale(self, instance, scale, width, height):
         """ create a scaled version of the image """
-        instance = self.context
+        field = self.context
         if HAS_PIL and width and height:
             image = field.getRaw(instance)
             if image:
@@ -54,9 +74,9 @@ class ImageTraverser(DefaultPublishTraverse):
                     return image
         return None
 
-    def storeScale(self, field, image):
+    def storeScale(self, instance, image):
         """ store a scaled version of the image """
-        instance = self.context
+        field = self.context
         field.getStorage(instance).set(image.getId(), instance, image,
             mimetype=image.content_type, filename=image.filename)
 

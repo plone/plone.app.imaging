@@ -2,6 +2,7 @@ from unittest import TestSuite, makeSuite
 from plone.app.imaging.tests.base import ImagingTestCase
 from plone.app.imaging.tests.base import ImagingFunctionalTestCase
 from plone.app.imaging.traverse import ImageTraverser
+from plone.app.imaging.traverse import DefaultImageScaleHandler
 from StringIO import StringIO
 from PIL.Image import open
 
@@ -43,19 +44,6 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         self.assertEqual(thumb.tag(), tag % (url, height, width))
         # make sure the traversal adapter was call in fact
         self.assertEqual(self.counter, 2)
-
-    def testCreateScale(self):
-        data = self.getImage()
-        folder = self.folder
-        image = folder[folder.invokeFactory('Image', id='foo', image=data)]
-        # try creating a scale
-        traverser = ImageTraverser(image, None)
-        foo = traverser.createScale(image.getField('image'), 'foo', 100, 80)
-        self.assertEqual(foo.getId(), 'image_foo')
-        self.assertEqual(foo.getContentType(), 'image/png')
-        self.assertEqual(foo.data[:4], '\x89PNG')
-        self.assertEqual(foo.width, 80)
-        self.assertEqual(foo.height, 80)
 
     def testCustomSizes(self):
         data = self.getImage()
@@ -131,9 +119,54 @@ class ImagePublisherTests(TraverseCounterMixin, ImagingFunctionalTestCase):
         self.assertEqual(self.counter, 3)
 
 
+class DefaultAdapterTests(ImagingTestCase):
+
+    def afterSetUp(self):
+        data = self.getImage()
+        folder = self.folder
+        self.image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        self.field = self.image.getField('image')
+        self.handler = DefaultImageScaleHandler(self.field)
+        iprops = self.portal.portal_properties.imaging_properties
+        iprops.manage_changeProperties(allowed_sizes=['foo 60:60'])
+
+    def testCreateScale(self):
+        foo = self.handler.createScale(self.image, 'foo', 100, 80)
+        self.assertEqual(foo.getId(), 'image_foo')
+        self.assertEqual(foo.getContentType(), 'image/png')
+        self.assertEqual(foo.data[:4], '\x89PNG')
+        self.assertEqual(foo.width, 80)
+        self.assertEqual(foo.height, 80)
+
+    def testCreateScaleWithZeroWidth(self):
+        foo = self.handler.createScale(self.image, 'foo', 100, 0)
+        self.assertEqual(foo, None)
+
+    def testCreateScaleWithoutData(self):
+        folder = self.folder
+        image = folder[folder.invokeFactory('Image', id='image')]
+        field = image.getField('image')
+        handler = DefaultImageScaleHandler(field)
+        foo = handler.createScale(image, 'foo', 100, 80)
+        self.assertEqual(foo, None)
+
+    def testGetScale(self):
+        foo = self.handler.getScale(self.image, 'foo')
+        self.assertEqual(foo.getId(), 'image_foo')
+        self.assertEqual(foo.getContentType(), 'image/png')
+        self.assertEqual(foo.data[:4], '\x89PNG')
+        self.assertEqual(foo.width, 60)
+        self.assertEqual(foo.height, 60)
+
+    def testGetUnknownScale(self):
+        foo = self.handler.getScale(self.image, 'foo?')
+        self.assertEqual(foo, None)
+
+
 def test_suite():
     return TestSuite([
         makeSuite(ImageTraverseTests),
         makeSuite(ImagePublisherTests),
+        makeSuite(DefaultAdapterTests),
     ])
 

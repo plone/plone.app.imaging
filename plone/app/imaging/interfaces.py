@@ -14,3 +14,10 @@ class IImagingSchema(Interface):
         value_type = TextLine(), default = [], required = False)
 
 
+class IImageScaleHandler(Interface):
+    """ handler for retrieving scaled versions of an image """
+
+    def getScale(instance, scale):
+        """ return scaled and aq-wrapped version for given image data """
+
+

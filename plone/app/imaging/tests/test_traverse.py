@@ -1,8 +1,11 @@
 from unittest import defaultTestLoader
 from unittest import TestCase
+from zope.component import provideAdapter
 from zope.interface.verify import verifyClass
 from zope.publisher.interfaces import IPublishTraverse
+from plone.app.imaging.interfaces import IImageScaleHandler
 from plone.app.imaging.traverse import ImageTraverser
+from plone.app.imaging.traverse import DefaultImageScaleHandler
 from Products.Archetypes.atapi import ImageField
 
 
@@ -40,6 +43,7 @@ class TraverseTests(TestCase):
             return fallback_marker
         ImageTraverser.org_fallback = ImageTraverser.fallback
         ImageTraverser.fallback = fallback
+        provideAdapter(DefaultImageScaleHandler, (MockField,), IImageScaleHandler)
 
     def tearDown(self):
         ImageTraverser.fallback = ImageTraverser.org_fallback
