@@ -42,6 +42,19 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         # make sure the traversal adapter was call in fact
         self.assertEqual(self.counter, 2)
 
+    def testCreateScale(self):
+        data = self.getImage()
+        folder = self.folder
+        image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        # try creating a scale
+        traverser = ImageTraverser(image, None)
+        foo = traverser.createScale(image.getField('image'), 'foo', 100, 80)
+        self.assertEqual(foo.getId(), 'image_foo')
+        self.assertEqual(foo.getContentType(), 'image/png')
+        self.assertEqual(foo.data[:4], '\x89PNG')
+        self.assertEqual(foo.width, 80)
+        self.assertEqual(foo.height, 80)
+
 
 class ImagePublisherTests(TraverseCounterMixin, ImagingFunctionalTestCase):
 
