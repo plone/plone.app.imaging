@@ -2,6 +2,8 @@ from unittest import TestSuite, makeSuite
 from plone.app.imaging.tests.base import ImagingTestCase
 from plone.app.imaging.tests.base import ImagingFunctionalTestCase
 from plone.app.imaging.traverse import ImageTraverser
+from StringIO import StringIO
+from PIL.Image import open
 
 
 class TraverseCounterMixin:
@@ -55,6 +57,33 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         self.assertEqual(foo.width, 80)
         self.assertEqual(foo.height, 80)
 
+    def testCustomSizes(self):
+        data = self.getImage()
+        folder = self.folder
+        image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        # set custom image sizes
+        iprops = self.portal.portal_properties.imaging_properties
+        iprops.manage_changeProperties(allowed_sizes=['foo 23:23', 'bar 6:8'])
+        # make sure traversing works with the new sizes
+        traverse = folder.REQUEST.traverseName
+        foo = traverse(image, 'image_foo')
+        self.assertEqual(foo.getContentType(), 'image/png')
+        self.assertEqual(foo.data[:4], '\x89PNG')
+        self.assertEqual(foo.width, 23)
+        self.assertEqual(foo.height, 23)
+        # also check the generated tag
+        url = image.absolute_url() + '/image_foo'
+        tag = '<img src="%s" alt="foo" title="foo" height="23" width="23" />'
+        self.assertEqual(foo.tag(), tag % url)
+        # and the other specified size
+        bar = traverse(image, 'image_bar')
+        self.assertEqual(bar.getContentType(), 'image/png')
+        self.assertEqual(bar.data[:4], '\x89PNG')
+        self.assertEqual(bar.width, 6)
+        self.assertEqual(bar.height, 6)
+        # make sure the traversal adapter was call in fact
+        self.assertEqual(self.counter, 2)
+
 
 class ImagePublisherTests(TraverseCounterMixin, ImagingFunctionalTestCase):
 
@@ -82,6 +111,24 @@ class ImagePublisherTests(TraverseCounterMixin, ImagingFunctionalTestCase):
         self.assertEqual(response.getHeader('Content-Type'), 'image/png')
         # make sure the traversal adapter was call in fact
         self.assertEqual(self.counter, 9)
+
+    def testPublishCustomSize(self):
+        data = self.getImage()
+        folder = self.folder
+        image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        # set custom image sizes
+        iprops = self.portal.portal_properties.imaging_properties
+        iprops.manage_changeProperties(allowed_sizes=['foo 23:23'])
+        # make sure traversing works as expected
+        base = '/'.join(folder.getPhysicalPath())
+        credentials = self.getCredentials()
+        response = self.publish(base + '/foo/image_foo', basic=credentials)
+        self.assertEqual(response.getStatus(), 200)
+        foo = open(StringIO(response.getBody()))
+        self.assertEqual(foo.format, 'PNG')
+        self.assertEqual(foo.size, (23, 23))
+        # make sure the traversal adapter was call in fact
+        self.assertEqual(self.counter, 3)
 
 
 def test_suite():
