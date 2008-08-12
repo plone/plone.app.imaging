@@ -20,14 +20,15 @@ class ImageTraverser(DefaultPublishTraverse):
             fieldname, scale = name, None
         field = schema.get(fieldname)
         if field is not None and isinstance(field, ImageField):
-            available = field.getAvailableSizes(self.context)
+            instance = self.context
+            available = field.getAvailableSizes(instance)
             if scale in available or scale is None:
-                image = field.getScale(self.context, scale=scale)
+                image = field.getScale(instance, scale=scale)
                 if not image:       # create the scale if it doesn't exist
                     width, height = available[scale]
                     image = self.createScale(field, scale, width, height)
                     self.storeScale(field, image)
-                    image = field.getScale(self.context, scale=scale)
+                    image = field.getScale(instance, scale=scale)
                 if image is not None and not isinstance(image, basestring):
                     return image
         return self.fallback(request, name)
