@@ -1,10 +1,19 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="plone.app.imaging">
 
   <include file="profiles.zcml" />
 
   <adapter
       factory=".traverse.ImageTraverser" />
+
+  <adapter factory=".configlet.ImagingControlPanelAdapter" />
+
+  <browser:page
+      name="imaging-controlpanel"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      class=".configlet.ImagingControlPanel"
+      permission="cmf.ManagePortal" />
 
 </configure>
