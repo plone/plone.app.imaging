@@ -19,7 +19,9 @@ def setup_product():
     fiveconfigure.debug_mode = False
 
 setup_product()
-ptc.setupPloneSite()
+ptc.setupPloneSite(extension_profiles=(
+    'plone.app.imaging:default',
+))
 
 
 class ImagingTestCaseMixin:
