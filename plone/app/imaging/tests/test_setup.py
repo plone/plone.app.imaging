@@ -1,4 +1,5 @@
 from unittest import defaultTestLoader
+from Products.Archetypes.interfaces import IImageField
 from Products.ATContentTypes.content.image import ATImageSchema, ATImage
 from plone.app.imaging.tests.base import ImagingTestCase
 from plone.app.imaging.monkey import getAvailableSizes
@@ -39,6 +40,16 @@ class MonkeyPatchTests(ImagingTestCase):
             return 'foo!'
         ATImageSchema['image'].sizes = foo      # store method in schema
         self.assertEqual(self.field.getAvailableSizes(self.image), 'foo!')
+
+
+class RegistryTests(ImagingTestCase):
+
+    def testImageFieldInterface(self):
+        data = self.getImage()
+        folder = self.folder
+        image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        field = image.getField('image')
+        self.failUnless(IImageField.providedBy(field))
 
 
 def test_suite():
