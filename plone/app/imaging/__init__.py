@@ -1,1 +1,4 @@
-# non-empty init file to turn this directory into a module...
+
+from plone.app.imaging.monkey import patchAvailableSizes
+patchAvailableSizes()   # patch ImageField's `getAvailableSizes` method
+
