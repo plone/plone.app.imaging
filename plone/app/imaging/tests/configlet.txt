@@ -19,6 +19,13 @@ Viewing the site control panel
     >>> self.browser.url
     'http://nohost/plone/@@imaging-controlpanel'
 
+Check for the icon to exist:
+
+    >>> self.browser.contents
+    '...Add-on Product Configuration...
+     ...<img src="http://nohost/plone/image_icon.gif"...
+     ...Image Handling...'
+
 Click the cancel button:
 
     >>> self.browser.getControl(name="form.actions.cancel").click()
