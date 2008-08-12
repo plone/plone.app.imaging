@@ -6,7 +6,9 @@ def getAllowedSizes():
     ptool = getUtility(IPropertiesTool)
     sizes = {}
     for line in ptool.imaging_properties.getProperty('allowed_sizes'):
-        name, dims = line.split(' ', 1)
-        sizes[name.strip()] = tuple(map(int, dims.split(':', 1)))
+        line = line.strip()
+        if line:
+            name, dims = line.split(' ', 1)
+            sizes[name.strip()] = tuple(map(int, dims.split(':', 1)))
     return sizes
 

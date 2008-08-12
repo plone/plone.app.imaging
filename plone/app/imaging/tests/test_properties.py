@@ -19,6 +19,9 @@ class PropertiesTests(ImagingTestCase):
         iprops = self.portal.portal_properties.imaging_properties
         iprops.manage_changeProperties(allowed_sizes='foo 23:23')
         self.assertEqual(getAllowedSizes(), dict(foo = (23, 23)))
+        # empty lines and white space should be ignored
+        iprops.manage_changeProperties(allowed_sizes=['x   23 :23 ', '', ' '])
+        self.assertEqual(getAllowedSizes(), dict(x = (23, 23)))
 
 
 def test_suite():
