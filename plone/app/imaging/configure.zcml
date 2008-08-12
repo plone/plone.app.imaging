@@ -13,7 +13,8 @@
   <adapter
       factory=".traverse.ImageTraverser" />
 
-  <adapter factory=".configlet.ImagingControlPanelAdapter" />
+  <adapter
+      factory=".configlet.ImagingControlPanelAdapter" />
 
   <browser:page
       name="imaging-controlpanel"
