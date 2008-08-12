@@ -3,7 +3,10 @@ Changelog
 
     (name of developer listed in brackets)
 
-plone.app.imaging - 1.0a1 Unreleased
+plone.app.imaging - 1.0a2 Unreleased
+
+
+plone.app.imaging - 1.0a1 Released August 12th, 2008
 
     - Initial version
       [witsch]
