@@ -1,3 +1,4 @@
+from Acquisition import aq_base
 from Products.Archetypes.Field import ImageField
 from Products.Archetypes.utils import shasattr
 from plone.app.imaging.utils import getAllowedSizes
@@ -7,7 +8,7 @@ def getAvailableSizes(self, instance):
     """ get available sizes for scaled down images;  this uses the new,
         user-configurable settings, but still support instance methods
         and other callables;  see Archetypes/Field.py """
-    sizes = self.sizes
+    sizes = getattr(aq_base(self), 'sizes', None)
     if isinstance(sizes, basestring):
         assert(shasattr(instance, sizes))
         method = getattr(instance, sizes)
