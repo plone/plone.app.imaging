@@ -43,12 +43,12 @@ class DefaultImageScaleHandler(object):
         field = self.context
         available = field.getAvailableSizes(instance)
         if scale in available or scale is None:
-            image = field.getScale(instance, scale=scale)
+            image = self.retrieveScale(instance, scale=scale)
             if not image:       # create the scale if it doesn't exist
                 width, height = available[scale]
                 image = self.createScale(instance, scale, width, height)
                 self.storeScale(instance, image)
-                image = field.getScale(instance, scale=scale)
+                image = self.retrieveScale(instance, scale=scale)
             if image is not None and not isinstance(image, basestring):
                 return image
         return None
@@ -73,6 +73,11 @@ class DefaultImageScaleHandler(object):
                         pass
                     return image
         return None
+
+    def retrieveScale(self, instance, scale):
+        """ retrieve a scaled version of the image """
+        field = self.context
+        return field.getScale(instance, scale=scale)
 
     def storeScale(self, instance, image):
         """ store a scaled version of the image """
