@@ -1,0 +1,3 @@
+todos:
+- free scales (<property name="strictSizes" type="boolean">True</property>)
+- user-configurable image format, quality

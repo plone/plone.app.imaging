@@ -5,6 +5,8 @@ Changelog
 
 plone.app.imaging - 1.0a2 Unreleased
 
+    - Fix `getAvailableSizes` to not depend on `sizes` field-attribute.
+      [witsch]
 
 plone.app.imaging - 1.0a1 Released August 12th, 2008
 
