@@ -5,6 +5,9 @@ Changelog
 
 plone.app.imaging - 1.0a2 Unreleased
 
+    - Refactor image scaling to better support a blob implementation.
+      [elro]
+
     - Fix `getAvailableSizes` to not depend on `sizes` field-attribute.
       [witsch]
 
