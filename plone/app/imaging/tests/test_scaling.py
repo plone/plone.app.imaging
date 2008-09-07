@@ -131,15 +131,16 @@ class DefaultAdapterTests(ImagingTestCase):
         iprops.manage_changeProperties(allowed_sizes=['foo 60:60'])
 
     def testCreateScale(self):
-        handle, content_type, width, height = self.handler.createScale(self.image, 'foo', 100, 80)
-        self.assertEqual(content_type, 'image/png')
-        self.assertEqual(handle.getvalue()[:4], '\x89PNG')
-        self.assertEqual(width, 80)
-        self.assertEqual(height, 80)
+        foo = self.handler.createScale(self.image, 'foo', 100, 80)
+        self.assertEqual(foo.getId(), 'image_foo')
+        self.assertEqual(foo.getContentType(), 'image/png')
+        self.assertEqual(foo.data[:4], '\x89PNG')
+        self.assertEqual(foo.width, 80)
+        self.assertEqual(foo.height, 80)
 
     def testCreateScaleWithZeroWidth(self):
         foo = self.handler.createScale(self.image, 'foo', 100, 0)
-        self.assertEqual(foo, (None, None, None, None))
+        self.assertEqual(foo, None)
 
     def testCreateScaleWithoutData(self):
         folder = self.folder
@@ -147,7 +148,7 @@ class DefaultAdapterTests(ImagingTestCase):
         field = image.getField('image')
         handler = DefaultImageScaleHandler(field)
         foo = handler.createScale(image, 'foo', 100, 80)
-        self.assertEqual(foo, (None, None, None, None))
+        self.assertEqual(foo, None)
 
     def testGetScale(self):
         foo = self.handler.getScale(self.image, 'foo')

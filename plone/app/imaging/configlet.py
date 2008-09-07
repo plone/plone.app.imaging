@@ -20,7 +20,6 @@ class ImagingControlPanelAdapter(SchemaAdapterBase):
         self.context = getUtility(IPropertiesTool).imaging_properties
 
     allowed_sizes = ProxyFieldProperty(IImagingSchema['allowed_sizes'])
-    quality = ProxyFieldProperty(IImagingSchema['quality'])
 
 
 class ImagingControlPanel(ControlPanelForm):

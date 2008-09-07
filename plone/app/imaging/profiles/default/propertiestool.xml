@@ -11,6 +11,5 @@
    <element value="icon 32:32"/>
    <element value="listing 16:16"/>
   </property>
-  <property name="quality" type="int">88</property>
  </object>
 </object>
