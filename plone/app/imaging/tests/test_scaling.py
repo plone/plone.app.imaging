@@ -42,6 +42,8 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         url = image.absolute_url() + '/image_thumb'
         tag = '<img src="%s" alt="foo" title="foo" height="%d" width="%d" />'
         self.assertEqual(thumb.tag(), tag % (url, height, width))
+        # calling str(...) on the scale should return the tag
+        self.assertEqual(str(thumb), thumb.tag())
         # make sure the traversal adapter was call in fact
         self.assertEqual(self.counter, 2)
 
