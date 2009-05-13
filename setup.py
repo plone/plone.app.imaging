@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 from os.path import join
 
 name = 'plone.app.imaging'
-path = name.split('.') + ['version.txt']
+path = ['src'] + name.split('.') + ['version.txt']
 version = open(join(*path)).read().strip()
 readme = open("README.txt").read()
 history = open(join('docs', 'HISTORY.txt')).read().replace(name + ' - ', '')
@@ -16,7 +16,8 @@ setup(name = name,
       author_email = 'plone-developers@lists.sourceforge.net',
       url = 'http://svn.plone.org/svn/plone/plone.app.imaging/',
       license = 'GPL',
-      packages = find_packages(),
+      packages = find_packages('src'),
+      package_dir = {'': 'src'},
       namespace_packages = ['plone', 'plone.app'],
       include_package_data = True,
       install_requires = ['setuptools',],
