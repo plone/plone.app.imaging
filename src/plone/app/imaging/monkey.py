@@ -18,7 +18,10 @@ def getAvailableSizes(self, instance):
     elif callable(sizes):
         return sizes()
     else:
-        return getAllowedSizes()
+        sizes = getAllowedSizes()
+        if sizes is None:
+            sizes = self.original_getAvailableSizes(instance)
+        return sizes
 
 
 def patchAvailableSizes():

@@ -5,6 +5,9 @@ Changelog
 
 plone.app.imaging - 1.0a3 Unreleased
 
+    - Add fallback for determining available image sizes to avoid breaking
+      sites which haven't installed the package yet.
+      [witsch]
 
 plone.app.imaging - 1.0a2 Released September 22nd, 2008
 
