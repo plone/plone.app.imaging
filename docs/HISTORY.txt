@@ -3,7 +3,7 @@ Changelog
 
     (name of developer listed in brackets)
 
-plone.app.imaging - 1.0a3 Unreleased
+plone.app.imaging - 1.0b1 Released May 14th, 2009
 
     - Add fallback for determining available image sizes to avoid breaking
       sites which haven't installed the package yet.
