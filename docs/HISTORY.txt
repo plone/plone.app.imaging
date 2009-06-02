@@ -5,6 +5,8 @@ Changelog
 
 plone.app.imaging - 1.0b2 Unreleased
 
+    - Replaced a getUtility with a queryUtility call in getAllowedSizes.
+      [hannosch]
 
 plone.app.imaging - 1.0b1 Released May 14th, 2009
 

@@ -1,9 +1,11 @@
-from zope.component import getUtility
+from zope.component import queryUtility
 from Products.CMFCore.interfaces import IPropertiesTool
 
 
 def getAllowedSizes():
-    ptool = getUtility(IPropertiesTool)
+    ptool = queryUtility(IPropertiesTool)
+    if ptool is None:
+        return None
     props = getattr(ptool, 'imaging_properties', None)
     if props is None:
         return None
