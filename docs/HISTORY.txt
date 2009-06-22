@@ -5,6 +5,11 @@ Changelog
 
 plone.app.imaging - 1.0b2 Unreleased
 
+    - Register traversal handler locally to avoid problems without the
+      corresponding monkey patch in place.  Please see the second issue in
+      http://plone.org/products/plone.app.blob/issues/19 for more info.
+      [witsch]
+
     - Replaced a getUtility with a queryUtility call in getAllowedSizes.
       [hannosch]
 
