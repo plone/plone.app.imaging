@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<componentregistry>
+ <adapters>
+  <adapter
+     for_="Products.Archetypes.interfaces.IBaseObject
+           zope.publisher.interfaces.IRequest"
+     provides="zope.publisher.interfaces.browser.IBrowserPublisher"
+     factory="plone.app.imaging.traverse.ImageTraverser" />
+ </adapters>
+ <utilities/>
+</componentregistry>

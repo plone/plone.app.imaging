@@ -13,9 +13,6 @@
       interface="Products.Archetypes.interfaces.IImageField" />
 
   <adapter
-      factory=".traverse.ImageTraverser" />
-
-  <adapter
       factory=".traverse.DefaultImageScaleHandler" />
 
   <adapter
