@@ -3,7 +3,10 @@ Changelog
 
     (name of developer listed in brackets)
 
-plone.app.imaging - 1.0b2 Unreleased
+plone.app.imaging - 1.0b3 Unreleased
+
+
+plone.app.imaging - 1.0b2 Released July 8th, 2009
 
     - Register traversal handler locally to avoid problems without the
       corresponding monkey patch in place.  Please see the second issue in
