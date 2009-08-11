@@ -2,7 +2,6 @@
 # see http://plone.org/documentation/tutorial/testing/writing-a-plonetestcase-unit-integration-test
 # for more information about the following setup
 
-from Testing.ZopeTestCase import installPackage
 from Products.Five import zcml
 from Products.Five import fiveconfigure
 from Products.Five.testbrowser import Browser
@@ -18,7 +17,6 @@ def setup_product():
     import plone.app.imaging
     zcml.load_config('configure.zcml', plone.app.imaging)
     fiveconfigure.debug_mode = False
-    installPackage('plone.app.imaging', quiet=True)
 
 setup_product()
 ptc.setupPloneSite(extension_profiles=(

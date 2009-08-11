@@ -4,13 +4,14 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="plone.app.imaging">
 
-  <five:registerPackage package="." initialize=".initialize" />
-
   <include file="profiles.zcml" />
 
   <five:implements
       class="Products.Archetypes.Field.ImageField"
       interface="Products.Archetypes.interfaces.IImageField" />
+
+  <adapter
+      factory=".traverse.ImageTraverser" />
 
   <adapter
       factory=".traverse.DefaultImageScaleHandler" />

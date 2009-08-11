@@ -5,6 +5,9 @@ Changelog
 
 plone.app.imaging - 1.0b3 Unreleased
 
+    - Revert deferral of monkey-patching and traversal adapter registration
+      to package installation time.
+      [witsch]
 
 plone.app.imaging - 1.0b2 Released July 8th, 2009
 
