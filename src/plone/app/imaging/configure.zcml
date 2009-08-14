@@ -11,6 +11,11 @@
       interface="Products.Archetypes.interfaces.IImageField" />
 
   <adapter
+      factory=".imagedata.ZopeAppFileImageData"/>
+  <adapter
+      factory=".imagedata.DexterityScaleStorage"/>
+
+  <adapter
       factory=".traverse.ImageTraverser" />
 
   <adapter
