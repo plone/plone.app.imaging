@@ -1,10 +1,10 @@
 from zope.component import adapts
 from zope.interface import implements
 from zope.publisher.interfaces import IRequest
-from Products.Archetypes.interfaces import IBaseObject
 from Products.Archetypes.interfaces import IImageField
 from Products.Archetypes.Field import Image, HAS_PIL
 from ZPublisher.BaseRequest import DefaultPublishTraverse
+from plone.app.imaging.interfaces import IBaseObject
 from plone.app.imaging.interfaces import IImageScaleHandler
 
 

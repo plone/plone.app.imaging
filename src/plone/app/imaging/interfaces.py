@@ -21,3 +21,6 @@ class IImageScaleHandler(Interface):
         """ return scaled and aq-wrapped version for given image data """
 
 
+class IBaseObject(Interface):
+    """ marker interface used to be able to avoid having to use
+        `overrides.zcml` to register our version of the traversal adapter """

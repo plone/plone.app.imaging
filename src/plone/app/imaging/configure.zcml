@@ -10,6 +10,10 @@
       class="Products.Archetypes.Field.ImageField"
       interface="Products.Archetypes.interfaces.IImageField" />
 
+  <five:implements
+      class="Products.Archetypes.atapi.BaseObject"
+      interface="plone.app.imaging.interfaces.IBaseObject" />
+
   <adapter
       factory=".traverse.ImageTraverser" />
 
