@@ -3,7 +3,7 @@ Changelog
 
     (name of developer listed in brackets)
 
-plone.app.imaging - 1.0b3 Unreleased
+plone.app.imaging - 1.0b3 Released August 26, 2009
 
     - Fix compatibility issue with Plone 4.0.
       [witsch]
