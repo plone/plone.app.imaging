@@ -5,6 +5,9 @@ Changelog
 
 plone.app.imaging - 1.0b3 Unreleased
 
+    - Fix compatibility issue with Plone 4.0.
+      [witsch]
+
     - Revert deferral of monkey-patching and traversal adapter registration
       to package installation time.
       [witsch]
