@@ -5,6 +5,9 @@ Changelog
 
 plone.app.imaging - 1.0b4 Unreleased
 
+    - Refactor default scale handler to make it more reusable for the
+      blob-enabled version in `plone.app.blob`
+      [witsch]
 
 plone.app.imaging - 1.0b3 Released August 26, 2009
 

@@ -134,11 +134,9 @@ class DefaultAdapterTests(ImagingTestCase):
 
     def testCreateScale(self):
         foo = self.handler.createScale(self.image, 'foo', 100, 80)
-        self.assertEqual(foo.getId(), 'image_foo')
-        self.assertEqual(foo.getContentType(), 'image/png')
-        self.assertEqual(foo.data[:4], '\x89PNG')
-        self.assertEqual(foo.width, 80)
-        self.assertEqual(foo.height, 80)
+        self.assertEqual(foo['id'], 'image_foo')
+        self.assertEqual(foo['content_type'], 'image/png')
+        self.assertEqual(foo['data'][:4], '\x89PNG')
 
     def testCreateScaleWithZeroWidth(self):
         foo = self.handler.createScale(self.image, 'foo', 100, 0)

@@ -8,6 +8,21 @@ from plone.app.imaging.interfaces import IBaseObject
 from plone.app.imaging.interfaces import IImageScaleHandler
 
 
+class ImageScale(Image):
+    """ extend image class from `Archetypes.Field` by making sure the title
+        gets always computed and not calling `_get_content_type` even though
+        an explicit type has been passed """
+
+    def __init__(self, id, data, content_type, filename):
+        self.__name__ = id
+        self.filename = filename
+        self.precondition = ''
+        # `OFS.Image` has no proper support for file objects or iterators,
+        # so we'll require `data` to be a string for now...
+        assert isinstance(data, str), 'data must be a string'
+        self.update_data(data, content_type, size=len(data))
+
+
 class ImageTraverser(DefaultPublishTraverse):
     """ traversal adapter for scaled down versions of image content """
     adapts(IBaseObject, IRequest)
@@ -46,9 +61,10 @@ class DefaultImageScaleHandler(object):
             image = self.retrieveScale(instance, scale=scale)
             if not image:       # create the scale if it doesn't exist
                 width, height = available[scale]
-                image = self.createScale(instance, scale, width, height)
-                self.storeScale(instance, image)
-                image = self.retrieveScale(instance, scale=scale)
+                data = self.createScale(instance, scale, width, height)
+                if data is not None:
+                    self.storeScale(instance, scale, **data)
+                    image = self.retrieveScale(instance, scale=scale)
             if image is not None and not isinstance(image, basestring):
                 return image
         return None
@@ -63,15 +79,10 @@ class DefaultImageScaleHandler(object):
                 if data:
                     id = field.getName() + '_' + scale
                     imgdata, format = field.scale(data, width, height)
-                    mimetype = 'image/%s' % format.lower()
-                    image = Image(id, title=field.getName(), file=imgdata,
-                        content_type=mimetype)
-                    image.filename = field.getFilename(instance)
-                    try:
-                        delattr(image, 'title')
-                    except (KeyError, AttributeError):
-                        pass
-                    return image
+                    content_type = 'image/%s' % format.lower()
+                    filename = field.getFilename(instance)
+                    return dict(id=id, data=imgdata.getvalue(),
+                        content_type=content_type, filename=filename)
         return None
 
     def retrieveScale(self, instance, scale):
@@ -79,9 +90,9 @@ class DefaultImageScaleHandler(object):
         field = self.context
         return field.getScale(instance, scale=scale)
 
-    def storeScale(self, instance, image):
+    def storeScale(self, instance, scale, **data):
         """ store a scaled version of the image """
+        image = ImageScale(**data)
         field = self.context
         field.getStorage(instance).set(image.getId(), instance, image,
             mimetype=image.content_type, filename=image.filename)
-
