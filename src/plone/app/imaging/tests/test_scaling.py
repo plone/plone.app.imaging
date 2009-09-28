@@ -74,6 +74,19 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         # make sure the traversal adapter was call in fact
         self.assertEqual(self.counter, 2)
 
+    def testScaleInvalidation(self):
+        data = self.getImage()
+        folder = self.folder
+        image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        # first view the thumbnail of the original image
+        traverse = folder.REQUEST.traverseName
+        thumb1 = traverse(image, 'image_thumb')
+        # now upload a new one and make sure the thumbnail has changed
+        image.update(image=self.getImage('image.jpg'))
+        traverse = folder.REQUEST.traverseName
+        thumb2 = traverse(image, 'image_thumb')
+        self.failIf(thumb1.data == thumb2.data, 'thumb not updated?')
+
 
 class ImagePublisherTests(TraverseCounterMixin, ImagingFunctionalTestCase):
 
