@@ -1,6 +1,7 @@
 from zope.interface import Interface
 from zope.schema import List, TextLine
 from zope.i18nmessageid import MessageFactory
+from Products.Archetypes.interfaces import IBaseObject as IATBaseObject
 
 _ = MessageFactory('plone.app.imaging')
 
@@ -21,6 +22,6 @@ class IImageScaleHandler(Interface):
         """ return scaled and aq-wrapped version for given image data """
 
 
-class IBaseObject(Interface):
+class IBaseObject(IATBaseObject):
     """ marker interface used to be able to avoid having to use
         `overrides.zcml` to register our version of the traversal adapter """
