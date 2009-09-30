@@ -8,7 +8,7 @@
     title="plone.app.imaging"
     directory="profiles/default"
     description="User-configurable image scaling"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+    for="*"
     provides="Products.GenericSetup.interfaces.EXTENSION"
     />
 

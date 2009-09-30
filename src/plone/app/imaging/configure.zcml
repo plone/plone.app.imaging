@@ -20,13 +20,5 @@
   <adapter
       factory=".traverse.DefaultImageScaleHandler" />
 
-  <adapter
-      factory=".configlet.ImagingControlPanelAdapter" />
-
-  <browser:page
-      name="imaging-controlpanel"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      class=".configlet.ImagingControlPanel"
-      permission="cmf.ManagePortal" />
 
 </configure>

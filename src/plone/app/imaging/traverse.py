@@ -1,22 +1,24 @@
 from zope.component import adapts
 from zope.interface import implements
-from zope.publisher.interfaces import IRequest
+from zope.app.traversing.interfaces import ITraversable
 from Products.Archetypes.interfaces import IImageField
 from Products.Archetypes.Field import Image, HAS_PIL
-from ZPublisher.BaseRequest import DefaultPublishTraverse
+from Products.Five.traversable import FiveTraversable
 from plone.app.imaging.interfaces import IBaseObject
 from plone.app.imaging.interfaces import IImageScaleHandler
 
 
-class ImageTraverser(DefaultPublishTraverse):
+class ImageTraverser(FiveTraversable):
     """ traversal adapter for scaled down versions of image content """
-    adapts(IBaseObject, IRequest)
+    implements(ITraversable)
+    adapts(IBaseObject)
 
     def fallback(self, request, name):
-        return super(ImageTraverser, self).publishTraverse(request, name)
+        return super(ImageTraverser, self).traverse(request, name)
 
-    def publishTraverse(self, request, name):
-        schema = self.context.Schema()
+    def traverse(self, name, furtherPath):
+        context = self._subject
+        schema = context.Schema()
         if '_' in name:
             fieldname, scale = name.split('_', 1)
         else:
@@ -24,10 +26,10 @@ class ImageTraverser(DefaultPublishTraverse):
         field = schema.get(fieldname)
         handler = IImageScaleHandler(field, None)
         if handler is not None:
-            image = handler.getScale(self.context, scale)
+            image = handler.getScale(context, scale)
             if image is not None:
                 return image
-        return self.fallback(request, name)
+        return self.fallback(self.request, name)
 
 
 class DefaultImageScaleHandler(object):

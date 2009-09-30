@@ -1,9 +1,8 @@
-from zope.component import queryUtility
-from Products.CMFCore.interfaces import IPropertiesTool
+from Products.CMFCore.utils import getToolByName
+from zope.app.component.hooks import getSite
 
-
-def getAllowedSizes():
-    ptool = queryUtility(IPropertiesTool)
+def getAllowedSizes(context=getSite()):
+    ptool = getToolByName(context, 'portal_properties', None)
     if ptool is None:
         return None
     props = getattr(ptool, 'imaging_properties', None)
