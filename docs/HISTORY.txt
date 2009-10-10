@@ -3,7 +3,7 @@ Changelog
 
     (name of developer listed in brackets)
 
-plone.app.imaging - 1.0b4 Unreleased
+plone.app.imaging - 1.0b4 Released October 10, 2009
 
     - Refactor default scale handler to make it more reusable for the
       blob-enabled version in `plone.app.blob`
