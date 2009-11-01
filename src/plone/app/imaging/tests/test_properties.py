@@ -22,8 +22,10 @@ class PropertiesTests(ImagingTestCase):
         # empty lines and white space should be ignored
         iprops.manage_changeProperties(allowed_sizes=['x   23 :23 ', '', ' '])
         self.assertEqual(getAllowedSizes(), dict(x = (23, 23)))
+        # however, white space within the name should be fine...
+        iprops.manage_changeProperties(allowed_sizes=['foo bar 23:23'])
+        self.assertEqual(getAllowedSizes(), dict(foo_bar = (23, 23)))
 
 
 def test_suite():
     return defaultTestLoader.loadTestsFromName(__name__)
-

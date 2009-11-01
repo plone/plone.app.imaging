@@ -1,5 +1,9 @@
 from zope.component import queryUtility
 from Products.CMFCore.interfaces import IPropertiesTool
+from re import compile
+
+
+pattern = compile(r'^(.*)\s+(\d+)\s*:\s*(\d+)$')
 
 
 def getAllowedSizes():
@@ -13,8 +17,8 @@ def getAllowedSizes():
     for line in props.getProperty('allowed_sizes'):
         line = line.strip()
         if line:
-            name = '_'.join(line.split(' ')[:-1])
-            dims = line.split(' ')[-1]
-            sizes[name.strip()] = tuple(map(int, dims.split(':', 1)))
+            name, width, height = pattern.match(line).groups()
+            name = name.strip().replace(' ', '_')
+            sizes[name] = int(width), int(height)
     return sizes
 
