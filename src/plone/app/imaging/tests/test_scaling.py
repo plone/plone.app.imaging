@@ -74,7 +74,6 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         # make sure the traversal adapter was call in fact
         self.assertEqual(self.counter, 2)
 
-
     def testCustomSizesWithSpaces(self):
         data = self.getImage()
         folder = self.folder

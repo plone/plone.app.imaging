@@ -4,9 +4,9 @@ Changelog
     (name of developer listed in brackets)
 
 plone.app.imaging - 1.0b5 Unreleased
-    
-    - Fix problem with custom image size with space.
-      http://dev.plone.org/old/plone/ticket/9207
+
+    - Allow white space within image scale definitions.
+      This fixes http://dev.plone.org/plone/ticket/9207
       [amleczko]
 
 plone.app.imaging - 1.0b4 Released October 10, 2009
