@@ -74,6 +74,26 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         # make sure the traversal adapter was call in fact
         self.assertEqual(self.counter, 2)
 
+
+    def testCustomSizesWithSpaces(self):
+        data = self.getImage()
+        folder = self.folder
+        image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        # set custom image sizes
+        iprops = self.portal.portal_properties.imaging_properties
+        iprops.manage_changeProperties(allowed_sizes=['foo bar 23:23'])
+        # make sure traversing works with the new sizes
+        traverse = folder.REQUEST.traverseName
+        foo_bar = traverse(image, 'image_foo_bar')
+        self.assertEqual(foo_bar.getContentType(), 'image/png')
+        self.assertEqual(foo_bar.data[:4], '\x89PNG')
+        self.assertEqual(foo_bar.width, 23)
+        self.assertEqual(foo_bar.height, 23)
+        # also check the generated tag
+        url = image.absolute_url() + '/image_foo_bar'
+        tag = '<img src="%s" alt="foo" title="foo" height="23" width="23" />'
+        self.assertEqual(foo_bar.tag(), tag % url)                
+
     def testScaleInvalidation(self):
         data = self.getImage()
         folder = self.folder

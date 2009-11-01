@@ -13,7 +13,8 @@ def getAllowedSizes():
     for line in props.getProperty('allowed_sizes'):
         line = line.strip()
         if line:
-            name, dims = line.split(' ', 1)
+            name = '_'.join(line.split(' ')[:-1])
+            dims = line.split(' ')[-1]
             sizes[name.strip()] = tuple(map(int, dims.split(':', 1)))
     return sizes
 
