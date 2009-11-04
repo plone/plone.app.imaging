@@ -14,6 +14,9 @@ def test_suite():
            'traversal.txt', package='plone.app.imaging.tests',
            test_class=ImagingFunctionalTestCase, optionflags=optionflags),
         ztc.FunctionalDocFileSuite(
+           'transforms.txt', package='plone.app.imaging.tests',
+           test_class=ImagingFunctionalTestCase, optionflags=optionflags),
+        ztc.FunctionalDocFileSuite(
            'configlet.txt', package='plone.app.imaging.tests',
            test_class=ControlPanelTestCase, optionflags=optionflags),
     ])
