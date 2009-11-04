@@ -13,8 +13,8 @@ class ImagingLayer(PloneSite):
     def setUp(cls):
         # load zcml & install packages
         fiveconfigure.debug_mode = True
-        from plone.app import imaging
-        zcml.load_config('configure.zcml', imaging)
+        from plone.app.imaging import tests
+        zcml.load_config('testing.zcml', tests)
         fiveconfigure.debug_mode = False
         installPackage('plone.app.imaging', quiet=True)
         # import the default profile
