@@ -1,0 +1,52 @@
+Index: extras/Products.ATContentTypes/Products/ATContentTypes/tests/atcttestcase.py
+===================================================================
+--- extras/Products.ATContentTypes/Products/ATContentTypes/tests/atcttestcase.py	(revision 101014)
++++ extras/Products.ATContentTypes/Products/ATContentTypes/tests/atcttestcase.py	(working copy)
+@@ -31,4 +31,6 @@
+ from Products.PloneTestCase.setup import portal_owner
+ ZopeTestCase.installProduct('SiteAccess')
++
++from plone.app.imaging.tests.layer import ImagingLayer
+ PloneTestCase.setupPloneSite(extension_profiles=['Products.CMFPlone:testfixture'])
+ 
+@@ -68,8 +70,10 @@
+ 
+ class ATCTSiteTestCase(PloneTestCase.PloneTestCase):
+-    pass
++
++    layer = ImagingLayer
+ 
+ class ATCTFunctionalSiteTestCase(PloneTestCase.FunctionalTestCase):
+-    pass
++
++    layer = ImagingLayer
+ 
+ class ATCTTypeTestCase(ATCTSiteTestCase):
+@@ -79,4 +83,6 @@
+     """
+ 
++    layer = ImagingLayer
++
+     klass = None
+     cmf_klass = None
+Index: extras/Products.ATContentTypes/Products/ATContentTypes/tests/http_access.txt
+===================================================================
+--- extras/Products.ATContentTypes/Products/ATContentTypes/tests/http_access.txt	(revision 101014)
++++ extras/Products.ATContentTypes/Products/ATContentTypes/tests/http_access.txt	(working copy)
+@@ -321,11 +321,12 @@
+   ... Range: bytes=0-4
+   ... """ % (imgpath, user_name, user_password, etag))
+-  HTTP/1.1 200 OK
++  HTTP/1.1 206 Partial Content
+   Accept-Ranges: bytes
+-  Content-Length: 905
+-  Content-Type: image/gif...
++  Content-Length: 5
++  Content-Range: bytes 0-4/905
++  Content-Type: image/gif
+   ...
+   <BLANKLINE>
+-  GIF89...
++  GIF89
+ 
+ 
