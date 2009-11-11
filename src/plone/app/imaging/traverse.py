@@ -13,8 +13,8 @@ class ImageTraverser(FiveTraversable):
     implements(ITraversable)
     adapts(IBaseObject)
 
-    def fallback(self, request, name):
-        return super(ImageTraverser, self).traverse(request, name)
+    def fallback(self, name):
+        return super(ImageTraverser, self).traverse(name, [])
 
     def traverse(self, name, furtherPath):
         context = self._subject
@@ -29,7 +29,7 @@ class ImageTraverser(FiveTraversable):
             image = handler.getScale(context, scale)
             if image is not None:
                 return image
-        return self.fallback(self.request, name)
+        return self.fallback(name)
 
 
 class DefaultImageScaleHandler(object):
