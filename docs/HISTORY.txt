@@ -5,9 +5,6 @@ Changelog
 
 plone.app.imaging - 1.0b5 Unreleased
 
-    - Removed actionicons.xml. Icon is assigned in controlpanel.xml now.
-      [naro]
-
     - Allow white space within image scale definitions.
       This fixes http://dev.plone.org/plone/ticket/9207
       [amleczko]

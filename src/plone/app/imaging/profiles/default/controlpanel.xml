@@ -4,7 +4,6 @@
  <configlet title="Image Handling" action_id="ImagingSettings" appId="ImagingSettings"
     category="Products" condition_expr=""
     url_expr="string:${portal_url}/@@imaging-controlpanel" visible="True"
-    icon_expr="string:${portal_url}/image_icon.gif"
     i18n:attributes="title">
   <permission>Manage portal</permission>
  </configlet>
