@@ -3,7 +3,10 @@ Changelog
 
     (name of developer listed in brackets)
 
-plone.app.imaging - 1.0b5 Unreleased
+plone.app.imaging - 1.0b6 Unreleased
+
+
+plone.app.imaging - 1.0b5 Released November 15, 2009
 
     - Allow white space within image scale definitions.
       This fixes http://dev.plone.org/plone/ticket/9207
