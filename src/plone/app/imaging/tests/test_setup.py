@@ -10,7 +10,7 @@ class MonkeyPatchTests(ImagingTestCase):
     def afterSetUp(self):
         data = self.getImage()
         folder = self.folder
-        self.image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        self.image = ATImage('test')
         self.field = self.image.getField('image')
         self.sizes = ATImageSchema['image'].sizes   # save original value
 
