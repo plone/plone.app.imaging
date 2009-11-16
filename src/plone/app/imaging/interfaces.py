@@ -11,7 +11,7 @@ class IImagingSchema(Interface):
 
     allowed_sizes = List(title=_(u'Allowed image sizes'),
         description = _(u'Specify all allowed maximum image dimensions, one per line. '
-                         'The required format is "<name> <width>:<height>".'),
+                         'The required format is <name> <width>:<height>.'),
         value_type = TextLine(), default = [], required = False)
 
 
