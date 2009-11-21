@@ -1,4 +1,4 @@
-A simple test the make sure the traversal adapter for image scales is
+A simple test the make sure the traversal adapters for image scales are
 working correctly.  First we have to create an image to start with:
 
   >>> self.setRoles(('Manager',))
@@ -37,3 +37,18 @@ Now check the scaled version:
   >>> image.size
   (128, 128)
 
+We also want to be able to traverse to the image scale in path expressions,
+which don't use publish traversal:
+
+  >>> from Products.CMFCore.Expression import Expression, getExprContext
+  >>> def eval_expression(expr):
+  ...     econtext = getExprContext(self.portal)
+  ...     return Expression(expr)(econtext)
+  >>> eval_expression('portal/foo/image_thumb')
+  <ImageScale at ...>
+
+And let's make sure that we can check for the scale with an 'exists'
+expression:
+
+  >>> eval_expression('exists:portal/foo/image_thumb')
+  True
