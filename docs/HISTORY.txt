@@ -1,5 +1,5 @@
 Changelog
----------
+=========
 
 1.0b7 - Unreleased
 ------------------
@@ -11,12 +11,14 @@ Changelog
 - Corrected ill-formed msgid that contained a double quote.
   [hannosch]
 
+
 1.0b5 - 2009-11-15
 ------------------
 
 - Allow white space within image scale definitions.
   This fixes http://dev.plone.org/plone/ticket/9207
   [amleczko]
+
 
 1.0b4 - 2009-10-29
 ------------------
@@ -25,7 +27,9 @@ Changelog
   blob-enabled version in `plone.app.blob`
   [witsch]
 
-plone.app.imaging - 1.0b3 Released August 26, 2009
+
+1.0b3 - 2009-08-26
+------------------
 
 - Fix compatibility issue with Plone 4.0.
   [witsch]
@@ -34,7 +38,9 @@ plone.app.imaging - 1.0b3 Released August 26, 2009
   to package installation time.
   [witsch]
 
-plone.app.imaging - 1.0b2 Released July 8th, 2009
+
+1.0b2 - 2009-07-08
+------------------
 
 - Register traversal handler locally to avoid problems without the
   corresponding monkey patch in place.  Please see the second issue in
@@ -44,22 +50,27 @@ plone.app.imaging - 1.0b2 Released July 8th, 2009
 - Replaced a getUtility with a queryUtility call in getAllowedSizes.
   [hannosch]
 
-plone.app.imaging - 1.0b1 Released May 14th, 2009
+
+1.0b1 - 2009-05-14
+------------------
 
 - Add fallback for determining available image sizes to avoid breaking
   sites which haven't installed the package yet.
   [witsch]
 
-plone.app.imaging - 1.0a2 Released September 22nd, 2008
+
+1.0a2 - 2008-09-22
+------------------
 
 - Fix `getAvailableSizes` to not depend on `sizes` field-attribute.
   [witsch]
 
-plone.app.imaging - 1.0a1 Released August 12th, 2008
+
+1.0a1 - 2008-08-12
+------------------
 
 - Initial version
   [witsch]
 
 - Initial package structure.
   [zopeskel]
-

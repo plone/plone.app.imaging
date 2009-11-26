@@ -1,8 +1,9 @@
+=================
 plone.app.imaging
 =================
 
 Introduction
-------------
+============
 
 This package tries to factor out and re-use the image scaling code from
 Archetypes_ into a separate package in order to make it user-configurable
