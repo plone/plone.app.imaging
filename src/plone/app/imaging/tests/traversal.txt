@@ -5,6 +5,7 @@ working correctly.  First we have to create an image to start with:
   >>> data = self.getImage()
   >>> portal.invokeFactory('Image', id='foo', title='Foo', image=data)
   'foo'
+  >>> portal.foo.getField('image').removeScales(portal.foo)
 
 Then we can use a testbrowser to access the image itself and a scaled down
 version:
@@ -50,5 +51,5 @@ which don't use publish traversal:
 And let's make sure that we can check for the scale with an 'exists'
 expression:
 
-  >>> eval_expression('exists:portal/foo/image_thumb')
+  >>> bool(eval_expression('exists:portal/foo/image_thumb'))
   True
