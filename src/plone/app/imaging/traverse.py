@@ -1,3 +1,5 @@
+import traceback
+
 from zope.component import adapts
 from zope.interface import implements
 from zope.publisher.interfaces import IRequest
@@ -7,7 +9,7 @@ from ZODB.POSException import ConflictError
 from ZPublisher.BaseRequest import DefaultPublishTraverse
 from plone.app.imaging.interfaces import IBaseObject
 from plone.app.imaging.interfaces import IImageScaleHandler
-
+from zLOG import LOG, ERROR
 
 class ImageScale(Image):
     """ extend image class from `Archetypes.Field` by making sure the title
@@ -83,10 +85,16 @@ class DefaultImageScaleHandler(object):
                         imgdata, format = field.scale(data, width, height)
                     except (ConflictError, KeyboardInterrupt):
                         raise
-                    except:
+                    except Exception, e:
                         if not field.swallowResizeExceptions:
                             raise
                         else:
+                            tb = traceback.format_exc()
+                            m = """Error while scaling ImageField '%s' of %s
+                            
+                            
+%s""" % (self.context.__name__, instance.absolute_url(), tb)
+                            LOG('plone.app.imaging', ERROR, m)
                             return None
                     content_type = 'image/%s' % format.lower()
                     filename = field.getFilename(instance)
