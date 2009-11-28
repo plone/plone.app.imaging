@@ -3,6 +3,7 @@ from zope.interface import implements
 from zope.publisher.interfaces import IRequest
 from Products.Archetypes.interfaces import IImageField
 from Products.Archetypes.Field import Image, HAS_PIL
+from ZODB.POSException import ConflictError
 from ZPublisher.BaseRequest import DefaultPublishTraverse
 from plone.app.imaging.interfaces import IBaseObject
 from plone.app.imaging.interfaces import IImageScaleHandler
@@ -78,7 +79,15 @@ class DefaultImageScaleHandler(object):
                 data = str(image.data)
                 if data:
                     id = field.getName() + '_' + scale
-                    imgdata, format = field.scale(data, width, height)
+                    try:
+                        imgdata, format = field.scale(data, width, height)
+                    except (ConflictError, KeyboardInterrupt):
+                        raise
+                    except:
+                        if not field.swallowResizeExceptions:
+                            raise
+                        else:
+                            return None
                     content_type = 'image/%s' % format.lower()
                     filename = field.getFilename(instance)
                     return dict(id=id, data=imgdata.getvalue(),
