@@ -4,11 +4,12 @@ Changelog
 1.0b7 - Unreleased
 ------------------
 
-- Swallow resizing exceptions if that flag is set on the image field
-  [MatthewWilkes]
+- Swallow resizing exceptions if that flag is set on the image field.
+  [matthewwilkes]
 
 - Add test to make sure traversal to scales in path expressions still works.
   [davisagli, witsch]
+
 
 1.0b6 - 2009-11-18
 ------------------
