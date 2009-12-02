@@ -197,10 +197,12 @@ class DefaultAdapterTests(ImagingTestCase):
     def testScaleThatCausesErrorsCanBeSuppressed(self):
         def causeError(*args, **kwargs):
             raise Exception
-        self.handler.context.swallowResizeExceptions = True
-        self.handler.context.scale = causeError
-        foo = self.handler.getScale(self.image, 'foo')
-        self.assertEqual(foo, None) # No exception was raised
+        self.field.scale = causeError
+        self.field.swallowResizeExceptions = False
+        self.assertRaises(Exception, self.handler.getScale, self.image, 'foo')
+        # scaling exceptions should be "swallowed" when set on the field...
+        self.field.swallowResizeExceptions = True
+        self.assertEqual(self.handler.getScale(self.image, 'foo'), None)
 
 
 def test_suite():
