@@ -1,6 +1,4 @@
-import logging
-import traceback
-
+from logging import exception
 from zope.component import adapts
 from zope.interface import implements
 from zope.publisher.interfaces import IRequest
@@ -85,16 +83,12 @@ class DefaultImageScaleHandler(object):
                         imgdata, format = field.scale(data, width, height)
                     except (ConflictError, KeyboardInterrupt):
                         raise
-                    except Exception, e:
+                    except Exception:
                         if not field.swallowResizeExceptions:
                             raise
                         else:
-                            tb = traceback.format_exc()
-                            m = """Error while scaling ImageField '%s' of %s
-                            
-%s"""
-                            args = (self.context.__name__, instance.absolute_url(), tb)
-                            logging.log(logging.ERROR, m, *args)
+                            exception('could not scale ImageField "%s" of %s',
+                                field.getName(), instance.absolute_url())
                             return None
                     content_type = 'image/%s' % format.lower()
                     filename = field.getFilename(instance)
