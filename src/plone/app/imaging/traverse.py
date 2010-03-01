@@ -70,30 +70,33 @@ class DefaultImageScaleHandler(object):
                 return image
         return None
 
-    def createScale(self, instance, scale, width, height):
-        """ create a scaled version of the image """
+    def createScale(self, instance, scale, width, height, data=None):
+        """ create & return a scaled version of the image as retrieved
+            from the field or optionally given data """
         field = self.context
         if HAS_PIL and width and height:
-            image = field.getRaw(instance)
-            if image:
+            if data is None:
+                image = field.getRaw(instance)
+                if not image:
+                    return None
                 data = str(image.data)
-                if data:
-                    id = field.getName() + '_' + scale
-                    try:
-                        imgdata, format = field.scale(data, width, height)
-                    except (ConflictError, KeyboardInterrupt):
+            if data:
+                id = field.getName() + '_' + scale
+                try:
+                    imgdata, format = field.scale(data, width, height)
+                except (ConflictError, KeyboardInterrupt):
+                    raise
+                except Exception:
+                    if not field.swallowResizeExceptions:
                         raise
-                    except Exception:
-                        if not field.swallowResizeExceptions:
-                            raise
-                        else:
-                            exception('could not scale ImageField "%s" of %s',
-                                field.getName(), instance.absolute_url())
-                            return None
-                    content_type = 'image/%s' % format.lower()
-                    filename = field.getFilename(instance)
-                    return dict(id=id, data=imgdata.getvalue(),
-                        content_type=content_type, filename=filename)
+                    else:
+                        exception('could not scale ImageField "%s" of %s',
+                            field.getName(), instance.absolute_url())
+                        return None
+                content_type = 'image/%s' % format.lower()
+                filename = field.getFilename(instance)
+                return dict(id=id, data=imgdata.getvalue(),
+                    content_type=content_type, filename=filename)
         return None
 
     def retrieveScale(self, instance, scale):

@@ -1,6 +1,7 @@
 from Acquisition import aq_base
 from Products.Archetypes.Field import ImageField
 from Products.Archetypes.utils import shasattr
+from plone.app.imaging.interfaces import IImageScaleHandler
 from plone.app.imaging.utils import getAllowedSizes
 
 
@@ -24,8 +25,21 @@ def getAvailableSizes(self, instance):
         return sizes
 
 
+def createScales(self, instance, value=None):
+    """ creates scales and stores them; largely based on the version from
+        `Archetypes.Field.ImageField` """
+    sizes = self.getAvailableSizes(instance)
+    handler = IImageScaleHandler(self)
+    for name, size in sizes.items():
+        width, height = size
+        data = handler.createScale(instance, name, width, height, data=value)
+        if data is not None:
+            handler.storeScale(instance, name, **data)
+
+
 def patchAvailableSizes():
-    """ monkey patch ImageField's `getAvailableSizes` method """
+    """ monkey patch `ImageField` methods """
     ImageField.original_getAvailableSizes = ImageField.getAvailableSizes
     ImageField.getAvailableSizes = getAvailableSizes
-
+    ImageField.original_createScales = ImageField.createScales
+    ImageField.createScales = createScales

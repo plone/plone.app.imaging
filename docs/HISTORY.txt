@@ -4,6 +4,10 @@ Changelog
 1.0b8 - Unreleased
 ------------------
 
+- Add monkey-patch for `createScales` in order to fix recreation of scales.
+  This refs http://dev.plone.org/plone/ticket/10186
+  [witsch]
+
 
 1.0b7 - 2009-12-03
 ------------------

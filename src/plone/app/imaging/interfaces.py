@@ -21,6 +21,10 @@ class IImageScaleHandler(Interface):
     def getScale(instance, scale):
         """ return scaled and aq-wrapped version for given image data """
 
+    def createScale(instance, scale, width, height, data=None):
+        """ create & return a scaled version of the image as retrieved
+            from the field or optionally given data """
+
 
 class IBaseObject(IATBaseObject):
     """ marker interface used to be able to avoid having to use
