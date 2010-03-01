@@ -8,8 +8,6 @@ from plone.app.imaging.monkey import getAvailableSizes
 class MonkeyPatchTests(ImagingTestCase):
 
     def afterSetUp(self):
-        data = self.getImage()
-        folder = self.folder
         self.image = ATImage('test')
         self.field = self.image.getField('image')
         self.sizes = ATImageSchema['image'].sizes   # save original value

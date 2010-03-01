@@ -44,7 +44,7 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         self.assertEqual(thumb.tag(), tag % (url, height, width))
         # calling str(...) on the scale should return the tag
         self.assertEqual(str(thumb), thumb.tag())
-        # make sure the traversal adapter was call in fact
+        # make sure the traversal adapter was called in fact
         self.assertEqual(self.counter, 2)
 
     def testCustomSizes(self):
@@ -71,7 +71,7 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         self.assertEqual(bar.data[:4], '\x89PNG')
         self.assertEqual(bar.width, 6)
         self.assertEqual(bar.height, 6)
-        # make sure the traversal adapter was call in fact
+        # make sure the traversal adapter was called in fact
         self.assertEqual(self.counter, 2)
 
     def testCustomSizesWithSpaces(self):
@@ -137,7 +137,7 @@ class ImagePublisherTests(TraverseCounterMixin, ImagingFunctionalTestCase):
     def testPublishThumb(self):
         data = self.getImage()
         folder = self.folder
-        image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        folder.invokeFactory('Image', id='foo', image=data)
         # make sure traversing works as is and with scaling
         base = '/'.join(folder.getPhysicalPath())
         credentials = self.getCredentials()
@@ -162,7 +162,7 @@ class ImagePublisherTests(TraverseCounterMixin, ImagingFunctionalTestCase):
     def testPublishCustomSize(self):
         data = self.getImage()
         folder = self.folder
-        image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        folder.invokeFactory('Image', id='foo', image=data)
         # set custom image sizes
         iprops = self.portal.portal_properties.imaging_properties
         iprops.manage_changeProperties(allowed_sizes=['foo 23:23'])
@@ -236,4 +236,3 @@ def test_suite():
         makeSuite(ImagePublisherTests),
         makeSuite(DefaultAdapterTests),
     ])
-
