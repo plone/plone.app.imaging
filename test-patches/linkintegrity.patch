@@ -1,34 +1,15 @@
 Index: extras/plone.app.linkintegrity/plone/app/linkintegrity/tests/layer.py
 ===================================================================
---- extras/plone.app.linkintegrity/plone/app/linkintegrity/tests/layer.py	(revision 28518)
+--- extras/plone.app.linkintegrity/plone/app/linkintegrity/tests/layer.py	(revision 34440)
 +++ extras/plone.app.linkintegrity/plone/app/linkintegrity/tests/layer.py	(working copy)
-@@ -1,6 +1,6 @@
-+from plone.app.imaging.tests.layer import ImagingLayer
- from AccessControl.SecurityManagement import newSecurityManager
- from Testing import ZopeTestCase
- from Products.PloneTestCase import PloneTestCase
--from Products.PloneTestCase.layer import PloneSite
+@@ -2,4 +2,5 @@
+ from Products.Five import zcml, fiveconfigure
+ from collective.testcaselayer.ptc import BasePTCLayer, ptc_layer
++from plone.app.imaging import testing
  from StringIO import StringIO
  from base64 import decodestring
-@@ -8,5 +8,5 @@
+@@ -54,3 +55,3 @@
  
  
--class PloneLinkintegrity(PloneSite):
-+class PloneLinkintegrity(ImagingLayer):
- 
-     @classmethod
-@@ -20,4 +20,14 @@
-         newSecurityManager(None, user)
- 
-+        # the mimetype registry isn't registered as a utility for some
-+        # reason when trying to add content during the layer setup;  this
-+        # is most likely due to call `app()` again (see above), which seems
-+        # to no be a good idea... :)  however, loading the GS profile of
-+        # `Products.MimetypesRegistry` again helps
-+        from Products.CMFCore.utils import getToolByName
-+        tool = getToolByName(portal, 'portal_setup')
-+        profile = 'profile-Products.MimetypesRegistry:MimetypesRegistry'
-+        tool.runAllImportStepsFromProfile(profile, purge_old=False)
-+
-         # create sample content
-         gif = 'R0lGODlhAQABAPAAAPj8+AAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=='
+-integrity = PloneLinkintegrity(bases=[ptc_layer])
++integrity = PloneLinkintegrity(bases=[testing.imaging, ptc_layer])

@@ -1,17 +1,17 @@
 Index: extras/Plone/Products/CMFPlone/tests/PloneTestCase.py
 ===================================================================
---- extras/Plone/Products/CMFPlone/tests/PloneTestCase.py	(revision 28521)
+--- extras/Plone/Products/CMFPlone/tests/PloneTestCase.py	(revision 34440)
 +++ extras/Plone/Products/CMFPlone/tests/PloneTestCase.py	(working copy)
 @@ -5,4 +5,5 @@
  # $Id$
  
-+from plone.app.imaging.tests.layer import ImagingLayer
++from plone.app.imaging import testing
  from Products.PloneTestCase.ptc import *
  
 @@ -24,4 +25,6 @@
      """
  
-+    layer = ImagingLayer
++    layer = testing.imaging
 +
      def setRequestMethod(self, method):
          self.app.REQUEST.set('REQUEST_METHOD', method)
@@ -19,4 +19,4 @@ Index: extras/Plone/Products/CMFPlone/tests/PloneTestCase.py
         something fancy on Your Branch (tm), put it here.
      """
 +
-+    layer = ImagingLayer
++    layer = testing.imaging
