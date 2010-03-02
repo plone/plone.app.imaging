@@ -21,6 +21,7 @@ setup(name = name,
       namespace_packages = ['plone', 'plone.app'],
       include_package_data = True,
       install_requires = ['setuptools',],
+      extras_require = {'test': ['collective.testcaselayer',]},
       platforms = 'Any',
       zip_safe = False,
       classifiers = [

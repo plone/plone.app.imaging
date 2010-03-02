@@ -4,6 +4,9 @@ Changelog
 1.0b8 - Unreleased
 ------------------
 
+- Convert test setup to use `collective.testcaselayer`.
+  [witsch]
+
 - Add monkey-patch for `createScales` in order to fix recreation of scales.
   This refs http://dev.plone.org/plone/ticket/10186
   [witsch]

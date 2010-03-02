@@ -1,6 +1,6 @@
 from Products.Five.testbrowser import Browser
 from Products.PloneTestCase import ptc
-from plone.app.imaging.tests.layer import ImagingLayer
+from plone.app.imaging import testing
 from plone.app.imaging.tests.utils import getData
 
 
@@ -17,13 +17,13 @@ class ImagingTestCaseMixin:
 class ImagingTestCase(ptc.PloneTestCase, ImagingTestCaseMixin):
     """ base class for integration tests """
 
-    layer = ImagingLayer
+    layer = testing.imaging
 
 
 class ImagingFunctionalTestCase(ptc.FunctionalTestCase, ImagingTestCaseMixin):
     """ base class for functional tests """
 
-    layer = ImagingLayer
+    layer = testing.imaging
 
     def getCredentials(self):
         return '%s:%s' % (ptc.default_user, ptc.default_password)

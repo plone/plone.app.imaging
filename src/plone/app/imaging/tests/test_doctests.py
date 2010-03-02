@@ -3,7 +3,7 @@ from zope.testing import doctest
 from Testing import ZopeTestCase as ztc
 from plone.app.controlpanel.tests.cptc import ControlPanelTestCase
 from plone.app.imaging.tests.base import ImagingFunctionalTestCase
-from plone.app.imaging.tests.layer import ImagingLayer
+from plone.app.imaging import testing
 
 
 optionflags = (doctest.REPORT_ONLY_FIRST_FAILURE |
@@ -13,7 +13,7 @@ optionflags = (doctest.REPORT_ONLY_FIRST_FAILURE |
 class ImagingControlPanelTestCase(ControlPanelTestCase):
     """ base class for control-panel tests """
 
-    layer = ImagingLayer
+    layer = testing.imaging
 
 
 def test_suite():
