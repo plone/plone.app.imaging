@@ -1,6 +1,7 @@
 from Acquisition import aq_base
 from Products.Archetypes.Field import ImageField
 from Products.Archetypes.utils import shasattr
+from Products.ATContentTypes.content.image import ATImageSchema
 from plone.app.imaging.interfaces import IImageScaleHandler
 from plone.app.imaging.utils import getAllowedSizes
 
@@ -10,7 +11,9 @@ def getAvailableSizes(self, instance):
         user-configurable settings, but still support instance methods
         and other callables;  see Archetypes/Field.py """
     sizes = getattr(aq_base(self), 'sizes', None)
-    if isinstance(sizes, basestring):
+    if isinstance(sizes, dict):
+        return sizes
+    elif isinstance(sizes, basestring):
         assert(shasattr(instance, sizes))
         method = getattr(instance, sizes)
         data = method()
@@ -37,9 +40,15 @@ def createScales(self, instance, value=None):
             handler.storeScale(instance, name, **data)
 
 
-def patchAvailableSizes():
+def patchImageField():
     """ monkey patch `ImageField` methods """
     ImageField.original_getAvailableSizes = ImageField.getAvailableSizes
     ImageField.getAvailableSizes = getAvailableSizes
     ImageField.original_createScales = ImageField.createScales
     ImageField.createScales = createScales
+
+
+def patchImageSchema():
+    """ monkey patch `sizes` attribute in `ATImageSchema` to make it
+        possible to detect whether the sizes has been overridden """
+    ATImageSchema['image'].sizes = None

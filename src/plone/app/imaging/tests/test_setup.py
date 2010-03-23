@@ -39,6 +39,11 @@ class MonkeyPatchTests(ImagingTestCase):
         ATImageSchema['image'].sizes = foo      # store method in schema
         self.assertEqual(self.field.getAvailableSizes(self.image), 'foo!')
 
+    def testAvailableSizesOnField(self):
+        marker = dict(foo=23)
+        ATImageSchema['image'].sizes = marker   # store dict in schema
+        self.assertEqual(self.field.getAvailableSizes(self.image), marker)
+
 
 class RegistryTests(ImagingTestCase):
 

@@ -4,6 +4,10 @@ Changelog
 1.0b9 - Unreleased
 ------------------
 
+- Restore possibility to define per-field image scale sizes.
+  This refs http://dev.plone.org/plone/ticket/10159
+  [huub_bouma, witsch]
+
 
 1.0b8 - 2010-03-06
 ------------------
