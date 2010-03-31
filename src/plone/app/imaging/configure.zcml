@@ -2,6 +2,7 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="plone.app.imaging">
 
   <include file="profiles.zcml" />
@@ -28,5 +29,12 @@
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".configlet.ImagingControlPanel"
       permission="cmf.ManagePortal" />
+
+  <!-- configure sizes lookup for plone.namedfile if it's present -->
+  <utility
+    component=".utils.getAllowedSizes"
+    provides="plone.namedfile.interfaces.IAvailableSizes"
+    zcml:condition="installed plone.namedfile.scaling"
+    />
 
 </configure>

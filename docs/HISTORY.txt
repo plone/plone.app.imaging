@@ -4,6 +4,9 @@ Changelog
 1.0b9 - Unreleased
 ------------------
 
+- Provide sizes for plone.namedfile if it's installed.
+  [davisagli]
+
 - Restore possibility to define per-field image scale sizes.
   This refs http://dev.plone.org/plone/ticket/10159
   [huub_bouma, witsch]
