@@ -46,7 +46,9 @@ def patchImageField():
     ImageField.getAvailableSizes = getAvailableSizes
     ImageField.original_createScales = ImageField.createScales
     ImageField.createScales = createScales
-
+def unpatchImageField():
+    ImageField.getAvailableSizes = ImageField.original_getAvailableSizes
+    ImageField.createScales = ImageField.original_createScales
 
 def patchImageSchema():
     """ monkey patch `sizes` attribute in `ATImageSchema` to make it
