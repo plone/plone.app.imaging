@@ -4,6 +4,7 @@ from Products.Five import fiveconfigure
 from collective.testcaselayer.ptc import BasePTCLayer, ptc_layer
 from plone.app.imaging.monkey import unpatchImageField
 
+
 class ImagingLayer(BasePTCLayer):
     """ layer for integration tests """
 
@@ -17,5 +18,6 @@ class ImagingLayer(BasePTCLayer):
 
     def beforeTearDown(self):
         unpatchImageField()
+
 
 imaging = ImagingLayer(bases=[ptc_layer])
