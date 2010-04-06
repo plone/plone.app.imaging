@@ -6,9 +6,7 @@ from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 from plone.app.controlpanel.form import ControlPanelForm
-
 from plone.app.imaging.interfaces import IImagingSchema, _
-
 
 
 class ImagingControlPanelAdapter(SchemaAdapterBase):
@@ -29,4 +27,3 @@ class ImagingControlPanel(ControlPanelForm):
     label = _('Image handling settings')
     description = _('Settings to configure image handling in Plone.')
     form_name = _('Imaging scaling')
-

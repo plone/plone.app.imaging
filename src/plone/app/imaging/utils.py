@@ -21,4 +21,3 @@ def getAllowedSizes():
             name = name.strip().replace(' ', '_')
             sizes[name] = int(width), int(height)
     return sizes
-

@@ -91,7 +91,7 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         # also check the generated tag
         url = image.absolute_url() + '/image_foo_bar'
         tag = '<img src="%s" alt="foo" title="foo" height="23" width="23" />'
-        self.assertEqual(foo_bar.tag(), tag % url)                
+        self.assertEqual(foo_bar.tag(), tag % url)
 
     def testScaleInvalidation(self):
         data = self.getImage()

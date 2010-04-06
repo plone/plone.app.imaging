@@ -9,6 +9,7 @@ from ZPublisher.BaseRequest import DefaultPublishTraverse
 from plone.app.imaging.interfaces import IBaseObject
 from plone.app.imaging.interfaces import IImageScaleHandler
 
+
 class ImageScale(Image):
     """ extend image class from `Archetypes.Field` by making sure the title
         gets always computed and not calling `_get_content_type` even though

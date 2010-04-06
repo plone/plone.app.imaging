@@ -39,10 +39,8 @@ class MockContext:
 class TraverseTests(TestCase):
 
     def setUp(self):
-        def fallback(self, request, name):
-            return fallback_marker
         ImageTraverser.org_fallback = ImageTraverser.fallback
-        ImageTraverser.fallback = fallback
+        ImageTraverser.fallback = lambda *args: fallback_marker
         provideAdapter(DefaultImageScaleHandler, (MockField,), IImageScaleHandler)
 
     def tearDown(self):
@@ -89,4 +87,3 @@ class TraverseTests(TestCase):
 
 def test_suite():
     return defaultTestLoader.loadTestsFromName(__name__)
-
