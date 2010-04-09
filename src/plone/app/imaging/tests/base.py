@@ -2,6 +2,8 @@ from Products.Five.testbrowser import Browser
 from Products.PloneTestCase import ptc
 from plone.app.imaging import testing
 from plone.app.imaging.tests.utils import getData
+from StringIO import StringIO
+from PIL.Image import open
 
 
 ptc.setupPloneSite()
@@ -12,6 +14,11 @@ class ImagingTestCaseMixin:
 
     def getImage(self, name='image.gif'):
         return getData(name)
+
+    def assertImage(self, data, format, size):
+        image = open(StringIO(data))
+        self.assertEqual(image.format, format)
+        self.assertEqual(image.size, size)
 
 
 class ImagingTestCase(ptc.PloneTestCase, ImagingTestCaseMixin):

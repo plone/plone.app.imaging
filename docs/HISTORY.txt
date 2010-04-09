@@ -4,6 +4,10 @@ Changelog
 1.0b9 - Unreleased
 ------------------
 
+- Add new syntax options for generating image scales based on ideas
+  borrowed from `plone.scale`.
+  [witsch]
+
 - Provide sizes for `plone.namedfile` if it's installed.
   [davisagli]
 

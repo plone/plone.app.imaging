@@ -3,26 +3,12 @@ from zope.component import adapts
 from zope.interface import implements
 from zope.publisher.interfaces import IRequest
 from Products.Archetypes.interfaces import IImageField
-from Products.Archetypes.Field import Image, HAS_PIL
+from Products.Archetypes.Field import HAS_PIL
 from ZODB.POSException import ConflictError
 from ZPublisher.BaseRequest import DefaultPublishTraverse
 from plone.app.imaging.interfaces import IBaseObject
 from plone.app.imaging.interfaces import IImageScaleHandler
-
-
-class ImageScale(Image):
-    """ extend image class from `Archetypes.Field` by making sure the title
-        gets always computed and not calling `_get_content_type` even though
-        an explicit type has been passed """
-
-    def __init__(self, id, data, content_type, filename):
-        self.__name__ = id
-        self.filename = filename
-        self.precondition = ''
-        # `OFS.Image` has no proper support for file objects or iterators,
-        # so we'll require `data` to be a string for now...
-        assert isinstance(data, str), 'data must be a string'
-        self.update_data(data, content_type, size=len(data))
+from plone.app.imaging.scale import ImageScale
 
 
 class ImageTraverser(DefaultPublishTraverse):

@@ -24,6 +24,10 @@
       factory=".traverse.DefaultImageScaleHandler" />
 
   <adapter
+      for="Products.Archetypes.interfaces.IImageField"
+      factory=".scaling.ImageScaleFactory" />
+
+  <adapter
       factory=".configlet.ImagingControlPanelAdapter" />
 
   <browser:page
@@ -31,6 +35,13 @@
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".configlet.ImagingControlPanel"
       permission="cmf.ManagePortal" />
+
+  <browser:page
+      for="Products.Archetypes.interfaces.IBaseObject"
+      name="images"
+      class=".scaling.ImageScaling"
+      allowed_interface=".interfaces.IImageScaling"
+      permission="zope2.View" />
 
   <!-- configure sizes lookup for `plone.namedfile` if it's present -->
   <utility
