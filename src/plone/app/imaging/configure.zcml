@@ -32,11 +32,10 @@
       class=".configlet.ImagingControlPanel"
       permission="cmf.ManagePortal" />
 
-  <!-- configure sizes lookup for plone.namedfile if it's present -->
+  <!-- configure sizes lookup for `plone.namedfile` if it's present -->
   <utility
-    component=".utils.getAllowedSizes"
-    provides="plone.namedfile.interfaces.IAvailableSizes"
-    zcml:condition="installed plone.namedfile.scaling"
-    />
+      component=".utils.getAllowedSizes"
+      provides="plone.namedfile.interfaces.IAvailableSizes"
+      zcml:condition="installed plone.namedfile.scaling" />
 
 </configure>
