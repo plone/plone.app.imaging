@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0b9 - Unreleased
+1.0b9 - 2010-04-10
 ------------------
 
 - Add new syntax options for generating image scales based on ideas
