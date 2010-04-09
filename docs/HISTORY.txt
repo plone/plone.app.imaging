@@ -5,7 +5,7 @@ Changelog
 ------------------
 
 - Add new syntax options for generating image scales based on ideas
-  borrowed from `plone.scale`.
+  borrowed from `plone.scale`, also improving caching and invalidation.
   [witsch]
 
 - Provide sizes for `plone.namedfile` if it's installed.
