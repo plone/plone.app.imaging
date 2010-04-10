@@ -22,7 +22,6 @@ setup(name = name,
       include_package_data = True,
       install_requires = [
         'setuptools',
-        'uuid',
         'plone.scale',
       ],
       extras_require = {'test': ['collective.testcaselayer',]},
