@@ -74,6 +74,23 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         # make sure the traversal adapter was called in fact
         self.assertEqual(self.counter, 2)
 
+    def testCustomSizesNewsItem(self):
+        """Lets also check that new scales works for the News Item
+        """
+        data = self.getImage()
+        folder = self.folder
+        newsitem = folder[folder.invokeFactory('News Item', id='newsitem', image=data)]
+        # set custom image sizes
+        iprops = self.portal.portal_properties.imaging_properties
+        iprops.manage_changeProperties(allowed_sizes=['foo 23:23', 'bar 6:8'])
+        # make sure traversing works with the new sizes
+        traverse = folder.REQUEST.traverseName
+        foo = traverse(newsitem, 'image_foo')
+        self.assertEqual(foo.getContentType(), 'image/png')
+        self.assertEqual(foo.data[:4], '\x89PNG')
+        self.assertEqual(foo.width, 23)
+        self.assertEqual(foo.height, 23)
+
     def testCustomSizesWithSpaces(self):
         data = self.getImage()
         folder = self.folder
