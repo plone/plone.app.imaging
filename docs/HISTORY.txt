@@ -4,10 +4,9 @@ Changelog
 1.0b10 - Unreleased
 -------------------
 
-- Added failing test for new scales of the News Item which currently
-  doesn't work.
+- Add support for custom scales for "News Item" content.
   This refs http://dev.plone.org/plone/ticket/10250
-  [pelle]
+  [pelle, witsch]
 
 - Removed dependency declaration for the unused uuid distribution.
   [hannosch]

@@ -1,7 +1,7 @@
 from plone.app.imaging.monkey import patchImageField
-from plone.app.imaging.monkey import patchImageSchema
+from plone.app.imaging.monkey import patchSchemas
 
 
 def initialize(context):
     patchImageField()       # patch ImageField's `getAvailableSizes` method
-    patchImageSchema()      # patch ATImageSchema's `sizes` attrribute
+    patchSchemas()          # patch ATCT schemas with `sizes` attribute

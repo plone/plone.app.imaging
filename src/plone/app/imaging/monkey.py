@@ -2,6 +2,7 @@ from Acquisition import aq_base
 from Products.Archetypes.Field import ImageField
 from Products.Archetypes.utils import shasattr
 from Products.ATContentTypes.content.image import ATImageSchema
+from Products.ATContentTypes.content.newsitem import ATNewsItemSchema
 from plone.app.imaging.interfaces import IImageScaleHandler
 from plone.app.imaging.utils import getAllowedSizes
 
@@ -54,7 +55,9 @@ def unpatchImageField():
     ImageField.createScales = ImageField.original_createScales
 
 
-def patchImageSchema():
-    """ monkey patch `sizes` attribute in `ATImageSchema` to make it
-        possible to detect whether the sizes has been overridden """
+def patchSchemas():
+    """ monkey patch `sizes` attribute in `ATImageSchema` and
+        `ATNewsItemSchema` to make it possible to detect whether the
+        sizes has been overridden """
     ATImageSchema['image'].sizes = None
+    ATNewsItemSchema['image'].sizes = None
