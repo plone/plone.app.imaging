@@ -41,6 +41,7 @@ class ImageScaling(BrowserView):
             uid, ext = name.rsplit('.', 1)
             storage = AnnotationStorage(self.context)
             info = storage.get(uid)
+            image = None
             if info is not None:
                 image = self.make(info).__of__(self.context)
         else:

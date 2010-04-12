@@ -134,6 +134,14 @@ class ImagePublisherTests(ImagingFunctionalTestCase):
         self.assertEqual(response.getStatus(), 200)
         self.assertImage(response.getBody(), 'JPEG', (23, 23))
 
+    def testPublishScaleWithInvalidUID(self):
+        scale = self.view.scale('image', width=64, height=64)
+        url = scale.url.replace('http://nohost', '')
+        # change the url so it's invalid...
+        url = url.replace('.jpeg', 'x.jpeg')
+        response = self.publish(url, basic=self.getCredentials())
+        self.assertEqual(response.getStatus(), 404)
+
 
 class ScalesAdapterTests(ImagingTestCase):
 
