@@ -3,7 +3,7 @@ from zope.schema import List, TextLine
 from zope.i18nmessageid import MessageFactory
 from Products.Archetypes.interfaces import IBaseObject as IATBaseObject
 
-_ = MessageFactory('plone.app.imaging')
+_ = MessageFactory('plone')
 
 
 class IImagingSchema(Interface):
