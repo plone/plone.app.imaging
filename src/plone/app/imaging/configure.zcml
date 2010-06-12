@@ -9,13 +9,13 @@
 
   <include file="profiles.zcml" />
 
-  <five:implements
-      class="Products.Archetypes.Field.ImageField"
-      interface="Products.Archetypes.interfaces.IImageField" />
+  <class class="Products.Archetypes.Field.ImageField">
+    <implements interface="Products.Archetypes.interfaces.IImageField" />
+  </class>
 
-  <five:implements
-      class="Products.Archetypes.atapi.BaseObject"
-      interface="plone.app.imaging.interfaces.IBaseObject" />
+  <class class="Products.Archetypes.atapi.BaseObject">
+    <implements interface="plone.app.imaging.interfaces.IBaseObject" />
+  </class>
 
   <adapter
       factory=".traverse.ImageTraverser" />
