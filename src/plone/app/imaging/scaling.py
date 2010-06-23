@@ -1,6 +1,7 @@
 from logging import exception
 from Acquisition import aq_base
 from ZODB.POSException import ConflictError
+from OFS.Image import Pdata
 from zope.interface import implements
 from zope.traversing.interfaces import ITraversable, TraversalError
 from zope.publisher.interfaces import IPublishTraverse, NotFound
@@ -21,6 +22,8 @@ class ImageScaleFactory(object):
     def create(self, context, **parameters):
         value = self.field.get(context)
         data = getattr(aq_base(value), 'data', value)
+        if isinstance(data, Pdata):
+            data = str(data)
         if data:
             return scaleImage(data, **parameters)
 

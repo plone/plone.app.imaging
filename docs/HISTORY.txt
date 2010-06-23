@@ -4,6 +4,10 @@ Changelog
 1.0b11 - Unreleased
 -------------------
 
+- Fix issue with creating scales based on Image objects that are storing their
+  data as chained Pdata objects.
+  [davisagli]
+
 - Avoid using the deprecated five:implements directive.
   [hannosch]
 
