@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0b11 - Unreleased
+1.0b11 - 2010-07-01
 -------------------
 
 - Fix issue with creating scales based on Image objects that are storing their
