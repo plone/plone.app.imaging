@@ -1,13 +1,13 @@
+import doctest
 from unittest import TestSuite
-from zope.testing import doctest
-from Testing import ZopeTestCase as ztc
+
 from plone.app.controlpanel.tests.cptc import ControlPanelTestCase
+from Testing import ZopeTestCase as ztc
+
 from plone.app.imaging.tests.base import ImagingFunctionalTestCase
 from plone.app.imaging import testing
 
-
-optionflags = (doctest.REPORT_ONLY_FIRST_FAILURE |
-               doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
+optionflags = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
 
 
 class ImagingControlPanelTestCase(ControlPanelTestCase):
