@@ -28,6 +28,20 @@ class IImageScale(Interface):
     size = Attribute('The size of the image data in bytes.')
     filename = Attribute('The filename used for downloads.')
 
+    def transform(name, **parameters):
+        """ lookup a transformation registered under `name` and append it to the
+            transformation chain with the given `parameters`.
+            
+            (the actual transformation will happen later XXX more detail! )
+            
+            the parameters can be anything supported by the transform that is used
+            
+            """
+            
+            
+    def tag():
+        """evaluates transformation chain
+        """
 
 class IImageScaleFactory(Interface):
     """ adapter for image fields that allows generating scaled images """
@@ -44,12 +58,14 @@ class IImageScaleFactory(Interface):
 class IImageScaling(Interface):
     """ adapter use for generating (and storing) image scales """
 
+    #XXX deprecate that
     def scale(fieldname, scalename=None, **parameters):
         """ retrieve a scale based on the given name or set of parameters.
             the parameters can be anything supported by `scaleImage` and
             would usually consist of at least a width & height.  returns
             either an object implementing `IImageScale` or `None` """
 
+    
 
 class IImageScaleHandler(Interface):
     """ handler for retrieving scaled versions of an image """
@@ -65,3 +81,21 @@ class IImageScaleHandler(Interface):
 class IBaseObject(IATBaseObject):
     """ marker interface used to be able to avoid having to use
         `overrides.zcml` to register our version of the traversal adapter """
+
+
+
+class ITransform(Interface):
+    """
+    """
+    
+    title = TextLine(title=u"Transform Title",
+                     description=u"Shown in the Control Panel")
+    
+    description = TextLine(title=u"Transform description",
+                           description=u"Shown in the Control Panel, describes what the transform does")
+    
+    def __call__(image, **parameters):
+        """actually modifies the passed in image and returns the image again
+        """
+        pass
+    

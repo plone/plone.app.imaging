@@ -10,7 +10,10 @@ from plone.app.imaging.scale import ImageScale
 from plone.scale.storage import AnnotationStorage
 from plone.scale.scale import scaleImage
 from Products.Five import BrowserView
-
+from zope.component._api import queryUtility
+from plone.app.imaging.transforms import ITransform
+from plone.app.imaging.transform import apply_transforms
+import PIL
 
 class ImageScaleFactory(object):
     """ adapter for image fields that allows generating scaled images """
@@ -25,7 +28,9 @@ class ImageScaleFactory(object):
         if isinstance(data, Pdata):
             data = str(data)
         if data:
-            return scaleImage(data, **parameters)
+            image = PIL.Image.open(data)
+            image = apply_transforms(image, **parameters)
+            return image.data, image.format, image.size 
 
 
 class ImageScaling(BrowserView):
@@ -104,6 +109,7 @@ class ImageScaling(BrowserView):
             items, so stored image scales can be invalidated """
         return self.context.modified().millis()
 
+    #XXX deprecate
     def scale(self, fieldname=None, scale=None, **parameters):
         if scale is not None:
             field = self.field(fieldname)
@@ -117,3 +123,5 @@ class ImageScaling(BrowserView):
             fieldname=fieldname, **parameters)
         if info is not None:
             return self.make(info).__of__(self.context)
+    
+        
