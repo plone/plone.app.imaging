@@ -44,6 +44,7 @@ class IImageScale(Interface):
 class IImageScaleFactory(Interface):
     """ adapter for image fields that allows generating scaled images """
 
+    # TODO: update this!
     def create(context, **parameters):
         """ generate an image scale and return a tuple containing a
             representation of the actual image scale data (i.e. a string or

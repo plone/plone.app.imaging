@@ -1,5 +1,5 @@
 from logging import exception
-from PIL import Image
+from StringIO import StringIO
 from Acquisition import aq_base
 from ZODB.POSException import ConflictError
 from OFS.Image import Pdata
@@ -13,22 +13,35 @@ from plone.scale.storage import AnnotationStorage
 from Products.Five import BrowserView
 
 
+class HashableDict(dict):
+    """ a dictionary that can be used as a key in another one """
+
+    def __hash__(self):
+        return hash(tuple(sorted(self.items())))
+
+
+class OpenableStringFile(StringIO):
+
+    def open(self, mode):
+        return self
+
+
 class ImageScaleFactory(object):
     """ adapter for image fields that allows generating scaled images """
     implements(IImageScaleFactory)
 
+    new = OpenableStringFile
+
     def __init__(self, field):
         self.field = field
 
-    def create(self, context, **parameters):
+    def data(self, context):
         value = self.field.get(context)
         data = getattr(aq_base(value), 'data', value)
         if isinstance(data, Pdata):
             data = str(data)
         if data:
-            image = Image.open(data)
-            image = applyTransforms(image, **parameters)
-            return image.data, image.format, image.size
+            return StringIO(data)
 
 
 class ImageScaling(BrowserView):
@@ -87,12 +100,23 @@ class ImageScaling(BrowserView):
         else:
             return self.context.getPrimaryField()
 
-    def create(self, fieldname, direction='keep', **parameters):
+    def create(self, fieldname, transforms, **parameters):
         """ factory for image scales, see `IImageScaleStorage.scale` """
         field = self.field(fieldname)
-        create = IImageScaleFactory(field).create
+        factory = IImageScaleFactory(field)
+        data = factory.data(self.context)
         try:
-            return create(self.context, direction=direction, **parameters)
+            if data:
+                image, format = applyTransforms(data, transforms)
+                if not format == 'PNG':
+                    format = 'JPEG'
+                value = factory.new()
+                outfile = value.open('w')
+                image.save(outfile, format, **parameters)
+                if getattr(value, 'getvalue'):     # support for StringIO
+                    value = value.getvalue()
+                outfile.close()
+                return value, format, image.size
         except (ConflictError, KeyboardInterrupt):
             raise
         except Exception:
@@ -108,18 +132,18 @@ class ImageScaling(BrowserView):
         return self.context.modified().millis()
 
     # TODO: this should be deprecated in plone 4.2, see PLIP 10174
-    def scale(self, fieldname=None, scale=None, **parameters):
+    def scale(self, fieldname=None, scale=None, width=None, height=None,
+            direction='keep', **parameters):
         if scale is not None:
             field = self.field(fieldname)
             available = field.getAvailableSizes(self.context)
             if not scale in available:
                 return None
             width, height = available[scale]
-            parameters.update(width=width, height=height)
         storage = AnnotationStorage(self.context, self.modified)
+        scale = 'scale', HashableDict(width=width, height=height,
+            direction=direction)
         info = storage.scale(factory=self.create,
-            fieldname=fieldname, **parameters)
+            fieldname=fieldname, transforms=(scale,), **parameters)
         if info is not None:
             return self.make(info).__of__(self.context)
-    
-        

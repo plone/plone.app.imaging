@@ -49,4 +49,8 @@
       provides="plone.namedfile.interfaces.IAvailableSizes"
       zcml:condition="installed plone.namedfile.scaling" />
 
+  <utility
+      name="scale"
+      factory=".transform.Scale" />
+
 </configure>
