@@ -46,7 +46,7 @@ which don't use publish traversal:
   ...     econtext = getExprContext(self.portal)
   ...     return Expression(expr)(econtext)
   >>> eval_expression('portal/foo/image_thumb')
-  <ImageScale at ...>
+  <ATImageScale at ...>
 
 And let's make sure that we can check for the scale with an 'exists'
 expression:

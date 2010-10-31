@@ -21,10 +21,10 @@ class ImageTraverseTests(ImagingTestCase):
         tag = view.traverse(name, stack)
         base = self.image.absolute_url()
         expected = r'<img src="%s/@@images/([-0-9a-f]{36}).(jpeg|gif|png)" ' \
-            r'alt="foo" title="foo" height="(\d+)" width="(\d+)" />' % base
+            r'alt="(foo)?" title="(foo)?" height="(\d+)" width="(\d+)" />' % base
         groups = match(expected, tag).groups()
         self.failUnless(groups, tag)
-        uid, ext, height, width = groups
+        uid, ext, _, _, height, width = groups
         return uid, ext, int(width), int(height)
 
     def testImageThumb(self):

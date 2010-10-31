@@ -8,7 +8,7 @@ from ZODB.POSException import ConflictError
 from ZPublisher.BaseRequest import DefaultPublishTraverse
 from plone.app.imaging.interfaces import IBaseObject
 from plone.app.imaging.interfaces import IImageScaleHandler
-from plone.app.imaging.scale import ImageScale
+from plone.app.imaging.scale import ATImageScale
 
 
 class ImageTraverser(DefaultPublishTraverse):
@@ -93,7 +93,7 @@ class DefaultImageScaleHandler(object):
 
     def storeScale(self, instance, scale, **data):
         """ store a scaled version of the image """
-        image = ImageScale(**data)
+        image = ATImageScale(**data)
         field = self.context
         field.getStorage(instance).set(image.getId(), instance, image,
             mimetype=image.content_type, filename=image.filename)

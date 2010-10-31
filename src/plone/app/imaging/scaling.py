@@ -86,7 +86,7 @@ class ImageScaling(BrowserView):
         mimetype = info['mimetype']
         info['content_type'] = mimetype
         info['filename'] = self.context.getFilename()
-        scale = ImageScale(info['uid'], **info)
+        scale = ImageScale(self.context, self.request, id=info['uid'], **info)
         scale.size = len(scale.data)
         url = self.context.absolute_url()
         extension = mimetype.split('/')[-1]
