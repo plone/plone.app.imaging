@@ -171,13 +171,12 @@ class ScalesAdapterTests(ImagingTestCase):
     def testCreateScaleWithPdata(self):
         data = self.getImage() + '\x00' * (1 << 16)
         from Products.ATContentTypes.content.image import ATImage
-        image = ATImage('image')
+        image = ATImage('image').__of__(self.folder)
         image.setImage(data)
         field = image.getField('image')
         field.swallowResizeExceptions = False
         from OFS.Image import Pdata
         self.failUnless(isinstance(image.getImage().data, Pdata))
-
         adapter = ImageScaling(image, None)
         foo = adapter.scale('image', width=100, height=80)
         self.failIf(foo is None)
