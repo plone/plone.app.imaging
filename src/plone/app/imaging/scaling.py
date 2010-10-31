@@ -109,7 +109,7 @@ class ImageScaling(BrowserView):
             items, so stored image scales can be invalidated """
         return self.context.modified().millis()
 
-    #XXX deprecate
+    # TODO: this should be deprecated in plone 4.2, see PLIP 10174
     def scale(self, fieldname=None, scale=None, **parameters):
         if scale is not None:
             field = self.field(fieldname)

@@ -8,8 +8,9 @@ This package tries to factor out and re-use the image scaling code from
 Archetypes_ into a separate package in order to make it user-configurable
 and add support for storing the image data into ZODB blobs_.
 
-In addition it provides pluggable transformation chains (eg for cropping)
-(see section `Image transforms`_) for details how to use or define transforms.
+In addition it provides support for pluggable transformation chains (e.g.
+for cropping).  Please see section `Image transforms`_ for details how to
+use or define such transformations.
 
   .. _Archetypes: http://plone.org/products/archetypes
   .. _blobs: http://plone.org/products/plone.app.blob
@@ -48,7 +49,7 @@ much flexibility/convenience you need:
 
 1. for full control you may do the tag generation explicitly::
 
-     <img tal:define="image context/@@images/<imageFieldName>;
+     <img tal:define="image context/@@images/image;
                       thumbnail python: image.scale(width=64, height=64);"
           tal:condition="thumbnail"
           tal:attributes="src thumbnail/url;
@@ -64,21 +65,17 @@ much flexibility/convenience you need:
 
 2. for automatic tag generation with extra parameters you would use::
 
-     <img tal:define="img context/@@images/<imageFieldName>"
-          tal:replace="structure python: img.scale(width=1200,
-                       height=800, direction='down').tag()" />
+     <img tal:define="image context/@@images/image"
+          tal:replace="structure python: image.scale(width=1200, height=800,
+                       direction='down').tag()" />
 
 3. for tag generation using predefined scale names this would look like::
 
-     <img tal:define="img context/@@images/<imageFieldName>"
-          tal:replace="structure python: img.apply(transform='mini').tag()" />
+     <img tal:define="image context/@@images/image"
+          tal:replace="structure python: image.scale('mini').tag()" />
 
-     
-   This would use the predefined scale (XXX footnote) "mini" to determine the desired
+   This would use the predefined scale "mini" to determine the desired
    image dimensions, but still allow to pass in extra parameters.
-   
-..Note::
-	Technically no scale, XXX but easier for users to stick with this name
 
 4. a convenience short-cut for option 3 can be used::
 
@@ -91,6 +88,8 @@ much flexibility/convenience you need:
 
 Image transforms
 ----------------
+
+TODO this needs editing!
 
 scaling is a transform, so ``img.scale(width=80,height=80)`` is equivalent to
 ``img.transform(name='scale',width=80,height=80)``

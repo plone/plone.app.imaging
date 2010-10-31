@@ -29,19 +29,17 @@ class IImageScale(Interface):
     filename = Attribute('The filename used for downloads.')
 
     def transform(name, **parameters):
-        """ lookup a transformation registered under `name` and append it to the
-            transformation chain with the given `parameters`.
-            
-            (the actual transformation will happen later XXX more detail! )
-            
-            the parameters can be anything supported by the transform that is used
-            
-            """
-            
-            
-    def tag():
-        """evaluates transformation chain
-        """
+        """ lookup the image transformation utility with the given `name`
+            and add it to the transformation chain.  the provided `parameters`
+            will become part of the internal hash used to store the resulting
+            image and also passed in when the actual transformation is
+            applied.  please note this will only happen once any of the
+            above attributes or the `tag` method are used. """
+
+    def tag(**parameters):
+        """ please see the description in `OFS.Image.Image` for supported
+            parameters """
+
 
 class IImageScaleFactory(Interface):
     """ adapter for image fields that allows generating scaled images """
@@ -58,14 +56,13 @@ class IImageScaleFactory(Interface):
 class IImageScaling(Interface):
     """ adapter use for generating (and storing) image scales """
 
-    #XXX deprecate that
+    # TODO: this should be deprecated in plone 4.2, see PLIP 10174
     def scale(fieldname, scalename=None, **parameters):
         """ retrieve a scale based on the given name or set of parameters.
             the parameters can be anything supported by `scaleImage` and
             would usually consist of at least a width & height.  returns
             either an object implementing `IImageScale` or `None` """
 
-    
 
 class IImageScaleHandler(Interface):
     """ handler for retrieving scaled versions of an image """
@@ -83,19 +80,8 @@ class IBaseObject(IATBaseObject):
         `overrides.zcml` to register our version of the traversal adapter """
 
 
+class IImageTransformation(Interface):
+    """ represents an image transformation, usually performed via PIL """
 
-class ITransform(Interface):
-    """
-    """
-    
-    title = TextLine(title=u"Transform Title",
-                     description=u"Shown in the Control Panel")
-    
-    description = TextLine(title=u"Transform description",
-                           description=u"Shown in the Control Panel, describes what the transform does")
-    
     def __call__(image, **parameters):
-        """actually modifies the passed in image and returns the image again
-        """
-        pass
-    
+        """ modifies the given PIL image and returns result """
