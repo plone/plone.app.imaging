@@ -1,4 +1,5 @@
 from logging import exception
+from PIL import Image
 from Acquisition import aq_base
 from ZODB.POSException import ConflictError
 from OFS.Image import Pdata
@@ -6,14 +7,11 @@ from zope.interface import implements
 from zope.traversing.interfaces import ITraversable, TraversalError
 from zope.publisher.interfaces import IPublishTraverse, NotFound
 from plone.app.imaging.interfaces import IImageScaling, IImageScaleFactory
+from plone.app.imaging.transform import applyTransforms
 from plone.app.imaging.scale import ImageScale
 from plone.scale.storage import AnnotationStorage
-from plone.scale.scale import scaleImage
 from Products.Five import BrowserView
-from zope.component._api import queryUtility
-from plone.app.imaging.transforms import ITransform
-from plone.app.imaging.transform import apply_transforms
-import PIL
+
 
 class ImageScaleFactory(object):
     """ adapter for image fields that allows generating scaled images """
@@ -28,9 +26,9 @@ class ImageScaleFactory(object):
         if isinstance(data, Pdata):
             data = str(data)
         if data:
-            image = PIL.Image.open(data)
-            image = apply_transforms(image, **parameters)
-            return image.data, image.format, image.size 
+            image = Image.open(data)
+            image = applyTransforms(image, **parameters)
+            return image.data, image.format, image.size
 
 
 class ImageScaling(BrowserView):

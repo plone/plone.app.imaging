@@ -1,11 +1,8 @@
 from zope.interface import implements
 from Products.Archetypes.Field import Image
 from plone.app.imaging.interfaces import IImageScale
-from plone.app.imaging.transforms import ITransform
-from zope.component import getUtility
-import PIL
 
-           
+
 class ImageScale(Image):
     """ extend image class from `Archetypes.Field` by making sure the title
         gets always computed and not calling `_get_content_type` even though
@@ -16,7 +13,6 @@ class ImageScale(Image):
         self.__name__ = id
         self.__dict__.update(kw)
         self.precondition = ''
-        self.transforms = []
         # `OFS.Image` has no proper support for file objects or iterators,
         # so we'll require `data` to be a string or a file-like object...
         if not isinstance(data, str):
@@ -33,24 +29,3 @@ class ImageScale(Image):
     def __call__(self, *args, **kw):
         """ calling the scale returns itself, so "nocall:" can be skipped """
         return self
-
-
-    def transform(self, name, **parameters):
-        self.transforms.append((name, tuple(sorted(parameters.items()))))
-        return self
-        
-    
-    def dosomething(self):
-        # key existent already
-        
-        if key:
-            return existing image
-        else:
-            self.apply_transforms()
-
-        
-    
-            
-    
-            
-    
