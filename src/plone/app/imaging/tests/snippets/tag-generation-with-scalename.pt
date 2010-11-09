@@ -1,0 +1,2 @@
+<img tal:define="image context/@@images/image"
+     tal:replace="structure python: image.scale(scale='mini').tag()" />

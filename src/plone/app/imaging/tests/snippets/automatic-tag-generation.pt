@@ -1,0 +1,3 @@
+<img tal:define="image context/@@images/image"
+     tal:replace="structure python: image.scale(width=1200, height=800,
+                  direction='down').tag()" />

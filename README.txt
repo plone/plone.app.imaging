@@ -47,14 +47,10 @@ New-style image scales
 templates.  There are several variants you can pick from depending on how
 much flexibility/convenience you need:
 
-1. for full control you may do the tag generation explicitly::
+1. for full control you may do the tag generation explicitly:
 
-     <img tal:define="image context/@@images/image;
-                      thumbnail python: image.scale(width=64, height=64);"
-          tal:condition="thumbnail"
-          tal:attributes="src thumbnail/url;
-                          width thumbnail/width;
-                          height thumbnail/height" />
+   .. include:: src/plone/app/imaging/tests/snippets/explicit-tag-generation.pt
+      :literal:
 
    This would create an up to 64 by 64 pixel scaled down version of the image
    stored in the "image" field.  It also allows for passing in addition
@@ -63,27 +59,28 @@ much flexibility/convenience you need:
 
    .. _`plone.scale`: http://pypi.python.org/pypi/plone.scale
 
-2. for automatic tag generation with extra parameters you would use::
+2. for automatic tag generation with extra parameters you would use:
 
-     <img tal:define="image context/@@images/image"
-          tal:replace="structure python: image.scale(width=1200, height=800,
-                       direction='down').tag()" />
+   .. include:: src/plone/app/imaging/tests/snippets/automatic-tag-generation.pt
+      :literal:
 
-3. for tag generation using predefined scale names this would look like::
+3. for tag generation using predefined scale names this would look like:
 
-     <img tal:define="image context/@@images/image"
-          tal:replace="structure python: image.scale('mini').tag()" />
+   .. include:: src/plone/app/imaging/tests/snippets/tag-generation-with-scalename.pt
+      :literal:
 
    This would use the predefined scale "mini" to determine the desired
    image dimensions, but still allow to pass in extra parameters.
 
-4. a convenience short-cut for option 3 can be used::
+4. a convenience short-cut for option 3 can be used:
 
-     <img tal:replace="structure context/@@images/image/mini" />
+   .. include:: src/plone/app/imaging/tests/snippets/shortcut-tag-for-scale.pt
+      :literal:
 
-5. and lastly, the short-cut can also be used to render the unscaled image::
+5. and lastly, the short-cut can also be used to render the unscaled image:
 
-     <img tal:replace="structure context/@@images/image" />
+   .. include:: src/plone/app/imaging/tests/snippets/shortcut-tag-for-image.pt
+      :literal:
 
 
 Image transforms

@@ -1,0 +1,6 @@
+<img tal:define="image context/@@images/image;
+                 thumbnail python: image.scale(width=64, height=64);"
+     tal:condition="thumbnail"
+     tal:attributes="src thumbnail/url;
+                     width thumbnail/width;
+                     height thumbnail/height" />
