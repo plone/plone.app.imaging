@@ -30,11 +30,15 @@
   <adapter
       factory=".configlet.ImagingControlPanelAdapter" />
 
+  <permission
+      id="plone.app.controlpanel.Imaging"
+      title="Plone Site Setup: Imaging" />
+
   <browser:page
       name="imaging-controlpanel"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       class=".configlet.ImagingControlPanel"
-      permission="cmf.ManagePortal" />
+      permission="plone.app.controlpanel.Imaging" />
 
   <browser:page
       for="Products.Archetypes.interfaces.IBaseObject"

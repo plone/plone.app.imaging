@@ -6,6 +6,6 @@
     icon_expr="string:$portal_url/image_icon.gif"
     url_expr="string:${portal_url}/@@imaging-controlpanel" visible="True"
     i18n:attributes="title">
-  <permission>Manage portal</permission>
+  <permission>Plone Site Setup: Imaging</permission>
  </configlet>
 </object>

@@ -4,6 +4,9 @@ Changelog
 1.0.1 - unreleased
 ------------------
 
+- Protect the control panel with a custom permission,
+  "Plone Site Setup: Imaging", instead of the generic "Manage portal".
+  [davisagli]
 
 1.0 - 2010-07-18
 ----------------
