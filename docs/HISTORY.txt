@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.1 - unreleased
+1.0.1 - 2011-01-03
 ------------------
 
 - Protect the control panel with a custom permission,
