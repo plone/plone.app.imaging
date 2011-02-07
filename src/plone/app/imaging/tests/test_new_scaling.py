@@ -222,6 +222,12 @@ class ScalesAdapterTests(ImagingTestCase):
         field.swallowResizeExceptions = True
         self.assertEqual(self.adapter.scale('image'), None)
 
+    def testGetAvailableSizes(self):
+        assert self.adapter.getAvailableSizes('image') == {'foo': (60, 60)}
+
+    def testGetImageSize(self):
+        assert self.adapter.getImageSize('image') == (200, 200)
+
 
 def test_suite():
     return TestSuite([

@@ -44,11 +44,17 @@ class IImageScaleFactory(Interface):
 class IImageScaling(Interface):
     """ adapter use for generating (and storing) image scales """
 
-    def scale(fieldname, scalename=None, **parameters):
+    def scale(fieldname=None, scalename=None, **parameters):
         """ retrieve a scale based on the given name or set of parameters.
             the parameters can be anything supported by `scaleImage` and
             would usually consist of at least a width & height.  returns
             either an object implementing `IImageScale` or `None` """
+
+    def getAvailableSizes(fieldname=None):
+        """ returns a dictionary of scale name => (width, height) """
+
+    def getImageSize(fieldname=None):
+        """ returns the original image size, a tuple of (width, height) """
 
 
 class IImageScaleHandler(Interface):

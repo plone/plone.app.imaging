@@ -4,6 +4,9 @@ Changelog
 1.0.2 - Unreleased
 ------------------
 
+- Add getAvailableSizes and getImageSize to the @@images view.
+  [elro]
+
 1.0.1 - 2011-01-03
 ------------------
 

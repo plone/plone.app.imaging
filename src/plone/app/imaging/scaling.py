@@ -7,6 +7,7 @@ from zope.traversing.interfaces import ITraversable, TraversalError
 from zope.publisher.interfaces import IPublishTraverse, NotFound
 from plone.app.imaging.interfaces import IImageScaling, IImageScaleFactory
 from plone.app.imaging.scale import ImageScale
+from plone.app.imaging.utils import getAllowedSizes
 from plone.scale.storage import AnnotationStorage
 from plone.scale.scale import scaleImage
 from Products.Five import BrowserView
@@ -106,8 +107,7 @@ class ImageScaling(BrowserView):
 
     def scale(self, fieldname=None, scale=None, **parameters):
         if scale is not None:
-            field = self.field(fieldname)
-            available = field.getAvailableSizes(self.context)
+            available = self.getAvailableSizes(fieldname)
             if not scale in available:
                 return None
             width, height = available[scale]
@@ -117,3 +117,11 @@ class ImageScaling(BrowserView):
             fieldname=fieldname, **parameters)
         if info is not None:
             return self.make(info).__of__(self.context)
+
+    def getAvailableSizes(self, fieldname=None):
+        field = self.field(fieldname)
+        return field.getAvailableSizes(self.context)
+
+    def getImageSize(self, fieldname=None):
+        field = self.field(fieldname)
+        return field.getSize(self.context)
