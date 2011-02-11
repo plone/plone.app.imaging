@@ -1,3 +1,4 @@
+from logging import getLogger
 from logging import exception
 from Acquisition import aq_base
 from ZODB.POSException import ConflictError
@@ -7,9 +8,13 @@ from zope.traversing.interfaces import ITraversable, TraversalError
 from zope.publisher.interfaces import IPublishTraverse, NotFound
 from plone.app.imaging.interfaces import IImageScaling, IImageScaleFactory
 from plone.app.imaging.scale import ImageScale
-from plone.app.imaging.utils import getAllowedSizes
-from plone.scale.storage import AnnotationStorage
-from plone.scale.scale import scaleImage
+try:
+    from plone.scale.storage import AnnotationStorage
+    from plone.scale.scale import scaleImage
+except ImportError:
+    logger = getLogger('plone.app.imaging')
+    logger.warn("Warning: no Python Imaging Libraries (PIL) found. "
+                "Can't scale images.")
 from Products.Five import BrowserView
 
 

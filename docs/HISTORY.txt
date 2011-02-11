@@ -4,6 +4,9 @@ Changelog
 1.0.3 - Unreleased
 ------------------
 
+- Avoid breaking on startup if PIL is not present.
+  [davisagli]
+
 1.0.2 - 2011-02-10
 ------------------
 
