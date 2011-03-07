@@ -34,7 +34,6 @@ class ImageTraverser(FiveTraversable):
     def traverse(self, name, furtherPath):
         context = self._subject
         schema = context.Schema()
-        print "Traversing", context, name
         if '_' in name:
             fieldname, scale = name.split('_', 1)
         else:
