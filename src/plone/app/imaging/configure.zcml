@@ -20,7 +20,7 @@
   <adapter
       factory=".traverse.DefaultImageScaleHandler" />
 
-  <adapter for="plone.app.blob.interfaces.IATBlobImage"
-      factory=".traverse.ImageTraverser" />
+  <!--adapter for="plone.app.blob.interfaces.IATBlobImage"
+      factory=".traverse.ImageTraverser" /-->
 
 </configure>
