@@ -14,13 +14,14 @@
       class="Products.Archetypes.atapi.BaseObject"
       interface="plone.app.imaging.interfaces.IBaseObject" />
 
-  <adapter
-      factory=".traverse.ImageTraverser" />
 
   <adapter
       factory=".traverse.DefaultImageScaleHandler" />
 
-  <!--adapter for="plone.app.blob.interfaces.IATBlobImage"
-      factory=".traverse.ImageTraverser" /-->
+  <adapter
+      factory=".traverse.ImageTraverser" />
+
+  <!-- adapter for="plone.app.blob.interfaces.IATBlobImage"
+      factory=".traverse.ImageTraverser" / -->
 
 </configure>

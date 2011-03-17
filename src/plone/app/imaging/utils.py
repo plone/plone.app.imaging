@@ -2,6 +2,8 @@ from Products.CMFCore.utils import getToolByName
 from zope.app.component.hooks import getSite
 
 def getAllowedSizes(context=getSite()):
+    if not context:
+        raise ValueError("Site invalid")
     ptool = getToolByName(context, 'portal_properties', None)
     if ptool is None:
         return None

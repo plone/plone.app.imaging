@@ -7,6 +7,8 @@ from Products.Five.traversable import FiveTraversable
 from plone.app.imaging.interfaces import IBaseObject
 from plone.app.imaging.interfaces import IImageScaleHandler
 
+import logging
+logger = logging.getLogger('plone.app.imaging')
 
 class ImageScale(Image):
     """ extend image class from `Archetypes.Field` by making sure the title
@@ -33,6 +35,7 @@ class ImageTraverser(FiveTraversable):
 
     def traverse(self, name, furtherPath):
         context = self._subject
+        #logger.info("Doing traverse from p.a.i with %s and name %s" % (context, name))
         schema = context.Schema()
         if '_' in name:
             fieldname, scale = name.split('_', 1)
