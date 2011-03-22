@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.4 - Unreleased
+1.0.4 - 2011-03-22
 ------------------
 
 * Add a tag method to @@images to simplify tagging of full sized images.
