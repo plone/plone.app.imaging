@@ -148,6 +148,16 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         # make sure the traversal adapter was call in fact
         self.assertEqual(self.counter, 3)
 
+    def testViewTagMethod(self):
+        data = self.getImage()
+        folder = self.folder
+        image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        traverse = folder.REQUEST.traverseName
+        view = traverse(image, '@@images')
+        image_tag = image.tag()
+        view_tag = view.tag()
+        self.assertEqual(image.tag(), view.tag())
+
 
 class ImagePublisherTests(TraverseCounterMixin, ImagingFunctionalTestCase):
 

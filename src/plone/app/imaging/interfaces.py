@@ -50,6 +50,9 @@ class IImageScaling(Interface):
             would usually consist of at least a width & height.  returns
             either an object implementing `IImageScale` or `None` """
 
+    def tag(fieldname=None, scalename=None, **parameters):
+        """ returns a tag for a scale """
+
     def getAvailableSizes(fieldname=None):
         """ returns a dictionary of scale name => (width, height) """
 

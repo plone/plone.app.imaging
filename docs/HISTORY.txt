@@ -4,6 +4,12 @@ Changelog
 1.0.4 - Unreleased
 ------------------
 
+* Add a tag method to @@images to simplify tagging of full sized images.
+  [elro]
+
+* Make scale=None return the original image wrapped as an ImageScaling object.
+  [elro]
+
 1.0.3 - 2011-02-14
 ------------------
 

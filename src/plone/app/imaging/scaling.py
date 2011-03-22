@@ -110,18 +110,24 @@ class ImageScaling(BrowserView):
             items, so stored image scales can be invalidated """
         return self.context.modified().millis()
 
-    def scale(self, fieldname=None, scale=None, **parameters):
+    def scale(self, fieldname=None, scale=None, height=None, width=None, **parameters):
         if scale is not None:
             available = self.getAvailableSizes(fieldname)
             if not scale in available:
                 return None
             width, height = available[scale]
-            parameters.update(width=width, height=height)
+        if width is None and height is None:
+            field = self.field(fieldname)
+            return field.get(self.context)
         storage = AnnotationStorage(self.context, self.modified)
         info = storage.scale(factory=self.create,
-            fieldname=fieldname, **parameters)
+            fieldname=fieldname, height=height, width=width, **parameters)
         if info is not None:
             return self.make(info).__of__(self.context)
+
+    def tag(self, fieldname=None, scale=None, **kwargs):
+        scale = self.scale(fieldname, scale)
+        return scale.tag(**kwargs)
 
     def getAvailableSizes(self, fieldname=None):
         field = self.field(fieldname)
