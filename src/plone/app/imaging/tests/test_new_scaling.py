@@ -69,6 +69,16 @@ class ImageTraverseTests(ImagingTestCase):
         self.assertEqual(height, 42)
         self.assertNotEqual(uid1, uid2, 'scale not updated?')
 
+    def testViewTagMethod(self):
+        data = self.getImage()
+        folder = self.folder
+        image = folder['foo']
+        traverse = folder.REQUEST.traverseName
+        view = traverse(image, '@@images')
+        image_tag = image.tag()
+        view_tag = view.tag()
+        self.assertEqual(image.tag(), view.tag())
+
 
 class ImagePublisherTests(ImagingFunctionalTestCase):
 
