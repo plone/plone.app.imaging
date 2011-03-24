@@ -4,6 +4,8 @@ Changelog
 1.0.5 - unreleased
 ------------------
 
+* Fix test now scale=None does not raise exception.
+  [elro]
 
 1.0.4 - 2011-03-22
 ------------------

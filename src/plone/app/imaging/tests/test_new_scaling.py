@@ -227,10 +227,10 @@ class ScalesAdapterTests(ImagingTestCase):
     def testScaleThatCausesErrorsCanBeSuppressed(self):
         field = self.image.getField('image')
         field.swallowResizeExceptions = False
-        self.assertRaises(Exception, self.adapter.scale, 'image')
+        self.assertRaises(Exception, self.adapter.scale, 'image', width=-1, height=-1)
         # scaling exceptions should be "swallowed" when set on the field...
         field.swallowResizeExceptions = True
-        self.assertEqual(self.adapter.scale('image'), None)
+        self.assertEqual(self.adapter.scale('image', width=-1, height=-1), None)
 
     def testGetAvailableSizes(self):
         assert self.adapter.getAvailableSizes('image') == {'foo': (60, 60)}
