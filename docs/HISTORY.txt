@@ -3,6 +3,11 @@ Changelog
 
     (name of developer listed in brackets)
 
+plone.app.imaging - 1.0b4_1 Released 28 March 2011
+
+    - Compatibility with Plone 2.5
+      [afd]
+
 plone.app.imaging - 1.0b4 Unreleased
 
     - Refactor default scale handler to make it more reusable for the
