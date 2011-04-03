@@ -1,10 +1,10 @@
 Changelog
 =========
 
-1.0.5 - unreleased
+1.0.5 - 2011-04-03
 ------------------
 
-* Fix test now scale=None does not raise exception.
+* Fix test now `scale=None` does not raise exception.
   [elro]
 
 1.0.4 - 2011-03-22
