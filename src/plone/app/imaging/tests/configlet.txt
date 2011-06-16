@@ -10,7 +10,8 @@ First some initial setup code:
     >>> iprops = ptool.imaging_properties
     >>> iprops.getProperty('allowed_sizes')
     ('large 768:768', 'preview 400:400', 'mini 200:200', 'thumb 128:128',
-     'tile 64:64', 'icon 32:32', 'listing 16:16')
+     'tile 64:64', 'icon 32:32', 'listing 16:16', 'portrait 48:64 fill',
+     'landscape 640:320 fill')
 
 Viewing the site control panel
 ------------------------------

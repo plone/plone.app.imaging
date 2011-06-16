@@ -10,6 +10,8 @@
    <element value="tile 64:64"/>
    <element value="icon 32:32"/>
    <element value="listing 16:16"/>
+   <element value="portrait 48:64 fill"/>
+   <element value="landscape 640:320 fill"/>
   </property>
  </object>
 </object>

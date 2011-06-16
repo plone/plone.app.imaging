@@ -11,7 +11,12 @@ class IImagingSchema(Interface):
 
     allowed_sizes = List(title=_(u'Allowed image sizes'),
         description = _(u'Specify all allowed maximum image dimensions, one per line. '
-                         'The required format is <name> <width>:<height>.'),
+                         'The required format is <name> <width>:<height> '
+                         '<"fill"|"fit"> where "fill" indicates that the '
+                         'image will be cropped and scaled to fill the size ' 
+                         'preserving the aspect ratio and "fit" indicates the '
+                         'image will be scaled to fit the size. No value for '
+                         '<"fill"|"fit"> defaults to "fit".'),
         value_type = TextLine(), default = [], required = False)
 
 
