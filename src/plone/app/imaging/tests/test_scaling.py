@@ -148,6 +148,26 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         # make sure the traversal adapter was call in fact
         self.assertEqual(self.counter, 3)
 
+    def testScalingStrategies(self):
+        data = self.getImage('image.jpg')
+        folder = self.folder
+        image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        # set custom image sizes
+        iprops = self.portal.portal_properties.imaging_properties
+        iprops.manage_changeProperties(allowed_sizes=['foo 48:48 fit', 
+                                                      'bar 48:48 fill'])
+        # Check fit
+        traverse = folder.REQUEST.traverseName
+        foo = traverse(image, 'image_foo')
+        self.assertEqual(foo.width, 48)
+        self.assertEqual(foo.height, 19)
+        # Check fill
+        bar = traverse(image, 'image_bar')
+        self.assertEqual(bar.width, 48)
+        self.assertEqual(bar.height, 48)
+        # make sure the traversal adapter was called in fact
+        self.assertEqual(self.counter, 2)
+
 
 class ImagePublisherTests(TraverseCounterMixin, ImagingFunctionalTestCase):
 

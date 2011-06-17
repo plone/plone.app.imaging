@@ -4,6 +4,10 @@ Changelog
 1.0.6 - unreleased
 ------------------
 
+- Add "scaling strategies", i.e. a parameter to image scales that defines
+  whether the image should scale to fit as is in the scale or whether it
+  should be first cropped and then fill the scale dimensions.
+  [ggozad]
 
 1.0.5 - 2011-04-03
 ------------------
