@@ -8,19 +8,18 @@ from plone.app.blob.interfaces import IBlobImageField
 from plone.app.imaging.interfaces import IImageScaleHandler
 
 
-class ImageCropping(BrowserView):
+class CroppableImagesView(BrowserView):
+    """
+    Lists the image fields together with the scales that are specified
+    with the 'fill' parameter to allow later recropping.
+    """
 
     def __init__(self, context, request):
-        super(ImageCropping, self).__init__(context, request)
+        super(CroppableImagesView, self).__init__(context, request)
         image_fields = [field
                         for field in self.context.Schema().fields()
                         if IBlobImageField in providedBy(field).interfaces()]
         self.image_fields = image_fields
-
-    def publishTraverse(self, request, name):
-        if name=="cropImage":
-            return self.cropImage
-        return super(ImageCropping, self).publishTraverse(request, name)
 
     def imageFields(self):
         return [field.getName() for field in self.image_fields]
@@ -31,12 +30,31 @@ class ImageCropping(BrowserView):
         return [scale for scale in strategies
                 if strategies[scale]=='fill']
 
-    def aspectRatio(self, field_name, scale):
-        field = self.context.getField(field_name)
+
+class CropImageView(BrowserView):
+
+    def __init__(self, context, request):
+        super(CropImageView, self).__init__(context, request)
+        self.field_name = request.get('field')
+        self.scale_name = request.get('scale')
+
+    def publishTraverse(self, request, name):
+        if name=="cropImage":
+            return self.cropImage
+        return super(CropImageView, self).publishTraverse(request, name)
+
+    def field(self):
+        return self.field_name
+
+    def scale(self):
+        return self.scale_name
+
+    def aspectRatio(self):
+        field = self.context.getField(self.field_name)
         available_sizes = field.getAvailableSizes(field)
-        if scale not in available_sizes:
+        if self.scale_name not in available_sizes:
             return 1.0
-        w, h = available_sizes[scale]
+        w, h = available_sizes[self.scale_name]
         return float(w)/float(h)
 
     def cropImage(self, **kwargs):

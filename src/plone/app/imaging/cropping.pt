@@ -10,23 +10,29 @@
                  fields view/imageFields">
 
   <div tal:repeat="field fields">
-    <h2 tal:content="field">Image</h2>
-    <tal:scales tal:repeat="scale python:view.croppingScales(field)">
-      <div>
-        <label tal:content="scale">Portrait</label>
-        <br/>
-        <img src="" class="croppableImage"
-          tal:define="aspectratio python: view.aspectRatio(field, scale)"
-          tal:attributes="id string:${field}-${scale};
-            src string:${context/absolute_url}/${field};
-            data-aspectratio python: aspectratio;
+      <h2 i18n:translate="">Edit croppable images</h2>
+      <div class="documentDescription">For each image field in your content you can
+        select below the scales you want to re-crop.</div>
+      <h2 tal:content="field">Image</h2>
+      <ul>
+      <li>
+        <h3 i18n:translate="">Original image</h3>
+        <img src="" tal:attributes="src string:${context/absolute_url}/${field}"/>
+      </li>
+      <li tal:repeat="scale python:view.croppingScales(field)">
+        <h3 tal:content="scale">Portrait</h3>
+        <img src=""
+          tal:attributes="
+            src string:${context/absolute_url}/${field}_${scale};
             data-field field;
             data-scale scale"/>
-        <button class="cropImageButton"
-          tal:attributes="data-field field;
-                          data-scale scale">Crop</button>
-      </div>
-    </tal:scales>
+        <div class="formControls">
+          <a class="selImageToCropBtn"
+            tal:attributes="href string: ${context/absolute_url}/@@cropimage?field=${field}&scale=${scale};"
+            i18n:translate="">Re-crop</a>
+        </div>
+      </li>
+      <ul>
   </div>
 
 </metal:main>

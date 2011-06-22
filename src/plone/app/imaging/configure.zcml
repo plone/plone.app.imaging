@@ -50,9 +50,17 @@
   <browser:page
       for="Products.Archetypes.interfaces.IBaseObject"
       name="cropping"
-      class=".cropping.ImageCropping"
+      class=".cropping.CroppableImagesView"
       template="cropping.pt"
-      permission="zope2.View"
+      permission="cmf.ModifyPortalContent"
+    />
+
+  <browser:page
+      for="Products.Archetypes.interfaces.IBaseObject"
+      name="cropimage"
+      class=".cropping.CropImageView"
+      template="cropimage.pt"
+      permission="cmf.ModifyPortalContent"
       allowed_attributes="cropImage"
     />
 
