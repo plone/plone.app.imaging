@@ -1,0 +1,5 @@
+<object name="portal_javascripts" meta_type="JavaScripts Registry">
+ <javascript id="++resource++plone.app.imaging.resources/jquery.Jcrop.min.js" authenticated="True" insert-after="jquery.js" compression="none"/>
+ <javascript id="++resource++plone.app.imaging.resources/cropping.js" authenticated="True" insert-after="jquery.js" />
+
+</object>

@@ -47,6 +47,21 @@
       allowed_interface=".interfaces.IImageScaling"
       permission="zope2.View" />
 
+  <browser:page
+      for="Products.Archetypes.interfaces.IBaseObject"
+      name="cropping"
+      class=".cropping.ImageCropping"
+      template="cropping.pt"
+      permission="zope2.View"
+      allowed_attributes="cropImage"
+    />
+
+
+  <browser:resourceDirectory
+    name="plone.app.imaging.resources"
+    directory="resources"
+    />
+
   <!-- configure sizes lookup for `plone.namedfile` if it's present -->
   <utility
       component=".utils.getAllowedSizes"

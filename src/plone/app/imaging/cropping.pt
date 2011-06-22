@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+<head>
+</head>
+<body>
+<metal:main fill-slot="main"
+     tal:define="context_state context/@@plone_context_state;
+                 fields view/imageFields">
+
+  <div tal:repeat="field fields">
+    <h2 tal:content="field">Image</h2>
+    <tal:scales tal:repeat="scale python:view.croppingScales(field)">
+      <div>
+        <label tal:content="scale">Portrait</label>
+        <br/>
+        <img src="" class="croppableImage"
+          tal:define="aspectratio python: view.aspectRatio(field, scale)"
+          tal:attributes="id string:${field}-${scale};
+            src string:${context/absolute_url}/${field};
+            data-aspectratio python: aspectratio;
+            data-field field;
+            data-scale scale"/>
+        <button class="cropImageButton"
+          tal:attributes="data-field field;
+                          data-scale scale">Crop</button>
+      </div>
+    </tal:scales>
+  </div>
+
+</metal:main>
+</body>
+</html>
