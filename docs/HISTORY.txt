@@ -4,6 +4,10 @@ Changelog
 1.0.6 - unreleased
 ------------------
 
+- Added @@cropping and @@cropImage which allows to select a croppable scale 
+  and individually crop the scales.
+  [ggozad]
+
 - Add "scaling strategies", i.e. a parameter to image scales that defines
   whether the image should scale to fit as is in the scale or whether it
   should be first cropped and then fill the scale dimensions.
