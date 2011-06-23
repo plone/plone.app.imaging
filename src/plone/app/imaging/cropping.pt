@@ -28,7 +28,7 @@
             data-scale scale"/>
         <div class="formControls">
           <a class="selImageToCropBtn"
-            tal:attributes="href string: ${context/absolute_url}/@@cropimage?field=${field}&scale=${scale};"
+            tal:attributes="href string:${context/absolute_url}/cropimage?field=${field}&scale=${scale};"
             i18n:translate="">Re-crop</a>
         </div>
       </li>
