@@ -14,13 +14,12 @@
       <div class="documentDescription">For each image field in your content you can
         select below the scales you want to re-crop.</div>
       <h2 tal:content="field">Image</h2>
-      <ul>
-      <li>
         <h3 i18n:translate="">Original image</h3>
-        <img src="" tal:attributes="src string:${context/absolute_url}/${field}"/>
-      </li>
-      <li tal:repeat="scale python:view.croppingScales(field)">
-        <h3 tal:content="scale">Portrait</h3>
+        <img src="" tal:attributes="src string:${context/absolute_url}/${field}_preview"/>
+      <tal:scale tal:define="croppingScales python:view.croppingScales(field)" 
+          tal:repeat="scale croppingScales">
+        <h3 tal:define="size python:croppingScales[scale]"
+            tal:content="string:${scale} ${size}">Portrait</h3>
         <img src=""
           tal:attributes="
             src string:${context/absolute_url}/${field}_${scale};
@@ -31,8 +30,7 @@
             tal:attributes="href string:${context/absolute_url}/cropimage?field=${field}&scale=${scale};"
             i18n:translate="">Re-crop</a>
         </div>
-      </li>
-      <ul>
+      </tal:scale>
   </div>
 
 </metal:main>

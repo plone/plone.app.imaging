@@ -27,8 +27,11 @@ class CroppableImagesView(BrowserView):
     def croppingScales(self, field_name):
         field = self.context.getField(field_name)
         strategies = field.getScalingStrategies(field)
-        return [scale for scale in strategies
-                if strategies[scale]=='fill']
+        result = {}
+        for scale in strategies:
+            if strategies[scale]=='fill':
+                result[scale] = field.getSize(self.context, scale)
+        return result
 
 
 class CropImageView(BrowserView):
