@@ -3,6 +3,7 @@ from zope.interface import providedBy
 import PIL.Image
 
 from Products.Five import BrowserView
+from Products.Archetypes.interfaces import IImageField
 from plone.app.blob.interfaces import IBlobImageField
 
 from plone.app.imaging.interfaces import IImageScaleHandler
@@ -18,7 +19,11 @@ class CroppableImagesView(BrowserView):
         super(CroppableImagesView, self).__init__(context, request)
         image_fields = [field
                         for field in self.context.Schema().fields()
-                        if IBlobImageField in providedBy(field).interfaces()]
+                        if IBlobImageField in providedBy(field).interfaces()
+                        or IImageField in providedBy(field).interfaces()]
+        image_fields = [field
+                        for field in image_fields
+                        if field.get_size(self.context)>0]
         self.image_fields = image_fields
 
     def imageFields(self):
