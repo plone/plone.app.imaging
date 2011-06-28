@@ -20,7 +20,7 @@
         data-previewratioy python: view.scaleToLargeRatios()[1]"/>
     <div class="formControls">
 
-      <input disabled="disabled" id="image-recrop" type="submit" value="Re-crop" name="recrop" i18n:attributes="value"/>
+      <input disabled="disabled" class="standalone" id="image-recrop" type="submit" value="Re-crop" name="recrop" i18n:attributes="value"/>
     </div>
   </form>
 
