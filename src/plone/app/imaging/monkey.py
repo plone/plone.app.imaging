@@ -111,10 +111,14 @@ def createScales(self, instance, value=None):
     """ creates scales and stores them; largely based on the version from
         `Archetypes.Field.ImageField` """
     sizes = self.getAvailableSizes(instance)
+    strategies = self.getScalingStrategies(instance)
     handler = IImageScaleHandler(self)
     for name, size in sizes.items():
         width, height = size
-        data = handler.createScale(instance, name, width, height, data=value)
+        strategy = 'fit'
+        if name in strategies:
+            strategy = strategies[name]
+        data = handler.createScale(instance, name, width, height, scaling_strategy=strategy, data=value)
         if data is not None:
             handler.storeScale(instance, name, **data)
 
