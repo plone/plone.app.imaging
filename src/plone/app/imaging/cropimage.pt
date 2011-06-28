@@ -16,8 +16,8 @@
         data-field field;
         data-scale scale;
         data-aspectratio python: aspectratio;
-        data-previewratiox python: view.scaleToPreviewRatios()[0];
-        data-previewratioy python: view.scaleToPreviewRatios()[1]"/>
+        data-previewratiox python: view.scaleToLargeRatios()[0];
+        data-previewratioy python: view.scaleToLargeRatios()[1]"/>
     <div class="formControls">
 
       <input disabled="disabled" id="image-recrop" type="submit" value="Re-crop" name="recrop" i18n:attributes="value"/>

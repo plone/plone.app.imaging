@@ -67,12 +67,12 @@ class CropImageView(BrowserView):
         w, h = available_sizes[self.scale_name]
         return float(w)/float(h)
 
-    def scaleToPreviewRatios(self):
+    def scaleToLargeRatios(self):
         field = self.context.getField(self.field_name)
-        preview_scale = field.getScale(self.context, 'preview')
+        large_scale = field.getScale(self.context, 'large')
         original = field.getScale(self.context)
-        return (float(original.width)/float(preview_scale.width),
-                float(original.height)/float(preview_scale.height),)
+        return (float(original.width)/float(large_scale.width),
+                float(original.height)/float(large_scale.height),)
 
     def cropImage(self, **kwargs):
         """ Crops the image
@@ -80,7 +80,7 @@ class CropImageView(BrowserView):
         field_name = self.request['field']
         scale = self.request['scale']
 
-        preview_ratio_x, preview_ratio_y = self.scaleToPreviewRatios()
+        preview_ratio_x, preview_ratio_y = self.scaleToLargeRatios()
         box = (int(preview_ratio_x*float(self.request['x1'])),
                int(preview_ratio_y*float(self.request['y1'])),
                int(preview_ratio_x*float(self.request['x2'])),
