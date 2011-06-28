@@ -1,6 +1,8 @@
+from Acquisition import aq_base
 from cStringIO import StringIO
-from zope.interface import providedBy
+from OFS.Image import Pdata
 import PIL.Image
+from zope.interface import providedBy
 
 from Products.Five import BrowserView
 from Products.Archetypes.interfaces import IImageField
@@ -65,18 +67,31 @@ class CropImageView(BrowserView):
         w, h = available_sizes[self.scale_name]
         return float(w)/float(h)
 
+    def scaleToPreviewRatios(self):
+        field = self.context.getField(self.field_name)
+        preview_scale = field.getScale(self.context, 'preview')
+        original = field.getScale(self.context)
+        return (float(original.width)/float(preview_scale.width),
+                float(original.height)/float(preview_scale.height),)
+
     def cropImage(self, **kwargs):
         """ Crops the image
         """
         field_name = self.request['field']
         scale = self.request['scale']
-        box = (int(self.request['x1']), int(self.request['y1']),
-               int(self.request['x2']), int(self.request['y2']))
 
+        preview_ratio_x, preview_ratio_y = self.scaleToPreviewRatios()
+        box = (int(preview_ratio_x*float(self.request['x1'])),
+               int(preview_ratio_y*float(self.request['y1'])),
+               int(preview_ratio_x*float(self.request['x2'])),
+               int(preview_ratio_y*float(self.request['y2'])),)
         field = self.context.getField(field_name)
         handler = IImageScaleHandler(field)
 
-        data = field.get(self.context).data
+        value = field.get(self.context)
+        data = getattr(aq_base(value), 'data', value)
+        if isinstance(data, Pdata):
+            data = str(data)
 
         original_file=StringIO(data)
         image = PIL.Image.open(original_file)

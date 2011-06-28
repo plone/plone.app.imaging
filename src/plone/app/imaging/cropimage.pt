@@ -12,10 +12,12 @@
       tal:define="field python: view.field();
                   scale python: view.scale();
                   aspectratio python: view.aspectRatio()"
-      tal:attributes="src string:${context/absolute_url}/${field};
+      tal:attributes="src string:${context/absolute_url}/${field}_preview;
         data-field field;
         data-scale scale;
-        data-aspectratio python: aspectratio;"/>
+        data-aspectratio python: aspectratio;
+        data-previewratiox python: view.scaleToPreviewRatios()[0];
+        data-previewratioy python: view.scaleToPreviewRatios()[1]"/>
     <div class="formControls">
 
       <input disabled="disabled" id="image-recrop" type="submit" value="Re-crop" name="recrop" i18n:attributes="value"/>
