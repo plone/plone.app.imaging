@@ -8,9 +8,9 @@
 <metal:main fill-slot="main"
      tal:define="context_state context/@@plone_context_state;
                  fields view/imageFields">
-  <div class="documentDescription" tal:condition="not: fields" i18n:translate="">
+  <p class="documentDescription" tal:condition="not: fields" i18n:translate="">
     No images found.
-  </div>
+  </p>
   <div tal:repeat="field fields" tal:condition="fields">
       <h1 class="documentFirstHeading" i18n:translate="header_edit_crops">Edit croppable images</h1>
       <p class="documentDescription" i18n:translate="text_edit_crops_description">For each image field in your content you can
