@@ -34,7 +34,7 @@ jQuery(document).ready(function () {
                                    y2: cropbox.y2
                                   },
                             success: function () {
-                                window.location.replace(context_url+'/cropping');
+                                window.location.replace(context_url+'cropping');
                             }
                          });
                      });
