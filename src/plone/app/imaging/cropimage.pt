@@ -12,7 +12,7 @@
       tal:define="field python: view.field();
                   scale python: view.scale();
                   aspectratio python: view.aspectRatio()"
-      tal:attributes="src string:${context/absolute_url}/${field}_preview;
+      tal:attributes="src string:${context/absolute_url}/${field}_large;
         data-field field;
         data-scale scale;
         data-aspectratio python: aspectratio;
