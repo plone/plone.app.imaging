@@ -17,7 +17,7 @@
         select below the scales you want to re-crop.
       </p>
 
-      <h2 i18n:translate="header_field_name">Field <span tal:content="field" i18n:name="field_name">Image</span></h2>
+      <h2 tal:content="field/title">Image</h2>
 
       <div id="cropping-original-image">
           <h3 i18n:translate="label_original_image">Original image</h3>
