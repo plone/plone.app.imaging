@@ -23,6 +23,8 @@ jQuery(document).ready(function () {
                      jQuery('input#image-recrop').click(function (e) {
                          e.preventDefault();
                          var context_url = jQuery('base').attr('href');
+                         if (context_url.substr(-1) !== '/')
+                            context_url = context_url + '/';
                          jQuery.ajax({
                             type: "GET",
                             url: context_url+'/@@cropimage/cropImage',
