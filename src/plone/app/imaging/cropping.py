@@ -9,6 +9,7 @@ from Products.Archetypes.interfaces import IImageField
 from plone.app.blob.interfaces import IBlobImageField
 
 from plone.app.imaging.interfaces import IImageScaleHandler
+from plone.app.imaging.traverse import DefaultImageScaleHandler
 
 
 class CroppableImagesView(BrowserView):
@@ -70,6 +71,13 @@ class CropImageView(BrowserView):
     def scaleToLargeRatios(self):
         field = self.context.getField(self.field_name)
         large_scale = field.getScale(self.context, 'large')
+        if not large_scale:
+            # Ok we don't have a 'large' scale, so we'll create one.            
+            handler = DefaultImageScaleHandler(field)
+            data = handler.createScale(self.context, 'large', 768, 768)
+            handler.storeScale(self.context, 'large', **data)
+            large_scale = field.getScale(self.context, 'large')
+            
         original = field.getScale(self.context)
         return (float(original.width)/float(large_scale.width),
                 float(original.height)/float(large_scale.height),)
