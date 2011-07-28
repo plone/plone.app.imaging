@@ -1,6 +1,7 @@
 jQuery(document).ready(function () {
     jQuery('.selImageToCropBtn').prepOverlay({
          subtype: 'ajax',
+         filter: 'form#cropImage',
          config: {
              onLoad: function () {
                  var cropbox = null;
