@@ -2,7 +2,9 @@ from Acquisition import aq_base
 from cStringIO import StringIO
 from OFS.Image import Pdata
 import PIL.Image
+from zope.event import notify
 from zope.interface import providedBy
+from zope.lifecycleevent import ObjectModifiedEvent
 
 from Products.Five import BrowserView
 from Products.Archetypes.interfaces import IImageField
@@ -114,3 +116,4 @@ class CropImageView(BrowserView):
                                    scaling_strategy='fit',
                                    data=image_file.read())
         handler.storeScale(self.context, scale, **data)
+        notify(ObjectModifiedEvent(self.context))
