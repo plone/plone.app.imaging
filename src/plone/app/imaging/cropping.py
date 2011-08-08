@@ -74,7 +74,7 @@ class CropImageView(BrowserView):
         field = self.context.getField(self.field_name)
         large_scale = field.getScale(self.context, 'large')
         if not large_scale:
-            # Ok we don't have a 'large' scale, so we'll create one.            
+            # Ok we don't have a 'large' scale, so we'll create one.
             handler = DefaultImageScaleHandler(field)
             data = handler.createScale(self.context, 'large', 768, 768)
             handler.storeScale(self.context, 'large', **data)
