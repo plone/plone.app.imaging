@@ -79,6 +79,23 @@ class ImageTraverseTests(ImagingTestCase):
         view_tag = view.tag()
         self.assertEqual(image.tag(), view.tag())
 
+    def testViewTagMethodCustomScale(self):
+        data = self.getImage()
+        folder = self.folder
+        image = folder['foo']
+        traverse = folder.REQUEST.traverseName
+        view = traverse(image, '@@images')
+        view_tag = view.tag(width=23, height=23, alt="foo", title="foo")
+        base = self.image.absolute_url()
+        expected = r'<img src="%s/@@images/([-0-9a-f]{36}).(jpeg|gif|png)" ' \
+            r'height="(\d+)" width="(\d+)" alt="foo" title="foo" />' % base
+        name, ext, height, width = match(expected, view_tag).groups()
+        self.assertEqual(height, '23')
+        self.assertEqual(width, '23')
+        scale = view.publishTraverse(self.image.REQUEST, name + "." + ext)
+        self.assertEqual(scale.height, 23)
+        self.assertEqual(scale.width, 23)
+
 
 class ImagePublisherTests(ImagingFunctionalTestCase):
 

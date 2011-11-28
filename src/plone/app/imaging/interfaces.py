@@ -59,6 +59,9 @@ class IImageScaling(Interface):
     def getImageSize(fieldname=None):
         """ returns the original image size, a tuple of (width, height) """
 
+    def getInfo(fieldname=None, scalename=None, **parameters):
+        """ returns metadata for the requested scale from the storage """
+
 
 class IImageScaleHandler(Interface):
     """ handler for retrieving scaled versions of an image """
