@@ -43,7 +43,41 @@ New-style image scales
 templates.  There are several variants you can pick from depending on how
 much flexibility/convenience you need:
 
-1. for full control you may do the tag generation explicitly::
+1. The ``tag`` method generates a complete image tag::
+
+     <img tal:define="scales context/@@images"
+          tal:replace="structure python: scales.tag('image',
+                       width=1200, height=800, direction='down')"
+          />
+
+   While the first call requires the storage to load the image data
+   and extract information for scaling, consecutive calls are cheap
+   because the metadata is stored for each call signature.
+
+   The ``direction`` keyword-argument can be used to specify the
+   scaling direction. Additional parameters are rendered as element
+   attributes (typically: "title" and "alt").
+
+2. For tag generation using predefined scale names this would look like::
+
+     <img tal:define="scales context/@@images"
+          tal:replace="structure python: scales.tag('image', scale='mini')"
+          />
+
+   This would use the predefined scale size "mini" to determine the desired
+   image dimensions, but still allow to pass in extra parameters.
+
+3. The following traversal syntax is a short-cut for tag generation
+   for predefined image scales::
+
+     <img tal:replace="structure context/@@images/image/mini" />
+
+4. The same syntax may be used for the original image::
+
+     <img tal:replace="structure context/@@images/image" />
+
+5. The ``scale`` method returns an image scale object useful for
+   explicit tag generation::
 
      <img tal:define="scales context/@@images;
                       thumbnail python: scales.scale('image', width=64, height=64);"
@@ -57,27 +91,16 @@ much flexibility/convenience you need:
    parameters support by `plone.scale`_'s ``scaleImage`` function, e.g.
    ``direction`` or ``quality``.
 
+   Note that the ``scale`` method loads the actual image data into
+   memory on each invocation.
+
    .. _`plone.scale`: http://pypi.python.org/pypi/plone.scale
 
-2. for automatic tag generation with extra parameters you would use::
+6. The image scale object also implements a ``tag`` method::
 
-     <img tal:define="scale context/@@images"
-          tal:replace="structure python: scale.scale('image',
-                       width=1200, height=800, direction='down').tag()" />
+     <img tal:define="scales context/@@images;
+                      scale python: scale.scale('image', width=1200, height=800)"
+          tal:replace="structure scale/tag" />
 
-3. for tag generation using predefined scale names this would look like::
-
-     <img tal:define="scale context/@@images"
-          tal:replace="structure python: scale.scale('image',
-                       scale='mini').tag()" />
-
-   This would use the predefined scale size "mini" to determine the desired
-   image dimensions, but still allow to pass in extra parameters.
-
-4. a convenience short-cut for option 3 can be used::
-
-     <img tal:replace="structure context/@@images/image/mini" />
-
-5. and lastly, the short-cut can also be used to render the unscaled image::
-
-     <img tal:replace="structure context/@@images/image" />
+   However, it's recommended to use the ``tag`` method of the image
+   scales view directly because it avoids loading the image into memory.

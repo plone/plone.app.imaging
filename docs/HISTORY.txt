@@ -4,6 +4,10 @@ Changelog
 1.0.6 - unreleased
 ------------------
 
+* Avoid loading an image scale object in order to generate a tag. It's
+  expensive because it loads the image data into memory. The
+  documentation has been updated to reflect that this is the most
+  efficient usage of the API.
 
 1.0.5 - 2011-04-03
 ------------------

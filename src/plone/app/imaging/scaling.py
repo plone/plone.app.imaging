@@ -1,3 +1,4 @@
+from cgi import escape
 from logging import getLogger
 from logging import exception
 from Acquisition import aq_base
@@ -110,24 +111,86 @@ class ImageScaling(BrowserView):
             items, so stored image scales can be invalidated """
         return self.context.modified().millis()
 
-    def scale(self, fieldname=None, scale=None, height=None, width=None, **parameters):
+    def scale(self, fieldname=None, scale=None, height=None, width=None,
+              **parameters):
         if scale is not None:
             available = self.getAvailableSizes(fieldname)
             if not scale in available:
                 return None
             width, height = available[scale]
+
         if width is None and height is None:
             field = self.field(fieldname)
             return field.get(self.context)
-        storage = AnnotationStorage(self.context, self.modified)
-        info = storage.scale(factory=self.create,
-            fieldname=fieldname, height=height, width=width, **parameters)
+
+        info = self.getInfo(
+            fieldname=fieldname, scale=scale, height=height, width=width,
+            **parameters
+            )
+
         if info is not None:
             return self.make(info).__of__(self.context)
 
-    def tag(self, fieldname=None, scale=None, **kwargs):
-        scale = self.scale(fieldname, scale)
-        return scale.tag(**kwargs)
+    def tag(self, fieldname=None, scale=None, height=None, width=None,
+            css_class=None, direction='keep', **args):
+        """
+        Generate an HTML IMG tag for this image, with customization.
+        Arguments to self.tag() can be any valid attributes of an IMG
+        tag.  'src' will always be an absolute pathname, to prevent
+        redundant downloading of images. Defaults are applied
+        intelligently for 'height' and 'width'. If specified, the
+        'scale' argument will be used to automatically adjust the
+        output height and width values of the image tag.
+
+        Since 'class' is a Python reserved word, it cannot be passed in
+        directly in keyword arguments which is a problem if you are
+        trying to use 'tag()' to include a CSS class. The tag() method
+        will accept a 'css_class' argument that will be converted to
+        'class' in the output tag to work around this.
+        """
+
+        if scale is not None:
+            available = self.getAvailableSizes(fieldname)
+            if not scale in available:
+                return None
+            width, height = available[scale]
+
+        if width is None and height is None:
+            field = self.field(fieldname)
+            return field.tag(
+                self.context, css_class=css_class, **args
+                )
+
+        info = self.getInfo(
+            fieldname=fieldname, scale=scale,
+            height=height, width=width,
+            direction=direction,
+            )
+
+        width = info['width']
+        height = info['height']
+        mimetype = info['mimetype']
+        extension = mimetype.split('/')[-1]
+
+        url = self.context.absolute_url()
+        src = '%s/@@images/%s.%s' % (url, info['uid'], extension)
+        result = '<img src="%s"' % src
+
+        if height:
+            result = '%s height="%s"' % (result, height)
+
+        if width:
+            result = '%s width="%s"' % (result, width)
+
+        if css_class is not None:
+            result = '%s class="%s"' % (result, css_class)
+
+        if args:
+            for key, value in sorted(args.items()):
+                if value:
+                    result = '%s %s="%s"' % (result, key, value)
+
+        return '%s />' % result
 
     def getAvailableSizes(self, fieldname=None):
         field = self.field(fieldname)
@@ -136,3 +199,9 @@ class ImageScaling(BrowserView):
     def getImageSize(self, fieldname=None):
         field = self.field(fieldname)
         return field.getSize(self.context)
+
+    def getInfo(self, fieldname=None, scale=None, height=None, width=None,
+                **parameters):
+        storage = AnnotationStorage(self.context, self.modified)
+        return storage.scale(factory=self.create,
+            fieldname=fieldname, height=height, width=width, **parameters)
