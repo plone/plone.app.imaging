@@ -14,7 +14,7 @@ class ImageScale(Image):
         self.__dict__.update(kw)
         self.precondition = ''
 
-        
+
         # `OFS.Image` has no proper support for file objects or iterators,
         # so we'll require `data` to be a string or a file-like object...
         if not isinstance(data, str):
