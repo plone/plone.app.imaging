@@ -31,10 +31,10 @@ Now check the scaled version:
 
   >>> browser.open('http://nohost/plone/foo/image_thumb')
   >>> browser.contents
-  '\x89PNG...'
+  'GIF89a...'
   >>> image = open(StringIO(browser.contents))
   >>> image.format
-  'PNG'
+  'GIF'
   >>> image.size
   (128, 128)
 
