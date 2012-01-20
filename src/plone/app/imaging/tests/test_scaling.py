@@ -68,7 +68,7 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         # and the other specified size
         bar = traverse(image, 'image_bar')
         self.assertEqual(bar.getContentType(), 'image/gif')
-        self.assertEqual(bar.data[:4], 'GIF87a')
+        self.assertEqual(bar.data[:6], 'GIF87a')
         self.assertEqual(bar.width, 6)
         self.assertEqual(bar.height, 6)
         # make sure the traversal adapter was called in fact
