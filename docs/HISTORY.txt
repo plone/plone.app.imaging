@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.6 - unreleased
+1.0.6 (2012-04-15)
 ------------------
 
 * Avoid loading an image scale object in order to generate a tag. It's
