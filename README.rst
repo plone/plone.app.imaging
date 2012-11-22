@@ -104,3 +104,9 @@ much flexibility/convenience you need:
 
    However, it's recommended to use the ``tag`` method of the image
    scales view directly because it avoids loading the image into memory.
+
+Scaled image quality
+~~~~~~~~~~~~~~~~~~~~
+
+The quality of scaled images can be controlled through the "Imaging" control
+panel.

@@ -4,7 +4,9 @@ Changelog
 1.0.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Make the quality of scaled images configurable through the configlet.
+  https://dev.plone.org/ticket/13337
+  [khink]
 
 
 1.0.7 (2013-03-05)

@@ -2,13 +2,19 @@ from Acquisition import aq_base
 from logging import getLogger
 from logging import exception
 from OFS.Image import Pdata
-from plone.app.imaging.interfaces import IImageScaling, IImageScaleFactory
+from plone.app.imaging.interfaces import (
+    IImageScaling,
+    IImageScaleFactory,
+    IImagingSchema
+)
 from plone.app.imaging.scale import ImageScale
 from Products.Five import BrowserView
+from zope.component.hooks import getSite
 from zope.interface import implements
 from zope.traversing.interfaces import ITraversable, TraversalError
 from zope.publisher.interfaces import IPublishTraverse, NotFound
 from ZODB.POSException import ConflictError
+
 
 try:
     from plone.scale.storage import AnnotationStorage
@@ -25,6 +31,8 @@ class ImageScaleFactory(object):
 
     def __init__(self, field):
         self.field = field
+        imaging_schema = IImagingSchema(getSite())
+        self.quality = getattr(imaging_schema, 'quality', None)
 
     def create(self, context, **parameters):
         value = self.field.get(context)
@@ -32,6 +40,8 @@ class ImageScaleFactory(object):
         if isinstance(data, Pdata):
             data = str(data)
         if data:
+            if 'quality' not in parameters and self.quality:
+                parameters['quality'] = self.quality
             return scaleImage(data, **parameters)
 
 

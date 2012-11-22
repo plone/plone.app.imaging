@@ -21,3 +21,13 @@ def getAllowedSizes():
             name = name.strip().replace(' ', '_')
             sizes[name] = int(width), int(height)
     return sizes
+
+
+def getQuality():
+    ptool = queryUtility(IPropertiesTool)
+    if ptool is None:
+        return None
+    props = getattr(ptool, 'imaging_properties', None)
+    if props is None:
+        return None
+    return props.getProperty('quality')
