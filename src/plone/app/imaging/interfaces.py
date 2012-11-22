@@ -15,9 +15,10 @@ class IImagingSchema(Interface):
         value_type = TextLine(), default = [], required = False)
     quality = Int(
         title=_(u'Scaled image quality'),
-        description=_(u'A higher value will mean scaled images have higher '
-                       'resolution. Value should be an integer from 0 to '
-                       '100.'),
+        description=_(u'A value for the quality of scaled images, from 1 '
+                       '(lowest) to 100 (highest). A value of 0 will mean '
+                       'plone.scaling\'s default will be used, which is '
+                       'currently 88.'),
         )
 
 

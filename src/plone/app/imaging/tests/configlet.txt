@@ -64,3 +64,30 @@ Make sure the changes have been applied correctly:
     >>> getAllowedSizes()
     {...u'foo': (42, 42)...}
 
+Change the quality
+~~~~~~~~~~~~~~~~~~
+
+    >>> self.browser.open('http://nohost/plone/@@imaging-controlpanel')
+    >>> self.browser.url.endswith('imaging-controlpanel')
+    True
+
+    >>> self.browser.getControl(name='form.quality').value = '42'
+
+Click the save button:
+
+    >>> self.browser.getControl(name="form.actions.save").click()
+    >>> self.browser.url.endswith('imaging-controlpanel')
+    True
+
+We should be informed that something has changed:
+
+    >>> 'Changes saved.' in self.browser.contents
+    True
+
+Make sure the changes have been applied correctly:
+
+    >>> iprops.getProperty('quality')
+    42
+    >>> from plone.app.imaging.utils import getQuality
+    >>> getQuality()
+    42

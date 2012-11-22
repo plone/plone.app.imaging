@@ -53,4 +53,13 @@
       provides="plone.namedfile.interfaces.IAvailableSizes"
       zcml:condition="installed plone.namedfile.scaling" />
 
+  <!-- configure quality lookup for `plone.namedfile` if it's present -->
+  <!-- Can't use this until plone.namedfile has an IQuality interface
+       (expected in version 2.0.1)
+  <utility
+      component=".utils.getQuality"
+      provides="plone.namedfile.interfaces.IScaledImageQuality"
+      zcml:condition="installed plone.namedfile.scaling" />
+  -->
+
 </configure>
