@@ -243,19 +243,26 @@ class ScalesAdapterTests(ImagingTestCase):
 
     def testQualityChange(self):
         iprops = self.portal.portal_properties.imaging_properties
-        # get image size at default scaling quality
-        self.assertEqual(iprops.getProperty('quality'), 88)
         self.image.update(image=self.getImage('image.jpg'))
-        foo_q88 = self.adapter.scale('image', width=50, height=50)
-        size_q88 = len(foo_q88.data)
-        # lower scaling quality and get image's size at that quality
+        data = self.getImage('image.jpg') + '\x00' * (1 << 16)
+        # get size of image scaled at default scaling quality
+        self.assertEqual(iprops.getProperty('quality'), 88)
+        from Products.ATContentTypes.content.image import ATImage
+        image = ATImage('image').__of__(self.folder)
+        image.setImage(data)
+        adapter = ImageScaling(image, None)
+        img_high_quality = adapter.scale('image', width=100, height=80)
+        size_high_quality = img_high_quality.size
+        # lower scaling quality and get scaled image's size at that quality
         iprops.manage_changeProperties(quality=20)
         self.assertEqual(iprops.getProperty('quality'), 20)
-        self.image.update(image=self.getImage('image.jpg'))
-        foo_q20 = self.adapter.scale('image', width=50, height=50)
-        size_q20 = len(foo_q20.data)
+        image = ATImage('image').__of__(self.folder)
+        image.setImage(data)
+        adapter = ImageScaling(image, None)
+        img_low_quality = adapter.scale('image', width=100, height=80)
+        size_low_quality = img_low_quality.size
         # data should be smaller at lower quality
-        self.assertGreater(size_q88, size_q20)
+        self.assertGreater(size_high_quality, size_low_quality)
 
     def testScaleThatCausesErrorsCanBeSuppressed(self):
         field = self.image.getField('image')
