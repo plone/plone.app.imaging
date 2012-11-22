@@ -1,5 +1,5 @@
 from zope.interface import Interface, Attribute
-from zope.schema import List, TextLine
+from zope.schema import List, TextLine, Int
 from zope.i18nmessageid import MessageFactory
 from Products.Archetypes.interfaces import IBaseObject as IATBaseObject
 
@@ -13,6 +13,12 @@ class IImagingSchema(Interface):
         description = _(u'Specify all allowed maximum image dimensions, one per line. '
                          'The required format is <name> <width>:<height>.'),
         value_type = TextLine(), default = [], required = False)
+    quality = Int(
+        title=_(u'Scaled image quality'),
+        description=_(u'A higher value will mean scaled images have higher '
+                       'resolution. Value should be an integer from 0 to '
+                       '100.'),
+        )
 
 
 class IImageScale(Interface):
