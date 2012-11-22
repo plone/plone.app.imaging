@@ -1,5 +1,5 @@
 from plone.app.imaging.tests.base import ImagingTestCase
-from plone.app.imaging.utils import getAllowedSizes
+from plone.app.imaging.utils import getAllowedSizes, getQuality
 from unittest import defaultTestLoader
 
 
@@ -27,6 +27,12 @@ class PropertiesTests(ImagingTestCase):
         iprops.manage_changeProperties(allowed_sizes=['foo bar 23:23'])
         self.assertEqual(getAllowedSizes(), dict(foo_bar=(23, 23)))
 
+    def testQuality(self):
+        self.assertEqual(getQuality(), 88)
+        # change and test again
+        iprops = self.portal.portal_properties.imaging_properties
+        iprops.manage_changeProperties(quality='42')
+        self.assertEqual(getQuality(), 42)
 
 def test_suite():
     return defaultTestLoader.loadTestsFromName(__name__)
