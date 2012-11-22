@@ -241,6 +241,29 @@ class ScalesAdapterTests(ImagingTestCase):
         self.assertEqual(foo.width, 42)
         self.assertEqual(foo.height, 42)
 
+    def testQualityChange(self):
+        iprops = self.portal.portal_properties.imaging_properties
+        self.image.update(image=self.getImage('image.jpg'))
+        data = self.getImage('image.jpg') + '\x00' * (1 << 16)
+        # get size of image scaled at default scaling quality
+        self.assertEqual(iprops.getProperty('quality'), 88)
+        from Products.ATContentTypes.content.image import ATImage
+        image = ATImage('image').__of__(self.folder)
+        image.setImage(data)
+        adapter = ImageScaling(image, None)
+        img_high_quality = adapter.scale('image', width=100, height=80)
+        size_high_quality = img_high_quality.size
+        # lower scaling quality and get scaled image's size at that quality
+        iprops.manage_changeProperties(quality=20)
+        self.assertEqual(iprops.getProperty('quality'), 20)
+        image = ATImage('image').__of__(self.folder)
+        image.setImage(data)
+        adapter = ImageScaling(image, None)
+        img_low_quality = adapter.scale('image', width=100, height=80)
+        size_low_quality = img_low_quality.size
+        # data should be smaller at lower quality
+        self.assertGreater(size_high_quality, size_low_quality)
+
     def testScaleThatCausesErrorsCanBeSuppressed(self):
         field = self.image.getField('image')
         field.swallowResizeExceptions = False
