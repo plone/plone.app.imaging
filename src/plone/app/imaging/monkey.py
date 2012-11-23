@@ -8,13 +8,13 @@ from Products.ATContentTypes.content.newsitem import ATNewsItemSchema
 from plone.app.imaging.interfaces import IImageScaleHandler
 from plone.app.imaging.utils import getAllowedSizes, getQuality
 
-# Import conditionally, so we don't introduce a hard depdendency
+# Import conditionally, so we don't introduce a hard dependency
 try:
     import PIL.Image
 except ImportError:
     # no PIL, no scaled versions!
     log("Warning: no Python Imaging Libraries (PIL) found. "
-        "Archetypes based ImageField's don't scale if neccessary.")
+        "Archetypes based ImageFields don't scale if neccessary.")
 else:
     pass
 
