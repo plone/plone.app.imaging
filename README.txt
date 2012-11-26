@@ -110,3 +110,8 @@ Scaled image quality
 
 The quality of scaled images can be controlled through the "Imaging" control
 panel.
+
+This will only take effect for images that have not been scaled yet. To
+re-scale existing images with an updated quality setting, you'l need to go in
+the ZMI > ``portal_atct`` > "Image scales" tab, and click "recreate". This
+may take a very long time!
