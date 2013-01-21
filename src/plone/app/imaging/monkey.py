@@ -1,5 +1,6 @@
 from Acquisition import aq_base
 from cStringIO import StringIO
+from logging import getLogger
 
 from Products.Archetypes.Field import ImageField
 from Products.Archetypes.utils import shasattr
@@ -8,12 +9,14 @@ from Products.ATContentTypes.content.newsitem import ATNewsItemSchema
 from plone.app.imaging.interfaces import IImageScaleHandler
 from plone.app.imaging.utils import getAllowedSizes, getQuality
 
+logger = getLogger(__name__)
+
 # Import conditionally, so we don't introduce a hard dependency
 try:
     import PIL.Image
 except ImportError:
     # no PIL, no scaled versions!
-    log("Warning: no Python Imaging Libraries (PIL) found. "
+    logger.warning("Warning: no Python Imaging Libraries (PIL) found. "
         "Archetypes based ImageFields don't scale if neccessary.")
 else:
     pass
