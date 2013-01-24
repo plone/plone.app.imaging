@@ -35,7 +35,9 @@ setup(name = name,
         'setuptools',
         'plone.scale [storage]',
       ],
-      extras_require = {'test': ['collective.testcaselayer', ]},
+      extras_require = {'test':
+          ['collective.testcaselayer',
+           'Products.ATContentTypes' ]},
       platforms = 'Any',
       zip_safe = False,
       entry_points = '''
