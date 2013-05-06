@@ -34,6 +34,7 @@ setup(name = name,
       install_requires = [
         'setuptools',
         'plone.scale [storage]',
+        'plone.namedfile>=2.0.2',
       ],
       extras_require = {'test':
           ['collective.testcaselayer',
