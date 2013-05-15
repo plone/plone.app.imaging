@@ -1,14 +1,15 @@
-from cgi import escape
+from Acquisition import aq_base
 from logging import getLogger
 from logging import exception
-from Acquisition import aq_base
-from ZODB.POSException import ConflictError
 from OFS.Image import Pdata
+from plone.app.imaging.interfaces import IImageScaling, IImageScaleFactory
+from plone.app.imaging.scale import ImageScale
+from Products.Five import BrowserView
 from zope.interface import implements
 from zope.traversing.interfaces import ITraversable, TraversalError
 from zope.publisher.interfaces import IPublishTraverse, NotFound
-from plone.app.imaging.interfaces import IImageScaling, IImageScaleFactory
-from plone.app.imaging.scale import ImageScale
+from ZODB.POSException import ConflictError
+
 try:
     from plone.scale.storage import AnnotationStorage
     from plone.scale.scale import scaleImage
@@ -16,7 +17,6 @@ except ImportError:
     logger = getLogger('plone.app.imaging')
     logger.warn("Warning: no Python Imaging Libraries (PIL) found. "
                 "Can't scale images.")
-from Products.Five import BrowserView
 
 
 class ImageScaleFactory(object):
@@ -104,7 +104,7 @@ class ImageScaling(BrowserView):
                 raise
             else:
                 exception('could not scale "%r" of %r',
-                    field, self.context.absolute_url())
+                          field, self.context.absolute_url())
 
     def modified(self):
         """ provide a callable to return the modification time of content
@@ -126,7 +126,7 @@ class ImageScaling(BrowserView):
         info = self.getInfo(
             fieldname=fieldname, scale=scale, height=height, width=width,
             **parameters
-            )
+        )
 
         if info is not None:
             return self.make(info).__of__(self.context)
@@ -159,13 +159,13 @@ class ImageScaling(BrowserView):
             field = self.field(fieldname)
             return field.tag(
                 self.context, css_class=css_class, **args
-                )
+            )
 
         info = self.getInfo(
             fieldname=fieldname, scale=scale,
             height=height, width=width,
             direction=direction,
-            )
+        )
 
         width = info['width']
         height = info['height']
@@ -203,5 +203,9 @@ class ImageScaling(BrowserView):
     def getInfo(self, fieldname=None, scale=None, height=None, width=None,
                 **parameters):
         storage = AnnotationStorage(self.context, self.modified)
-        return storage.scale(factory=self.create,
-            fieldname=fieldname, height=height, width=width, **parameters)
+        return storage.scale(
+            factory=self.create,
+            fieldname=fieldname,
+            height=height,
+            width=width,
+            **parameters)

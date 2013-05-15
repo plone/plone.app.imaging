@@ -1,16 +1,16 @@
-from unittest import TestSuite, makeSuite
 from plone.app.imaging.tests.base import ImagingTestCase
 from plone.app.imaging.tests.base import ImagingFunctionalTestCase
 from plone.app.imaging.scaling import ImageScaling
 from re import match
+from unittest import TestSuite, makeSuite
 
 
 class ImageTraverseTests(ImagingTestCase):
 
     def afterSetUp(self):
         self.data = self.getImage()
-        self.image = self.folder[self.folder.invokeFactory('Image', id='foo',
-            image=self.data)]
+        self.image = self.folder[self.folder.invokeFactory(
+            'Image', id='foo', image=self.data)]
         field = self.image.getField('image')
         self.available = field.getAvailableSizes(self.image)
 
@@ -70,17 +70,13 @@ class ImageTraverseTests(ImagingTestCase):
         self.assertNotEqual(uid1, uid2, 'scale not updated?')
 
     def testViewTagMethod(self):
-        data = self.getImage()
         folder = self.folder
         image = folder['foo']
         traverse = folder.REQUEST.traverseName
         view = traverse(image, '@@images')
-        image_tag = image.tag()
-        view_tag = view.tag()
         self.assertEqual(image.tag(), view.tag())
 
     def testViewTagMethodCustomScale(self):
-        data = self.getImage()
         folder = self.folder
         image = folder['foo']
         traverse = folder.REQUEST.traverseName
@@ -140,12 +136,14 @@ class ImagePublisherTests(ImagingFunctionalTestCase):
         base = '/'.join(self.folder.getPhysicalPath())
         credentials = self.getCredentials()
         # first the field without a scale name
-        response = self.publish(base + '/foo/@@images/image', basic=credentials)
+        response = self.publish(base + '/foo/@@images/image',
+                                basic=credentials)
         self.assertEqual(response.getStatus(), 200)
         self.assertEqual(response.getBody(), self.getImage())
         self.assertEqual(response.getHeader('Content-Type'), 'image/gif')
         # and last a scaled version
-        response = self.publish(base + '/foo/@@images/image/thumb', basic=credentials)
+        response = self.publish(base + '/foo/@@images/image/thumb',
+                                basic=credentials)
         self.assertEqual(response.getStatus(), 200)
         self.assertEqual(response.getHeader('Content-Type'), 'image/jpeg')
         self.assertImage(response.getBody(), 'JPEG', (128, 128))
@@ -157,7 +155,8 @@ class ImagePublisherTests(ImagingFunctionalTestCase):
         # make sure traversing works as expected
         base = '/'.join(self.folder.getPhysicalPath())
         credentials = self.getCredentials()
-        response = self.publish(base + '/foo/@@images/image/foo', basic=credentials)
+        response = self.publish(base + '/foo/@@images/image/foo',
+                                basic=credentials)
         self.assertEqual(response.getStatus(), 200)
         self.assertImage(response.getBody(), 'JPEG', (23, 23))
 
@@ -175,7 +174,8 @@ class ScalesAdapterTests(ImagingTestCase):
     def afterSetUp(self):
         data = self.getImage()
         folder = self.folder
-        self.image = folder[folder.invokeFactory('Image', id='foo', image=data)]
+        self.image = folder[folder.invokeFactory(
+            'Image', id='foo', image=data)]
         self.adapter = ImageScaling(self.image, None)
         self.iprops = self.portal.portal_properties.imaging_properties
         self.iprops.manage_changeProperties(allowed_sizes=['foo 60:60'])
@@ -244,10 +244,12 @@ class ScalesAdapterTests(ImagingTestCase):
     def testScaleThatCausesErrorsCanBeSuppressed(self):
         field = self.image.getField('image')
         field.swallowResizeExceptions = False
-        self.assertRaises(Exception, self.adapter.scale, 'image', width=-1, height=-1)
+        self.assertRaises(
+            Exception, self.adapter.scale, 'image', width=-1, height=-1)
         # scaling exceptions should be "swallowed" when set on the field...
         field.swallowResizeExceptions = True
-        self.assertEqual(self.adapter.scale('image', width=-1, height=-1), None)
+        self.assertEqual(self.adapter.scale('image', width=-1, height=-1),
+                         None)
 
     def testGetAvailableSizes(self):
         assert self.adapter.getAvailableSizes('image') == {'foo': (60, 60)}

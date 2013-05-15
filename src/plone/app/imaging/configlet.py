@@ -1,12 +1,12 @@
-from zope.component import adapts, getUtility
-from zope.formlib.form import FormFields
-from zope.interface import implements
+from plone.app.controlpanel.form import ControlPanelForm
+from plone.app.imaging.interfaces import IImagingSchema, _
 from Products.CMFCore.interfaces import IPropertiesTool
 from Products.CMFDefault.formlib.schema import ProxyFieldProperty
 from Products.CMFDefault.formlib.schema import SchemaAdapterBase
 from Products.CMFPlone.interfaces import IPloneSiteRoot
-from plone.app.controlpanel.form import ControlPanelForm
-from plone.app.imaging.interfaces import IImagingSchema, _
+from zope.component import adapts, getUtility
+from zope.formlib.form import FormFields
+from zope.interface import implements
 
 
 class ImagingControlPanelAdapter(SchemaAdapterBase):

@@ -1,10 +1,10 @@
 from Acquisition import aq_base
+from plone.app.imaging.interfaces import IImageScaleHandler
+from plone.app.imaging.utils import getAllowedSizes
 from Products.Archetypes.Field import ImageField
 from Products.Archetypes.utils import shasattr
 from Products.ATContentTypes.content.image import ATImageSchema
 from Products.ATContentTypes.content.newsitem import ATNewsItemSchema
-from plone.app.imaging.interfaces import IImageScaleHandler
-from plone.app.imaging.utils import getAllowedSizes
 
 
 def getAvailableSizes(self, instance):

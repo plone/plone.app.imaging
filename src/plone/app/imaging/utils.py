@@ -1,6 +1,6 @@
-from zope.component import queryUtility
 from Products.CMFCore.interfaces import IPropertiesTool
 from re import compile
+from zope.component import queryUtility
 
 
 pattern = compile(r'^(.*)\s+(\d+)\s*:\s*(\d+)$')
