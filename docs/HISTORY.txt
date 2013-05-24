@@ -1,7 +1,7 @@
 Changelog
 =========
 
-1.0.8 (unreleased)
+1.0.8 (2013-05-23)
 ------------------
 
 - Make the quality of scaled images configurable through the configlet.
