@@ -262,7 +262,7 @@ class ScalesAdapterTests(ImagingTestCase):
         img_low_quality = adapter.scale('image', width=100, height=80)
         size_low_quality = img_low_quality.size
         # data should be smaller at lower quality
-        self.assertGreater(size_high_quality, size_low_quality)
+        self.assertTrue(size_high_quality > size_low_quality)
 
     def testScaleThatCausesErrorsCanBeSuppressed(self):
         field = self.image.getField('image')
