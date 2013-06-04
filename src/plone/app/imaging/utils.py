@@ -3,6 +3,7 @@ from re import compile
 from zope.component import queryUtility
 
 
+QUALITY_DEFAULT = 88
 pattern = compile(r'^(.*)\s+(\d+)\s*:\s*(\d+)$')
 
 
@@ -25,9 +26,10 @@ def getAllowedSizes():
 
 def getQuality():
     ptool = queryUtility(IPropertiesTool)
-    if ptool is None:
-        return None
-    props = getattr(ptool, 'imaging_properties', None)
-    if props is None:
-        return None
-    return props.getProperty('quality')
+    if ptool:
+        props = getattr(ptool, 'imaging_properties', None)
+        if props:
+            quality = props.getProperty('quality')
+            if quality:
+                return quality
+    return QUALITY_DEFAULT
