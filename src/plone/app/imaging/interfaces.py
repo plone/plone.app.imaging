@@ -25,6 +25,8 @@ class IImagingSchema(Interface):
                       '(lowest) to 95 (highest). A value of 0 will mean '
                       'plone.scaling\'s default will be used, which is '
                       'currently 88.'),
+        min=0,
+        max=95,
     )
 
 
