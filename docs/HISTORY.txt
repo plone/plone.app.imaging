@@ -4,7 +4,8 @@ Changelog
 1.0.10 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Generate Progressive JPEG.
+  [kroman0]
 
 
 1.0.9 (2013-06-13)

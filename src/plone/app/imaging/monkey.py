@@ -106,7 +106,7 @@ def scale(self, data, w, h, default_format='PNG'):
         image = image.convert('P')
     thumbnail_file = StringIO()
     # quality parameter doesn't affect lossless formats
-    image.save(thumbnail_file, target_format, quality=pil_quality)
+    image.save(thumbnail_file, target_format, quality=pil_quality, progressive=True)
     thumbnail_file.seek(0)
     return thumbnail_file, target_format.lower()
 
