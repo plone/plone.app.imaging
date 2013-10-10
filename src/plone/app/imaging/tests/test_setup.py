@@ -52,7 +52,7 @@ class RegistryTests(ImagingTestCase):
         folder = self.folder
         image = folder[folder.invokeFactory('Image', id='foo', image=data)]
         field = image.getField('image')
-        self.failUnless(IImageField.providedBy(field))
+        self.assertTrue(IImageField.providedBy(field))
 
 
 def test_suite():

@@ -23,12 +23,12 @@ class ImageTraverseTests(ImagingTestCase):
         expected = r'<img src="%s/@@images/([-0-9a-f]{36}).(jpeg|gif|png)" ' \
             r'alt="foo" title="foo" height="(\d+)" width="(\d+)" />' % base
         groups = match(expected, tag).groups()
-        self.failUnless(groups, tag)
+        self.assertTrue(groups, tag)
         uid, ext, height, width = groups
         return uid, ext, int(width), int(height)
 
     def testImageThumb(self):
-        self.failUnless('thumb' in self.available.keys())
+        self.assertTrue('thumb' in self.available.keys())
         uid, ext, width, height = self.traverse('image/thumb')
         self.assertEqual((width, height), self.available['thumb'])
         self.assertEqual(ext, 'jpeg')
@@ -182,7 +182,7 @@ class ScalesAdapterTests(ImagingTestCase):
 
     def testCreateScale(self):
         foo = self.adapter.scale('image', width=100, height=80)
-        self.failUnless(foo.uid)
+        self.assertTrue(foo.uid)
         self.assertEqual(foo.mimetype, 'image/jpeg')
         self.assertEqual(foo.width, 80)
         self.assertEqual(foo.height, 80)
@@ -203,14 +203,14 @@ class ScalesAdapterTests(ImagingTestCase):
         field = image.getField('image')
         field.swallowResizeExceptions = False
         from OFS.Image import Pdata
-        self.failUnless(isinstance(image.getImage().data, Pdata))
+        self.assertTrue(isinstance(image.getImage().data, Pdata))
         adapter = ImageScaling(image, None)
         foo = adapter.scale('image', width=100, height=80)
-        self.failIf(foo is None)
+        self.assertFalse(foo is None)
 
     def testGetScaleByName(self):
         foo = self.adapter.scale('image', scale='foo')
-        self.failUnless(foo.uid)
+        self.assertTrue(foo.uid)
         self.assertEqual(foo.mimetype, 'image/jpeg')
         self.assertEqual(foo.width, 60)
         self.assertEqual(foo.height, 60)
@@ -226,7 +226,7 @@ class ScalesAdapterTests(ImagingTestCase):
         # now upload a new one and make sure the scale has changed
         self.image.update(image=self.getImage('image.jpg'))
         foo2 = self.adapter.scale('image', scale='foo')
-        self.failIf(foo1.data == foo2.data, 'scale not updated?')
+        self.assertFalse(foo1.data == foo2.data, 'scale not updated?')
 
     def testCustomSizeChange(self):
         # set custom image sizes & view a scale

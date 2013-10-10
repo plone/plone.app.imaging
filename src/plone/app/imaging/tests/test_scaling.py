@@ -31,7 +31,7 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         traverse = folder.REQUEST.traverseName
         self.assertEqual(traverse(image, 'image').data, data)
         sizes = image.getField('image').getAvailableSizes(image)
-        self.failUnless('thumb' in sizes.keys())
+        self.assertTrue('thumb' in sizes.keys())
         thumb = traverse(image, 'image_thumb')
         self.assertEqual(thumb.getContentType(), 'image/gif')
         self.assertEqual(thumb.data[:6], 'GIF87a')
@@ -121,7 +121,7 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         image.update(image=self.getImage('image.jpg'))
         traverse = folder.REQUEST.traverseName
         thumb2 = traverse(image, 'image_thumb')
-        self.failIf(thumb1.data == thumb2.data, 'thumb not updated?')
+        self.assertFalse(thumb1.data == thumb2.data, 'thumb not updated?')
 
     def testCustomSizeChange(self):
         data = self.getImage()
