@@ -47,4 +47,16 @@
       allowed_interface=".interfaces.IImageScaling"
       permission="zope2.View" />
 
+  <!-- configure sizes lookup for `plone.namedfile` if it's present -->
+  <utility
+      component=".utils.getAllowedSizes"
+      provides="plone.namedfile.interfaces.IAvailableSizes"
+      zcml:condition="installed plone.namedfile.scaling" />
+
+  <!-- soft dependency: quality lookup for IScaledImageQuality -->
+  <utility
+      component=".utils.getQuality"
+      provides="plone.scale.interfaces.IScaledImageQuality"
+      zcml:condition="installed plone.scale.interfaces" />
+
 </configure>

@@ -4,11 +4,6 @@ Changelog
 1.0.10 (unreleased)
 -------------------
 
-- Move propertysheet imaging_properties and the corresponding
-  utilities to Products.CMFPlone.
-  https://github.com/plone/plone.app.contenttypes/issues/82
-  [pbauer]
-
 - Generate Progressive JPEG.
   [kroman0]
 
