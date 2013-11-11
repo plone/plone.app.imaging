@@ -34,6 +34,7 @@ setup(name = name,
       install_requires = [
         'setuptools',
         'plone.scale [storage]',
+        'Products.Archetypes',
       ],
       extras_require = {'test':
           ['collective.testcaselayer',
