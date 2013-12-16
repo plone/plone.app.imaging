@@ -22,7 +22,7 @@ Viewing the site control panel
 Check for the icon to exist:
 
     >>> self.browser.contents
-    '...<img src="http://nohost/plone/image_icon.gif"...
+    '...<img src="http://nohost/plone/image_icon.png"...
      ...Image Handling...'
 
 Click the cancel button:
