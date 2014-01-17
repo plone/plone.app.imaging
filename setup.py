@@ -34,6 +34,7 @@ setup(name = name,
       install_requires = [
         'setuptools',
         'plone.scale [storage]',
+        'z3c.caching',
       ],
       extras_require = {'test':
           ['collective.testcaselayer',

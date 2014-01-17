@@ -5,11 +5,13 @@ from OFS.Image import Pdata
 from plone.app.imaging.interfaces import (
     IImageScaling,
     IImageScaleFactory,
-    IImagingSchema
+    IImagingSchema,
+    IStableImageScale,
 )
 from plone.app.imaging.scale import ImageScale
 from Products.Five import BrowserView
 from zope.component.hooks import getSite
+from zope.interface import alsoProvides
 from zope.interface import implements
 from zope.traversing.interfaces import ITraversable, TraversalError
 from zope.publisher.interfaces import IPublishTraverse, NotFound
@@ -64,6 +66,7 @@ class ImageScaling(BrowserView):
             image = None
             if info is not None:
                 image = self.make(info).__of__(self.context)
+                alsoProvides(image, IStableImageScale)
         else:
             # otherwise `name` must refer to a field...
             field = self.field(name)

@@ -44,6 +44,13 @@ class IImageScale(Interface):
     filename = Attribute('The filename used for downloads.')
 
 
+class IStableImageScale(Interface):
+    """ Marker for image scales when accessed with a UID-based URL.
+
+    These can be cached forever using the plone.stableResource ruleset.
+    """
+
+
 class IImageScaleFactory(Interface):
     """ adapter for image fields that allows generating scaled images """
 
