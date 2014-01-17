@@ -3,6 +3,7 @@
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:zcml="http://namespaces.zope.org/zcml"
+    xmlns:cache="http://namespaces.zope.org/cache"
     i18n_domain="plone.app.imaging">
 
   <five:registerPackage package="." initialize=".initialize"/>
@@ -46,5 +47,11 @@
       class=".scaling.ImageScaling"
       allowed_interface=".interfaces.IImageScaling"
       permission="zope2.View" />
+
+  <include package="z3c.caching" file="meta.zcml" />
+  <cache:ruleset
+      for=".interfaces.IStableImageScale"
+      ruleset="plone.stableResource"
+      />
 
 </configure>

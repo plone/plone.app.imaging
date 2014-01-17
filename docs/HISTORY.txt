@@ -4,6 +4,10 @@ Changelog
 1.0.10 (unreleased)
 -------------------
 
+- Cache image scales using the plone.stableResource ruleset
+  when they are accessed via UID-based URLs.
+  [davisagli]
+
 - Move propertysheet imaging_properties and the corresponding
   utilities to Products.CMFPlone.
   https://github.com/plone/plone.app.contenttypes/issues/82
