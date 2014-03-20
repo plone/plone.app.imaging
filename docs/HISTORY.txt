@@ -8,6 +8,9 @@ Changelog
   when they are accessed via UID-based URLs.
   [davisagli]
 
+- Backporting the auto CSRF protection from 1.1 branch
+  [keul]
+
 1.0.10 (2014-01-27)
 -------------------
 

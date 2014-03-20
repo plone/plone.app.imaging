@@ -1,6 +1,8 @@
-from logging import exception
+import logging
 from zope.component import adapts
+from zope.globalrequest import getRequest
 from zope.interface import implements
+from zope.interface import alsoProvides
 from zope.publisher.interfaces import IRequest
 from Products.Archetypes.interfaces import IImageField
 from Products.Archetypes.Field import HAS_PIL
@@ -9,6 +11,13 @@ from ZPublisher.BaseRequest import DefaultPublishTraverse
 from plone.app.imaging.interfaces import IBaseObject
 from plone.app.imaging.interfaces import IImageScaleHandler
 from plone.app.imaging.scale import ImageScale
+
+try:
+    from plone.protect.interfaces import IDisableCSRFProtection
+    HAS_AUTO_CSRF = True
+except ImportError:
+    logging.info("plone.protect < 3.0.0 no auto csrf protection")
+    HAS_AUTO_CSRF = False
 
 
 class ImageTraverser(DefaultPublishTraverse):
@@ -60,6 +69,11 @@ class DefaultImageScaleHandler(object):
     def createScale(self, instance, scale, width, height, data=None):
         """ create & return a scaled version of the image as retrieved
             from the field or optionally given data """
+        if HAS_AUTO_CSRF:
+            # disable CRSF on scale generation (from 1.1/Plone 5 branch)
+            req = getRequest()
+            if req:
+                alsoProvides(req, IDisableCSRFProtection)
         field = self.context
         if HAS_PIL and width and height:
             if data is None:
@@ -77,7 +91,7 @@ class DefaultImageScaleHandler(object):
                     if not field.swallowResizeExceptions:
                         raise
                     else:
-                        exception('could not scale ImageField "%s" of %s',
+                        logging.exception('could not scale ImageField "%s" of %s',
                             field.getName(), instance.absolute_url())
                         return None
                 content_type = 'image/%s' % format.lower()
