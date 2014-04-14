@@ -1,10 +1,11 @@
 Changelog
 =========
 
-1.1.1 (unreleased)
+1.1.1 (2014-04-13)
 ------------------
 
-- Nothing changed yet.
+- Disable csrf protection when scale is generated and traversed to.
+  [vangheem]
 
 
 1.1.0 (2014-02-23)
