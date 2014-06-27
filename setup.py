@@ -33,13 +33,14 @@ setup(name = name,
       include_package_data = True,
       install_requires = [
         'setuptools',
+        'plone.app.controlpanel',
         'plone.scale [storage]',
         'Products.Archetypes',
         'z3c.caching',
         'five.globalrequest'
       ],
       extras_require = {'test':
-          ['collective.testcaselayer',
+          ['plone.app.testing',
            'Products.ATContentTypes' ]},
       platforms = 'Any',
       zip_safe = False,
