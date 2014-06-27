@@ -37,7 +37,7 @@ class ImagingFunctionalTestCase(ImagingTestCase):
 
     def getBrowser(self, loggedIn=True):
         """ instantiate and return a testbrowser for convenience """
-        browser = Browser()
+        browser = Browser(self.layer['app'])
         if loggedIn:
             auth = 'Basic %s' % self.getCredentials()
             browser.addHeader('Authorization', auth)
