@@ -2,7 +2,6 @@ from plone.app.imaging.tests.base import ImagingTestCase
 from plone.app.imaging.tests.base import ImagingFunctionalTestCase
 from plone.app.imaging.scaling import ImageScaling
 from re import match
-from unittest import TestSuite, makeSuite
 
 import transaction
 

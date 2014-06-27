@@ -1,6 +1,6 @@
 from plone.app.imaging.monkey import unpatchImageField
 from plone.app import testing
-from plone.app.testing.bbb import PloneTestCaseFixture, PloneTestCase
+from plone.app.testing.bbb import PloneTestCaseFixture
 from plone.testing import z2
 
 

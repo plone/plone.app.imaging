@@ -2,7 +2,6 @@ from plone.app.testing.bbb import PloneTestCase
 from plone.testing.z2 import Browser
 from plone.app.imaging import testing
 from StringIO import StringIO
-import unittest
 from os.path import dirname, join
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD

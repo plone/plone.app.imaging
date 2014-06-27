@@ -1,4 +1,3 @@
-from unittest import TestSuite, makeSuite
 from plone.app.imaging.tests.base import ImagingTestCase
 from plone.app.imaging.tests.base import ImagingFunctionalTestCase
 from plone.app.imaging.traverse import ImageTraverser
@@ -249,11 +248,3 @@ class DefaultAdapterTests(ImagingTestCase):
         # scaling exceptions should be "swallowed" when set on the field...
         self.field.swallowResizeExceptions = True
         self.assertEqual(self.handler.getScale(self.image, 'foo'), None)
-
-
-def test_suite():
-    return TestSuite([
-        makeSuite(ImageTraverseTests),
-        makeSuite(ImagePublisherTests),
-        makeSuite(DefaultAdapterTests),
-    ])
