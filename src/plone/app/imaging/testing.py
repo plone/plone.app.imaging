@@ -8,18 +8,18 @@ class ImagingFixture(PloneTestCaseFixture):
     """ Test fixture for plone.app.imaging """
 
     def setUpZope(self, app, configurationContext):
-        super(PloneTestCaseFixture, self).setUpZope(app, configurationContext)
+        super(ImagingFixture, self).setUpZope(app, configurationContext)
         import plone.app.imaging
         self.loadZCML(package=plone.app.imaging)
         z2.installProduct(app, 'plone.app.imaging')
 
     def setUpPloneSite(self, portal):
-        super(PloneTestCaseFixture, self).setUpPloneSite(portal)
+        super(ImagingFixture, self).setUpPloneSite(portal)
         # install sunburst theme
         testing.applyProfile(portal, 'plone.app.imaging:default')
 
     def tearDownZope(self, app):
-        super(PloneTestCaseFixture, self).tearDownZope(app)
+        super(ImagingFixture, self).tearDownZope(app)
         unpatchImageField()
         z2.uninstallProduct(app, 'plone.app.imaging')
 
