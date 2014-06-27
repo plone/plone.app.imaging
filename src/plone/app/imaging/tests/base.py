@@ -4,6 +4,8 @@ from plone.app.imaging import testing
 from StringIO import StringIO
 import unittest
 from os.path import dirname, join
+from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import TEST_USER_PASSWORD
 
 
 def getData(filename):
@@ -31,7 +33,7 @@ class ImagingFunctionalTestCase(ImagingTestCase):
     """ base class for functional tests """
 
     def getCredentials(self):
-        return '%s:%s' % (ptc.default_user, ptc.default_password)
+        return '%s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD)
 
     def getBrowser(self, loggedIn=True):
         """ instantiate and return a testbrowser for convenience """
