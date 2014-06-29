@@ -1,30 +1,17 @@
 import doctest
 from unittest import TestSuite
 
-from plone.app.controlpanel.tests.cptc import ControlPanelTestCase
-from Testing import ZopeTestCase as ztc
-
-from plone.app.imaging.tests.base import ImagingFunctionalTestCase
 from plone.app.imaging import testing
+from plone.testing import layered
 
 optionflags = (doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE)
 
 
-class ImagingControlPanelTestCase(ControlPanelTestCase):
-    """ base class for control-panel tests """
-
-    layer = testing.imaging
-
-
 def test_suite():
-    return TestSuite([
-        ztc.FunctionalDocFileSuite(
-           'traversal.txt', package='plone.app.imaging.tests',
-           test_class=ImagingFunctionalTestCase, optionflags=optionflags),
-        ztc.FunctionalDocFileSuite(
-           'transforms.txt', package='plone.app.imaging.tests',
-           test_class=ImagingFunctionalTestCase, optionflags=optionflags),
-        ztc.FunctionalDocFileSuite(
-           'configlet.txt', package='plone.app.imaging.tests',
-           test_class=ImagingControlPanelTestCase, optionflags=optionflags),
-    ])
+    suite = TestSuite()
+    return suite
+    for testfile in ['traversal.txt', 'transforms.txt', 'configlet.txt']:
+        suite.addTest(layered(doctest.DocFileSuite(testfile,
+                                           package='plone.app.imaging.tests'),
+                             layer=testing.imaging))
+    return suite

@@ -1,10 +1,10 @@
-from unittest import TestSuite, makeSuite
 from plone.app.imaging.tests.base import ImagingTestCase
 from plone.app.imaging.tests.base import ImagingFunctionalTestCase
 from plone.app.imaging.traverse import ImageTraverser
 from plone.app.imaging.traverse import DefaultImageScaleHandler
 from StringIO import StringIO
 from PIL.Image import open
+import transaction
 
 
 class TraverseCounterMixin:
@@ -155,24 +155,27 @@ class ImagePublisherTests(TraverseCounterMixin, ImagingFunctionalTestCase):
         data = self.getImage()
         folder = self.folder
         folder.invokeFactory('Image', id='foo', image=data)
+        transaction.commit()
         # make sure traversing works as is and with scaling
-        base = '/'.join(folder.getPhysicalPath())
-        credentials = self.getCredentials()
+        base = folder.absolute_url()
         # first the image itself...
-        response = self.publish(base + '/foo', basic=credentials)
-        self.assertEqual(response.getStatus(), 200)
-        self.assertEqual(response.getBody(), data)
-        self.assertEqual(response.getHeader('Content-Type'), 'image/gif')
+        browser = self.getBrowser(loggedIn=False)
+        browser.open(base + '/foo')
+        self.assertEqual(browser.headers['status'], '200 Ok')
+        self.assertEqual(browser.contents, data)
+        self.assertEqual(browser.headers['Content-Type'], 'image/gif')
         # then the field without a scale name
-        response = self.publish(base + '/foo/image', basic=credentials)
-        self.assertEqual(response.getStatus(), 200)
-        self.assertEqual(response.getBody(), data)
-        self.assertEqual(response.getHeader('Content-Type'), 'image/gif')
+        browser.open(base + '/foo/image')
+        self.assertEqual(browser.headers['status'], '200 Ok')
+        self.assertEqual(browser.contents, data)
+        self.assertEqual(browser.headers['Content-Type'], 'image/gif')
         # and last a scaled version
-        response = self.publish(base + '/foo/image_thumb', basic=credentials)
-        self.assertEqual(response.getStatus(), 200)
-        self.assertEqual(response.getBody()[:6], 'GIF87a')
-        self.assertEqual(response.getHeader('Content-Type'), 'image/gif')
+        # get a authenticated browser session
+        browser = self.getBrowser()
+        browser.open(base + '/foo/image_thumb')
+        self.assertEqual(browser.headers['status'], '200 Ok')
+        self.assertEqual(browser.contents[:6], 'GIF87a')
+        self.assertEqual(browser.headers['Content-Type'], 'image/gif')
         # make sure the traversal adapter was call in fact
         self.assertEqual(self.counter, 9)
 
@@ -245,11 +248,3 @@ class DefaultAdapterTests(ImagingTestCase):
         # scaling exceptions should be "swallowed" when set on the field...
         self.field.swallowResizeExceptions = True
         self.assertEqual(self.handler.getScale(self.image, 'foo'), None)
-
-
-def test_suite():
-    return TestSuite([
-        makeSuite(ImageTraverseTests),
-        makeSuite(ImagePublisherTests),
-        makeSuite(DefaultAdapterTests),
-    ])

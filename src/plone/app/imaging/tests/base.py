@@ -1,15 +1,22 @@
-from Products.Five.testbrowser import Browser
-from Products.PloneTestCase import ptc
+from plone.app.testing.bbb import PloneTestCase
+from plone.testing.z2 import Browser
 from plone.app.imaging import testing
-from plone.app.imaging.tests.utils import getData
 from StringIO import StringIO
+from os.path import dirname, join
+from plone.app.testing import TEST_USER_NAME
+from plone.app.testing import TEST_USER_PASSWORD
 
 
-ptc.setupPloneSite()
+def getData(filename):
+    """ return contents of the file with the given name """
+    filename = join(dirname(__file__), filename)
+    return open(filename, 'r').read()
 
 
-class ImagingTestCaseMixin:
-    """ mixin for integration and functional tests """
+class ImagingTestCase(PloneTestCase):
+    """ base class for integration tests """
+
+    layer = testing.imaging
 
     def getImage(self, name='image.gif'):
         return getData(name)
@@ -21,23 +28,15 @@ class ImagingTestCaseMixin:
         self.assertEqual(image.size, size)
 
 
-class ImagingTestCase(ptc.PloneTestCase, ImagingTestCaseMixin):
-    """ base class for integration tests """
-
-    layer = testing.imaging
-
-
-class ImagingFunctionalTestCase(ptc.FunctionalTestCase, ImagingTestCaseMixin):
+class ImagingFunctionalTestCase(ImagingTestCase):
     """ base class for functional tests """
 
-    layer = testing.imaging
-
     def getCredentials(self):
-        return '%s:%s' % (ptc.default_user, ptc.default_password)
+        return '%s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD)
 
     def getBrowser(self, loggedIn=True):
         """ instantiate and return a testbrowser for convenience """
-        browser = Browser()
+        browser = Browser(self.layer['app'])
         if loggedIn:
             auth = 'Basic %s' % self.getCredentials()
             browser.addHeader('Authorization', auth)

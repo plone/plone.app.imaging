@@ -2,7 +2,8 @@ from plone.app.imaging.tests.base import ImagingTestCase
 from plone.app.imaging.tests.base import ImagingFunctionalTestCase
 from plone.app.imaging.scaling import ImageScaling
 from re import match
-from unittest import TestSuite, makeSuite
+
+import transaction
 
 
 class ImageTraverseTests(ImagingTestCase):
@@ -100,6 +101,7 @@ class ImagePublisherTests(ImagingFunctionalTestCase):
         folder = self.folder
         foo = folder[folder.invokeFactory('Image', id='foo', image=data)]
         self.view = foo.unrestrictedTraverse('@@images')
+        transaction.commit()
 
     def testPublishScaleViaUID(self):
         scale = self.view.scale('image', width=64, height=64)
@@ -133,20 +135,18 @@ class ImagePublisherTests(ImagingFunctionalTestCase):
 
     def testPublishThumbViaName(self):
         # make sure traversing works as is and with scaling
-        base = '/'.join(self.folder.getPhysicalPath())
-        credentials = self.getCredentials()
+        base = self.folder.absolute_url()
+        browser = self.getBrowser()
         # first the field without a scale name
-        response = self.publish(base + '/foo/@@images/image',
-                                basic=credentials)
-        self.assertEqual(response.getStatus(), 200)
-        self.assertEqual(response.getBody(), self.getImage())
-        self.assertEqual(response.getHeader('Content-Type'), 'image/gif')
+        browser.open(base + '/foo/@@images/image')
+        self.assertEqual(browser.headers['status'], '200 Ok')
+        self.assertEqual(browser.contents, self.getImage())
+        self.assertEqual(browser.headers['Content-Type'], 'image/gif')
         # and last a scaled version
-        response = self.publish(base + '/foo/@@images/image/thumb',
-                                basic=credentials)
-        self.assertEqual(response.getStatus(), 200)
-        self.assertEqual(response.getHeader('Content-Type'), 'image/jpeg')
-        self.assertImage(response.getBody(), 'JPEG', (128, 128))
+        browser.open(base + '/foo/@@images/image/thumb')
+        self.assertEqual(browser.headers['status'], '200 Ok')
+        self.assertImage(browser.contents, 'JPEG', (128, 128))
+        self.assertEqual(browser.headers['Content-Type'], 'image/jpeg')
 
     def testPublishCustomSizeViaName(self):
         # set custom image sizes
@@ -280,10 +280,3 @@ class ScalesAdapterTests(ImagingTestCase):
     def testGetImageSize(self):
         assert self.adapter.getImageSize('image') == (200, 200)
 
-
-def test_suite():
-    return TestSuite([
-        makeSuite(ImageTraverseTests),
-        makeSuite(ImagePublisherTests),
-        makeSuite(ScalesAdapterTests),
-    ])

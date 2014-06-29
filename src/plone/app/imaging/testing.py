@@ -1,23 +1,30 @@
-from Testing.ZopeTestCase import installPackage
-from Products.Five import zcml
-from Products.Five import fiveconfigure
-from collective.testcaselayer.ptc import BasePTCLayer, ptc_layer
 from plone.app.imaging.monkey import unpatchImageField
+from plone.app import testing
+from plone.app.testing.bbb import PloneTestCaseFixture
+from plone.testing import z2
 
 
-class ImagingLayer(BasePTCLayer):
-    """ layer for integration tests """
+class ImagingFixture(PloneTestCaseFixture):
+    """ Test fixture for plone.app.imaging """
 
-    def afterSetUp(self):
-        fiveconfigure.debug_mode = True
-        from plone.app import imaging
-        zcml.load_config('testing.zcml', imaging)
-        fiveconfigure.debug_mode = False
-        installPackage('plone.app.imaging', quiet=True)
-        self.addProfile('plone.app.imaging:default')
+    def setUpZope(self, app, configurationContext):
+        super(ImagingFixture, self).setUpZope(app, configurationContext)
+        import plone.app.imaging
+        self.loadZCML(package=plone.app.imaging)
+        z2.installProduct(app, 'plone.app.imaging')
 
-    def beforeTearDown(self):
+    def setUpPloneSite(self, portal):
+        super(ImagingFixture, self).setUpPloneSite(portal)
+        # install sunburst theme
+        testing.applyProfile(portal, 'plone.app.imaging:default')
+
+    def tearDownZope(self, app):
+        super(ImagingFixture, self).tearDownZope(app)
         unpatchImageField()
+        z2.uninstallProduct(app, 'plone.app.imaging')
 
 
-imaging = ImagingLayer(bases=[ptc_layer])
+
+PTC_FIXTURE = ImagingFixture()
+imaging = testing.FunctionalTesting(
+    bases=(PTC_FIXTURE,), name='ImagingTestCase:Functional')
