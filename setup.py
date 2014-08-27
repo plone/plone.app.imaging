@@ -39,6 +39,7 @@ setup(name = name,
       ],
       extras_require = {'test':
           ['collective.testcaselayer',
+           'Products.PloneTestCase',
            'Products.ATContentTypes' ]},
       platforms = 'Any',
       zip_safe = False,
