@@ -1,4 +1,3 @@
-import logging
 from zope.component import adapts
 from zope.globalrequest import getRequest
 from zope.interface import implements
@@ -8,14 +7,17 @@ from Products.Archetypes.interfaces import IImageField
 from Products.Archetypes.Field import HAS_PIL
 from ZODB.POSException import ConflictError
 from ZPublisher.BaseRequest import DefaultPublishTraverse
+from pkg_resources import get_distribution
 from plone.app.imaging.interfaces import IBaseObject
 from plone.app.imaging.interfaces import IImageScaleHandler
 from plone.app.imaging.scale import ImageScale
+import logging
 
-try:
+
+if get_distribution('plone.protect').version >= '3.0.0':
     from plone.protect.interfaces import IDisableCSRFProtection
-    HAS_AUTO_CSRF = True
-except ImportError:
+    HAS_AUTO_CSRF = true
+else:
     logging.info("plone.protect < 3.0.0 no auto csrf protection")
     HAS_AUTO_CSRF = False
 
