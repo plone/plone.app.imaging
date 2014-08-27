@@ -16,7 +16,7 @@ import logging
 
 if get_distribution('plone.protect').version >= '3.0.0':
     from plone.protect.interfaces import IDisableCSRFProtection
-    HAS_AUTO_CSRF = true
+    HAS_AUTO_CSRF = True
 else:
     logging.info("plone.protect < 3.0.0 no auto csrf protection")
     HAS_AUTO_CSRF = False
