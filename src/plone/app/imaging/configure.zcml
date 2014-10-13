@@ -8,6 +8,7 @@
 
   <five:registerPackage package="." initialize=".initialize"/>
 
+
   <include file="profiles.zcml" />
 
   <class class="Products.Archetypes.Field.ImageField">
@@ -60,6 +61,7 @@
       provides="plone.scale.interfaces.IScaledImageQuality"
       zcml:condition="installed plone.scale.interfaces" />
 
+  <include package="z3c.caching" />
   <include package="z3c.caching" file="meta.zcml" />
   <cache:ruleset
       for=".interfaces.IStableImageScale"
