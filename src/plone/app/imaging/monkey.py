@@ -3,6 +3,7 @@ from cStringIO import StringIO
 from logging import getLogger
 from plone.app.imaging.interfaces import IImageScaleHandler
 from plone.app.imaging.utils import getAllowedSizes, getQuality
+from plone.app.imaging.utils import getScalingStrategies as globalScalingStrategies
 from Products.Archetypes.Field import ImageField
 from Products.Archetypes.utils import shasattr
 from Products.ATContentTypes.content.image import ATImageSchema
@@ -43,19 +44,40 @@ def getAvailableSizes(self, instance):
         return sizes
 
 
+def getScalingStrategies(self, instance):
+    strategies = getattr(aq_base(self), 'scaling_strategies', None)
+    if isinstance(strategies, dict):
+        return strategies
+    elif isinstance(strategies, basestring):
+        assert(shasattr(instance, strategies))
+        method = getattr(instance, strategies)
+        data = method()
+        assert(isinstance(data, dict))
+        return data
+    elif callable(strategies):
+        return strategies()
+    else:
+        strategies = globalScalingStrategies()
+        return strategies
+
+
 def createScales(self, instance, value=None):
     """ creates scales and stores them; largely based on the version from
         `Archetypes.Field.ImageField` """
     sizes = self.getAvailableSizes(instance)
+    strategies = self.getScalingStrategies(instance)
     handler = IImageScaleHandler(self)
     for name, size in sizes.items():
         width, height = size
-        data = handler.createScale(instance, name, width, height, data=value)
+        strategy = 'fit'
+        if name in strategies:
+            strategy = strategies[name]
+        data = handler.createScale(instance, name, width, height, scaling_strategy=strategy, data=value)
         if data is not None:
             handler.storeScale(instance, name, **data)
 
 
-def scale(self, data, w, h, default_format='PNG'):
+def scale(self, data, w, h, scaling_strategy='fit', default_format='PNG'):
     """ use our quality setting as pil_quality """
     pil_quality = getQuality()
 
@@ -98,6 +120,31 @@ def scale(self, data, w, h, default_format='PNG'):
         image = image.convert('RGBA')
     elif original_mode == 'CMYK':
         image = image.convert('RGBA')
+        
+    if scaling_strategy == 'fill':
+        curr_size = image.size
+        curr_ratio = float(curr_size[0])/float(curr_size[1])
+        scale_ratio = float(w)/float(h)
+        approx_curr_ratio = int(100.0*curr_ratio)
+        approx_scale_ratio = int(100.0*scale_ratio)
+        box = None
+        if approx_curr_ratio > approx_scale_ratio: # Need to crop on x
+            new_width = int(float(curr_size[1])*scale_ratio)
+            margin = (curr_size[0] - new_width)
+            # Let's always do modulo 2 arithmetic to keep things simple;)
+            if margin % 2 != 0:
+                margin = margin - 1
+            margin = margin / 2
+            box = (margin, 0, curr_size[0] - margin, curr_size[1])
+        elif approx_curr_ratio < approx_scale_ratio:
+            new_height = int(float(curr_size[0])/scale_ratio)
+            margin = (curr_size[1] - new_height)
+            if margin % 2 != 0:
+                margin = margin - 1
+            margin = margin / 2
+            box = (0, margin, curr_size[0], curr_size[1] - margin)
+        if box:
+            image = image.crop(box)
 
     image.thumbnail(size, self.pil_resize_algo)
     # decided to only preserve palletted mode
@@ -115,6 +162,7 @@ def patchImageField():
     """ monkey patch `ImageField` methods """
     ImageField.original_getAvailableSizes = ImageField.getAvailableSizes
     ImageField.getAvailableSizes = getAvailableSizes
+    ImageField.getScalingStrategies = getScalingStrategies
     ImageField.original_createScales = ImageField.createScales
     ImageField.createScales = createScales
     ImageField.original_scale = ImageField.scale

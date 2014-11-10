@@ -1,0 +1,45 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+<head>
+</head>
+<body>
+<metal:main fill-slot="main"
+     tal:define="context_state context/@@plone_context_state;
+                 fields view/imageFields">
+  <p class="documentDescription" tal:condition="not: fields" i18n:translate="">
+    No images found.
+  </p>
+  <div tal:repeat="field fields" tal:condition="fields">
+      <h1 class="documentFirstHeading" i18n:translate="header_edit_crops">Edit croppable images</h1>
+      <p class="documentDescription" i18n:translate="text_edit_crops_description">For each image field in your content you can
+        select below the scales you want to re-crop.
+      </p>
+
+      <h2 tal:content="field/title">Image</h2>
+
+      <div id="cropping-original-image">
+          <h3 i18n:translate="label_original_image">Original image</h3>
+          <img src="" tal:attributes="src string:${context/absolute_url}/${field}_preview" />
+      </div>
+
+      <div class="cropScale" tal:define="croppingScales python:view.croppingScales(field)" 
+                             tal:repeat="scale croppingScales">
+          <h3 tal:define="size python:croppingScales[scale]"
+              tal:content="string:${scale} ${size}">Portrait</h3>
+          <img src="" tal:attributes="
+                      src string:${context/absolute_url}/${field}_${scale};
+                      data-field field;
+                      data-scale scale"/>
+          <div class="formControls">
+              <a class="selImageToCropBtn button"
+                 tal:attributes="href string:${context/absolute_url}/cropimage?field=${field}&scale=${scale};"
+                 i18n:translate="">Re-crop</a>
+          </div>
+      </div>
+  </div>
+
+</metal:main>
+</body>
+</html>

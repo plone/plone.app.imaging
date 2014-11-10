@@ -9,13 +9,15 @@ class PropertiesTests(ImagingTestCase):
         # test the defaults
         # for readability, pep8 is not applied to the dict below
         self.assertEqual(getAllowedSizes(), dict(
-            large =   (768, 768),
-            preview = (400, 400),
-            mini =    (200, 200),
-            thumb =   (128, 128),
-            tile =    ( 64,  64),
-            icon =    ( 32,  32),
-            listing = ( 16,  16)))
+            large =     (768, 768),
+            preview =   (400, 400),
+            mini =      (200, 200),
+            thumb =     (128, 128),
+            tile =      ( 64,  64),
+            icon =      ( 32,  32),
+            listing =   ( 16,  16),
+            portrait =  ( 48,  64),
+            landscape = (640, 320)))
         # override and test again
         iprops = self.portal.portal_properties.imaging_properties
         iprops.manage_changeProperties(allowed_sizes='foo 23:23')

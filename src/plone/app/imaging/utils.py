@@ -4,24 +4,47 @@ from zope.component import queryUtility
 
 
 QUALITY_DEFAULT = 88
-pattern = compile(r'^(.*)\s+(\d+)\s*:\s*(\d+)$')
+pattern = compile(r'^(.*)\s+(\d+)\s*:\s*(\d+)(?:\s+(fill|fit))?$')
 
 
-def getAllowedSizes():
+def getAllowedSizesAndStrategies():
     ptool = queryUtility(IPropertiesTool)
     if ptool is None:
         return None
     props = getattr(ptool, 'imaging_properties', None)
     if props is None:
         return None
-    sizes = {}
+    sizes_and_strategies = {}
     for line in props.getProperty('allowed_sizes'):
         line = line.strip()
         if line:
-            name, width, height = pattern.match(line).groups()
+            name, width, height, fillfit = pattern.match(line).groups()
+            crop = 'fit'
+            if fillfit=='fill':
+                crop = 'fill'
             name = name.strip().replace(' ', '_')
-            sizes[name] = int(width), int(height)
+            sizes_and_strategies[name] = int(width), int(height), crop
+    return sizes_and_strategies
+
+
+def getAllowedSizes():
+    sizes_and_strategies = getAllowedSizesAndStrategies()
+    sizes = {}
+    for name in sizes_and_strategies:
+        width, height, crop = sizes_and_strategies[name]
+        sizes[name] = width, height
     return sizes
+
+
+def getScalingStrategies():
+    sizes_and_strategies = getAllowedSizesAndStrategies()
+    if sizes_and_strategies is None:
+        return {}
+    strategies = {}
+    for name in sizes_and_strategies:
+        width, height, crop = sizes_and_strategies[name]
+        strategies[name] = crop
+    return strategies
 
 
 def getQuality():

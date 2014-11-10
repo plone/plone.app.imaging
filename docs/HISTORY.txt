@@ -29,6 +29,18 @@ Changelog
   documentation has been updated to reflect that this is the most
   efficient usage of the API.
 
+1.0.5-ftw1 (2012-02-22)
+-----------------------
+
+- Added @@cropping and @@cropImage which allows to select a croppable scale 
+  and individually crop the scales.
+  [ggozad]
+
+- Add "scaling strategies", i.e. a parameter to image scales that defines
+  whether the image should scale to fit as is in the scale or whether it
+  should be first cropped and then fill the scale dimensions.
+  [ggozad]
+
 1.0.5 - 2011-04-03
 ------------------
 

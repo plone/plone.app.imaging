@@ -45,11 +45,16 @@ class DefaultImageScaleHandler(object):
         """ return scaled and aq-wrapped version for given image data """
         field = self.context
         available = field.getAvailableSizes(instance)
+        strategies = field.getScalingStrategies(instance)
         if scale in available or scale is None:
             image = self.retrieveScale(instance, scale=scale)
             if not image:       # create the scale if it doesn't exist
                 width, height = available[scale]
-                data = self.createScale(instance, scale, width, height)
+                strategy = 'fit'
+                if scale in strategies:
+                    strategy = strategies[scale]
+                data = self.createScale(instance, scale, width, height,
+                    scaling_strategy=strategy)
                 if data is not None:
                     self.storeScale(instance, scale, **data)
                     image = self.retrieveScale(instance, scale=scale)
@@ -57,7 +62,8 @@ class DefaultImageScaleHandler(object):
                 return image
         return None
 
-    def createScale(self, instance, scale, width, height, data=None):
+    def createScale(self, instance, scale, width, height,
+                    scaling_strategy='fit', data=None):
         """ create & return a scaled version of the image as retrieved
             from the field or optionally given data """
         field = self.context
@@ -70,7 +76,8 @@ class DefaultImageScaleHandler(object):
             if data:
                 id = field.getName() + '_' + scale
                 try:
-                    imgdata, format = field.scale(data, width, height)
+                    imgdata, format = field.scale(data, width, height,
+                        scaling_strategy=scaling_strategy)
                 except (ConflictError, KeyboardInterrupt):
                     raise
                 except Exception:
