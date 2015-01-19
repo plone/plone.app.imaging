@@ -2,13 +2,11 @@ from setuptools import setup, find_packages
 from os.path import join
 
 name = 'plone.app.imaging'
-path = ['src'] + name.split('.') + ['version.txt']
-version = open(join(*path)).read().strip()
 readme = open("README.rst").read()
 history = open(join('docs', 'HISTORY.txt')).read()
 
 setup(name = name,
-      version = version,
+      version = "1.1.3.dev0",
       description = 'User-configurable, blob-aware image scaling for Plone.',
       long_description = readme[readme.find('\n\n'):] + '\n' + history,
       classifiers=[
