@@ -1,16 +1,25 @@
 A simple test the make sure the traversal adapters for image scales are
 working correctly.  First we have to create an image to start with:
 
-  >>> self.setRoles(('Manager',))
-  >>> data = self.getImage()
+  >>> from plone.app.testing import TEST_USER_ID, setRoles
+  >>> setRoles(layer['portal'], TEST_USER_ID, ['Manager'])
+  >>> from plone.app.imaging.tests.utils import getData
+  >>> data = getData('image.gif')
+  >>> portal = layer['portal']
   >>> portal.invokeFactory('Image', id='foo', title='Foo', image=data)
   'foo'
   >>> portal.foo.getField('image').removeScales(portal.foo)
 
+  >>> from transaction import commit
+  >>> commit()
+
 Then we can use a testbrowser to access the image itself and a scaled down
 version:
 
-  >>> browser = self.getBrowser()
+  >>> from plone.testing.z2 import Browser
+  >>> from plone.app.testing import TEST_USER_NAME, TEST_USER_PASSWORD
+  >>> browser = Browser(layer['app'])
+  >>> browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD))
   >>> browser.open('http://nohost/plone/foo')
   >>> browser.contents
   'GIF89a...'
@@ -43,7 +52,7 @@ which don't use publish traversal:
 
   >>> from Products.CMFCore.Expression import Expression, getExprContext
   >>> def eval_expression(expr):
-  ...     econtext = getExprContext(self.portal)
+  ...     econtext = getExprContext(layer['portal'])
   ...     return Expression(expr)(econtext)
   >>> eval_expression('portal/foo/image_thumb')
   <ImageScale at ...>

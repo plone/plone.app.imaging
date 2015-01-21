@@ -3,57 +3,65 @@ Image handling control panel
 
 First some initial setup code:
 
-    >>> self.loginAsManager()
+    >>> from plone.testing import z2
+    >>> from plone.app.testing import SITE_OWNER_NAME, SITE_OWNER_PASSWORD
+    >>> z2.login(layer['app']['acl_users'], SITE_OWNER_NAME)
     >>> from zope.component import getUtility
     >>> from Products.CMFCore.interfaces import IPropertiesTool
     >>> ptool = getUtility(IPropertiesTool)
     >>> iprops = ptool.imaging_properties
     >>> iprops.getProperty('allowed_sizes')
-    ('large 768:768', 'preview 400:400', 'mini 200:200', 'thumb 128:128',
-     'tile 64:64', 'icon 32:32', 'listing 16:16')
+    ('large 768:768', 'preview 400:400', 'mini 200:200', 'thumb 128:128', 'tile 64:64', 'icon 32:32', 'listing 16:16')
+
+    >>> from transaction import commit
+    >>> commit()
 
 Viewing the site control panel
 ------------------------------
 
-    >>> self.browser.open('http://nohost/plone/@@imaging-controlpanel')
-    >>> self.browser.url
+    >>> from plone.testing.z2 import Browser
+    >>> from plone.app.testing import TEST_USER_NAME, TEST_USER_PASSWORD
+    >>> browser = Browser(layer['app'])
+    >>> browser.addHeader('Authorization', 'Basic %s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD))
+    >>> browser.open('http://nohost/plone/@@imaging-controlpanel')
+    >>> browser.url
     'http://nohost/plone/@@imaging-controlpanel'
 
 Check for the icon to exist:
 
-    >>> self.browser.contents
+    >>> browser.contents
     '...<img src="http://nohost/plone/image_icon.png"...
      ...Image Handling...'
 
 Click the cancel button:
 
-    >>> self.browser.getControl(name="form.actions.cancel").click()
-    >>> self.browser.url.endswith('plone_control_panel')
+    >>> browser.getControl(name="form.actions.cancel").click()
+    >>> browser.url.endswith('plone_control_panel')
     True
 
 There should be still no changes:
 
-    >>> 'Changes canceled.' in self.browser.contents
+    >>> 'Changes canceled.' in browser.contents
     True
 
 Make some changes
 -----------------
 
-    >>> self.browser.open('http://nohost/plone/@@imaging-controlpanel')
-    >>> self.browser.url.endswith('imaging-controlpanel')
+    >>> browser.open('http://nohost/plone/@@imaging-controlpanel')
+    >>> browser.url.endswith('imaging-controlpanel')
     True
 
-    >>> self.browser.getControl(name='form.allowed_sizes.0.').value = 'foo 42:42'
+    >>> browser.getControl(name='form.allowed_sizes.0.').value = 'foo 42:42'
 
 Click the save button:
 
-    >>> self.browser.getControl(name="form.actions.save").click()
-    >>> self.browser.url.endswith('imaging-controlpanel')
+    >>> browser.getControl(name="form.actions.save").click()
+    >>> browser.url.endswith('imaging-controlpanel')
     True
 
 We should be informed that something has changed:
 
-    >>> 'Changes saved.' in self.browser.contents
+    >>> 'Changes saved.' in browser.contents
     True
 
 Make sure the changes have been applied correctly:
@@ -67,21 +75,21 @@ Make sure the changes have been applied correctly:
 Change the quality
 ~~~~~~~~~~~~~~~~~~
 
-    >>> self.browser.open('http://nohost/plone/@@imaging-controlpanel')
-    >>> self.browser.url.endswith('imaging-controlpanel')
+    >>> browser.open('http://nohost/plone/@@imaging-controlpanel')
+    >>> browser.url.endswith('imaging-controlpanel')
     True
 
-    >>> self.browser.getControl(name='form.quality').value = '42'
+    >>> browser.getControl(name='form.quality').value = '42'
 
 Click the save button:
 
-    >>> self.browser.getControl(name="form.actions.save").click()
-    >>> self.browser.url.endswith('imaging-controlpanel')
+    >>> browser.getControl(name="form.actions.save").click()
+    >>> browser.url.endswith('imaging-controlpanel')
     True
 
 We should be informed that something has changed:
 
-    >>> 'Changes saved.' in self.browser.contents
+    >>> 'Changes saved.' in browser.contents
     True
 
 Make sure the changes have been applied correctly:
