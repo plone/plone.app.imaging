@@ -2,18 +2,17 @@ from setuptools import setup, find_packages
 from os.path import join
 
 name = 'plone.app.imaging'
-path = ['src'] + name.split('.') + ['version.txt']
-version = open(join(*path)).read().strip()
 readme = open("README.rst").read()
 history = open(join('docs', 'HISTORY.txt')).read()
 
 setup(name = name,
-      version = version,
+      version = "1.1.3.dev0",
       description = 'User-configurable, blob-aware image scaling for Plone.',
       long_description = readme[readme.find('\n\n'):] + '\n' + history,
       classifiers=[
           "Environment :: Web Environment",
           "Framework :: Plone",
+          "Framework :: Plone :: 5.0",
           "Framework :: Zope2",
           'Intended Audience :: Developers',
           'Intended Audience :: Other Audience',
@@ -21,6 +20,7 @@ setup(name = name,
           "License :: OSI Approved :: GNU General Public License (GPL)",
           "Operating System :: OS Independent",
           "Programming Language :: Python",
+          "Programming Language :: Python :: 2.7",
         ],
       keywords='images scaling zodb blob plone',
       author='Plone Foundation',

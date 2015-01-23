@@ -2,8 +2,11 @@ A simple test the make sure image transformations work as expected (also see
 http://dev.plone.org/plone/ticket/8506).  First we create an image and check
 the dimensions of the image itself and one of the scales:
 
-  >>> self.setRoles(('Manager',))
-  >>> data = self.getImage(name='image.jpg')
+  >>> from plone.app.testing import TEST_USER_ID, setRoles
+  >>> setRoles(layer['portal'], TEST_USER_ID, ['Manager'])
+  >>> from plone.app.imaging.tests.utils import getData
+  >>> data = getData('image.jpg')
+  >>> portal = layer['portal']
   >>> portal.invokeFactory('Image', id='foo', title='Foo', image=data)
   'foo'
 
@@ -24,9 +27,15 @@ Let's also check a custom scale size:
   >>> scale.width, scale.height
   (100, 40)
 
+  >>> from transaction import commit
+  >>> commit()
+
 We use a testbrowser to rotate the image:
 
-  >>> browser = self.getBrowser()
+  >>> from plone.testing.z2 import Browser
+  >>> from plone.app.testing import TEST_USER_NAME, TEST_USER_PASSWORD
+  >>> browser = Browser(layer['app'])
+  >>> browser.addHeader('Authorization', 'Basic %s:%s' % (TEST_USER_NAME, TEST_USER_PASSWORD))
   >>> browser.open('http://nohost/plone/foo/view')
   >>> browser.getLink('Transform').click()
   >>> browser.getControl(name='method').displayValue = ['Rotate 90 clockwise']
