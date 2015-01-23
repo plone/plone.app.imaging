@@ -20,7 +20,6 @@ Viewing the site control panel
 ------------------------------
 
     >>> from plone.testing.z2 import Browser
-    >>> from plone.app.testing import TEST_USER_NAME, TEST_USER_PASSWORD
     >>> browser = Browser(layer['app'])
     >>> browser.addHeader('Authorization', 'Basic %s:%s' % (SITE_OWNER_NAME, SITE_OWNER_PASSWORD))
     >>> browser.open('http://nohost/plone/@@imaging-controlpanel')
