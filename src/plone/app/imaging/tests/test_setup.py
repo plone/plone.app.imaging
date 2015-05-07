@@ -3,6 +3,7 @@ from Products.Archetypes.interfaces import IImageField
 from Products.ATContentTypes.content.image import ATImageSchema, ATImage
 from plone.app.imaging.tests.base import ImagingTestCase
 from plone.app.imaging.monkey import getAvailableSizes
+from plone.app.imaging.tests.base import getSettings
 
 
 class MonkeyPatchTests(ImagingTestCase):
@@ -18,12 +19,12 @@ class MonkeyPatchTests(ImagingTestCase):
     def testAvailableSizes(self):
         # make sure the field was patched
         self.assertEqual(self.field.getAvailableSizes.func_code,
-            getAvailableSizes.func_code)
+                         getAvailableSizes.func_code)
         # set custom image sizes and check the helper
-        iprops = self.portal.portal_properties.imaging_properties
-        iprops.manage_changeProperties(allowed_sizes=['foo 23:23', 'bar 8:8'])
+        settings = getSettings()
+        settings.allowed_sizes = [u'foo 23:23', u'bar 8:8']
         self.assertEqual(self.field.getAvailableSizes(self.image),
-            dict(foo = (23, 23), bar = (8, 8)))
+                         dict(foo=(23, 23), bar=(8, 8)))
 
     def testAvailableSizesInstanceMethod(self):
         marker = dict(foo=23)

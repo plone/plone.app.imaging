@@ -1,33 +1,8 @@
 from Products.Archetypes.interfaces import IBaseObject as IATBaseObject
 from zope.i18nmessageid import MessageFactory
 from zope.interface import Interface, Attribute
-from zope.schema import List, TextLine, Int
 
 _ = MessageFactory('plone')
-
-
-class IImagingSchema(Interface):
-    """ schema for configlet form """
-
-    allowed_sizes = List(
-        title=_(u'Allowed image sizes'),
-        description=_(u'Specify all allowed maximum image dimensions, '
-                      'one per line. '
-                      'The required format is <name> <width>:<height>.'),
-        value_type=TextLine(),
-        default=[],
-        required=False,
-    )
-
-    quality = Int(
-        title=_(u'Scaled image quality'),
-        description=_(u'A value for the quality of scaled images, from 1 '
-                      '(lowest) to 95 (highest). A value of 0 will mean '
-                      'plone.scaling\'s default will be used, which is '
-                      'currently 88.'),
-        min=0,
-        max=95,
-    )
 
 
 class IImageScale(Interface):

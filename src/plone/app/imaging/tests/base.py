@@ -5,6 +5,14 @@ from StringIO import StringIO
 from os.path import dirname, join
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
+from zope.component import queryUtility
+from plone.registry.interfaces import IRegistry
+from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
+
+
+def getSettings():
+    registry = queryUtility(IRegistry)
+    return registry.forInterface(IImagingSchema, prefix="plone", check=False)
 
 
 def getData(filename):

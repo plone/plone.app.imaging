@@ -15,8 +15,6 @@ class ImagingFixture(PloneTestCaseFixture):
 
     def setUpPloneSite(self, portal):
         super(ImagingFixture, self).setUpPloneSite(portal)
-        # install sunburst theme
-        testing.applyProfile(portal, 'plone.app.imaging:default')
 
     def tearDownZope(self, app):
         super(ImagingFixture, self).tearDownZope(app)

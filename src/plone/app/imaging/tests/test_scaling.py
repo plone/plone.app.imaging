@@ -5,6 +5,7 @@ from plone.app.imaging.traverse import DefaultImageScaleHandler
 from StringIO import StringIO
 from PIL.Image import open
 import transaction
+from plone.app.imaging.tests.base import getSettings
 
 
 class TraverseCounterMixin:
@@ -52,8 +53,8 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         folder = self.folder
         image = folder[folder.invokeFactory('Image', id='foo', image=data)]
         # set custom image sizes
-        iprops = self.portal.portal_properties.imaging_properties
-        iprops.manage_changeProperties(allowed_sizes=['foo 23:23', 'bar 6:8'])
+        settings = getSettings()
+        settings.allowed_sizes = [u'foo 23:23', u'bar 6:8']
         # make sure traversing works with the new sizes
         traverse = folder.REQUEST.traverseName
         foo = traverse(image, 'image_foo')
@@ -78,11 +79,10 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         # let's also check custom scales work for "News Item" content
         data = self.getImage()
         folder = self.folder
-        newsitem = folder[folder.invokeFactory('News Item',
-            id='newsitem', image=data)]
+        newsitem = folder[folder.invokeFactory('News Item', id='newsitem', image=data)]
         # set custom image sizes
-        iprops = self.portal.portal_properties.imaging_properties
-        iprops.manage_changeProperties(allowed_sizes=['foo 23:23'])
+        settings = getSettings()
+        settings.allowed_sizes = [u'foo 23:23']
         # make sure traversing works with the new sizes
         traverse = folder.REQUEST.traverseName
         foo = traverse(newsitem, 'image_foo')
@@ -96,8 +96,8 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         folder = self.folder
         image = folder[folder.invokeFactory('Image', id='foo', image=data)]
         # set custom image sizes
-        iprops = self.portal.portal_properties.imaging_properties
-        iprops.manage_changeProperties(allowed_sizes=['foo bar 23:23'])
+        settings = getSettings()
+        settings.allowed_sizes = [u'foo bar 23:23']
         # make sure traversing works with the new sizes
         traverse = folder.REQUEST.traverseName
         foo_bar = traverse(image, 'image_foo_bar')
@@ -128,15 +128,15 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         folder = self.folder
         image = folder[folder.invokeFactory('Image', id='foo', image=data)]
         # set custom image sizes & view a scale
-        iprops = self.portal.portal_properties.imaging_properties
-        iprops.manage_changeProperties(allowed_sizes=['foo 23:23'])
+        settings = getSettings()
+        settings.allowed_sizes = [u'foo 23:23']
         traverse = folder.REQUEST.traverseName
         foo = traverse(image, 'image_foo')
         self.assertEqual(foo.width, 23)
         self.assertEqual(foo.height, 23)
         # now let's update the scale dimensions, after which the scale
         # should still be the same...
-        iprops.manage_changeProperties(allowed_sizes=['foo 42:42'])
+        settings.allowed_sizes = [u'foo 42:42']
         foo = traverse(image, 'image_foo')
         self.assertEqual(foo.width, 23)
         self.assertEqual(foo.height, 23)
@@ -184,8 +184,8 @@ class ImagePublisherTests(TraverseCounterMixin, ImagingFunctionalTestCase):
         folder = self.folder
         folder.invokeFactory('Image', id='foo', image=data)
         # set custom image sizes
-        iprops = self.portal.portal_properties.imaging_properties
-        iprops.manage_changeProperties(allowed_sizes=['foo 23:23'])
+        settings = getSettings()
+        settings.allowed_sizes = [u'foo 23:23']
         # make sure traversing works as expected
         base = '/'.join(folder.getPhysicalPath())
         credentials = self.getCredentials()
@@ -206,8 +206,8 @@ class DefaultAdapterTests(ImagingTestCase):
         self.image = folder[folder.invokeFactory('Image', id='foo', image=data)]
         self.field = self.image.getField('image')
         self.handler = DefaultImageScaleHandler(self.field)
-        iprops = self.portal.portal_properties.imaging_properties
-        iprops.manage_changeProperties(allowed_sizes=['foo 60:60'])
+        settings = getSettings()
+        settings.allowed_sizes = [u'foo 60:60']
 
     def testCreateScale(self):
         foo = self.handler.createScale(self.image, 'foo', 100, 80)
