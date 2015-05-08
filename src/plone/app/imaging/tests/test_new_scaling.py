@@ -1,7 +1,9 @@
 from plone.app.imaging.tests.base import ImagingTestCase
 from plone.app.imaging.tests.base import ImagingFunctionalTestCase
+from plone.app.imaging.tests.base import getSettings
 from plone.app.imaging.scaling import ImageScaling
 from re import match
+
 
 import transaction
 
@@ -36,8 +38,8 @@ class ImageTraverseTests(ImagingTestCase):
 
     def testCustomSizes(self):
         # set custom image sizes
-        iprops = self.portal.portal_properties.imaging_properties
-        iprops.manage_changeProperties(allowed_sizes=['foo 23:23'])
+        settings = getSettings()
+        settings.allowed_sizes = [u'foo 23:23']
         # make sure traversing works with the new sizes
         uid, ext, width, height = self.traverse('image/foo')
         self.assertEqual(width, 23)
@@ -57,14 +59,14 @@ class ImageTraverseTests(ImagingTestCase):
 
     def testCustomSizeChange(self):
         # set custom image sizes & view a scale
-        iprops = self.portal.portal_properties.imaging_properties
-        iprops.manage_changeProperties(allowed_sizes=['foo 23:23'])
+        settings = getSettings()
+        settings.allowed_sizes = [u'foo 23:23']
         uid1, ext, width, height = self.traverse('image/foo')
         self.assertEqual(width, 23)
         self.assertEqual(height, 23)
         # now let's update the scale dimensions, after which the scale
         # should also have been updated...
-        iprops.manage_changeProperties(allowed_sizes=['foo 42:42'])
+        settings.allowed_sizes = [u'foo 42:42']
         uid2, ext, width, height = self.traverse('image/foo')
         self.assertEqual(width, 42)
         self.assertEqual(height, 42)
@@ -123,8 +125,8 @@ class ImagePublisherTests(ImagingFunctionalTestCase):
 
     def testPublishCustomSizeViaUID(self):
         # set custom image sizes
-        iprops = self.portal.portal_properties.imaging_properties
-        iprops.manage_changeProperties(allowed_sizes=['foo 23:23'])
+        settings = getSettings()
+        settings.allowed_sizes = [u'foo 23:23']
         scale = self.view.scale('image', 'foo')
         # make sure the referenced image scale is available
         url = scale.url.replace('http://nohost', '')
@@ -150,8 +152,8 @@ class ImagePublisherTests(ImagingFunctionalTestCase):
 
     def testPublishCustomSizeViaName(self):
         # set custom image sizes
-        iprops = self.portal.portal_properties.imaging_properties
-        iprops.manage_changeProperties(allowed_sizes=['foo 23:23'])
+        settings = getSettings()
+        settings.allowed_sizes = [u'foo 23:23']
         # make sure traversing works as expected
         base = '/'.join(self.folder.getPhysicalPath())
         credentials = self.getCredentials()
@@ -177,8 +179,8 @@ class ScalesAdapterTests(ImagingTestCase):
         self.image = folder[folder.invokeFactory(
             'Image', id='foo', image=data)]
         self.adapter = ImageScaling(self.image, None)
-        self.iprops = self.portal.portal_properties.imaging_properties
-        self.iprops.manage_changeProperties(allowed_sizes=['foo 60:60'])
+        self.settings = getSettings()
+        self.settings.allowed_sizes = [u'foo 60:60']
 
     def testCreateScale(self):
         foo = self.adapter.scale('image', width=100, height=80)
@@ -230,23 +232,23 @@ class ScalesAdapterTests(ImagingTestCase):
 
     def testCustomSizeChange(self):
         # set custom image sizes & view a scale
-        self.iprops.manage_changeProperties(allowed_sizes=['foo 23:23'])
+        self.settings.allowed_sizes = [u'foo 23:23']
         foo = self.adapter.scale('image', scale='foo')
         self.assertEqual(foo.width, 23)
         self.assertEqual(foo.height, 23)
         # now let's update the scale dimensions, after which the scale
         # shouldn't be the same...
-        self.iprops.manage_changeProperties(allowed_sizes=['foo 42:42'])
+        self.settings.allowed_sizes = [u'foo 42:42']
         foo = self.adapter.scale('image', scale='foo')
         self.assertEqual(foo.width, 42)
         self.assertEqual(foo.height, 42)
 
     def testQualityChange(self):
-        iprops = self.portal.portal_properties.imaging_properties
+        settings = getSettings()
         self.image.update(image=self.getImage('image.jpg'))
         data = self.getImage('image.jpg') + '\x00' * (1 << 16)
         # get size of image scaled at default scaling quality
-        self.assertEqual(iprops.getProperty('quality'), 88)
+        self.assertEqual(settings.quality, 88)
         from Products.ATContentTypes.content.image import ATImage
         image = ATImage('image').__of__(self.folder)
         image.setImage(data)
@@ -254,8 +256,8 @@ class ScalesAdapterTests(ImagingTestCase):
         img_high_quality = adapter.scale('image', width=100, height=80)
         size_high_quality = img_high_quality.size
         # lower scaling quality and get scaled image's size at that quality
-        iprops.manage_changeProperties(quality=20)
-        self.assertEqual(iprops.getProperty('quality'), 20)
+        settings.quality = 20
+        self.assertEqual(settings.quality, 20)
         image = ATImage('image').__of__(self.folder)
         image.setImage(data)
         adapter = ImageScaling(image, None)
@@ -279,4 +281,3 @@ class ScalesAdapterTests(ImagingTestCase):
 
     def testGetImageSize(self):
         assert self.adapter.getImageSize('image') == (200, 200)
-

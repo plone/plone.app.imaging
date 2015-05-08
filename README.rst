@@ -12,6 +12,12 @@ and add support for storing the image data into ZODB blobs_.
   .. _blobs: http://plone.org/products/plone.app.blob
 
 
+Warning
+-------
+
+Version 2.x is for Plone 5 only.
+
+
 Installation
 ------------
 

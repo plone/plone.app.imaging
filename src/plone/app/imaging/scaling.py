@@ -5,17 +5,18 @@ from OFS.Image import Pdata
 from plone.app.imaging.interfaces import (
     IImageScaling,
     IImageScaleFactory,
-    IImagingSchema,
     IStableImageScale,
 )
+from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
 from plone.app.imaging.scale import ImageScale
 from Products.Five import BrowserView
-from zope.component.hooks import getSite
 from zope.interface import alsoProvides
 from zope.interface import implements
 from zope.traversing.interfaces import ITraversable, TraversalError
 from zope.publisher.interfaces import IPublishTraverse, NotFound
 from ZODB.POSException import ConflictError
+from plone.registry.interfaces import IRegistry
+from zope.component import getUtility
 
 
 try:
@@ -33,8 +34,9 @@ class ImageScaleFactory(object):
 
     def __init__(self, field):
         self.field = field
-        imaging_schema = IImagingSchema(getSite())
-        self.quality = getattr(imaging_schema, 'quality', None)
+        registry = getUtility(IRegistry)
+        settings = registry.forInterface(IImagingSchema, prefix="plone", check=False)
+        self.quality = settings.quality
 
     def create(self, context, **parameters):
         value = self.field.get(context)
@@ -128,7 +130,7 @@ class ImageScaling(BrowserView):
               **parameters):
         if scale is not None:
             available = self.getAvailableSizes(fieldname)
-            if not scale in available:
+            if scale not in available:
                 return None
             width, height = available[scale]
 
@@ -164,7 +166,7 @@ class ImageScaling(BrowserView):
 
         if scale is not None:
             available = self.getAvailableSizes(fieldname)
-            if not scale in available:
+            if scale not in available:
                 return None
             width, height = available[scale]
 

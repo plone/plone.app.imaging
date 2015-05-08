@@ -20,9 +20,9 @@ the dimensions of the image itself and one of the scales:
 
 Let's also check a custom scale size:
 
-  >>> iprops = portal.portal_properties.imaging_properties
-  >>> iprops.manage_changeProperties(allowed_sizes=
-  ...   ['mini 200:200', 'foo 100:100'])
+  >>> from plone.app.imaging.tests.base import getSettings
+  >>> settings = getSettings()
+  >>> settings.allowed_sizes = [u'mini 200:200', u'foo 100:100']
   >>> scale = traverse(image, 'image_foo')
   >>> scale.width, scale.height
   (100, 40)
