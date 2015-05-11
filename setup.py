@@ -1,9 +1,8 @@
 from setuptools import setup, find_packages
-from os.path import join
 
 name = 'plone.app.imaging'
 readme = open("README.rst").read()
-history = open(join('docs', 'HISTORY.txt')).read()
+history = open("CHANGES.rst").read()
 
 setup(name = name,
       version = "1.1.3.dev0",
@@ -21,7 +20,7 @@ setup(name = name,
           "Operating System :: OS Independent",
           "Programming Language :: Python",
           "Programming Language :: Python :: 2.7",
-        ],
+          ],
       keywords='images scaling zodb blob plone',
       author='Plone Foundation',
       author_email='plone-developers@lists.sourceforge.net',
@@ -32,20 +31,20 @@ setup(name = name,
       namespace_packages = ['plone', 'plone.app'],
       include_package_data = True,
       install_requires = [
-        'setuptools',
-        'plone.app.controlpanel',
-        'plone.scale [storage]',
-        'Products.Archetypes',
-        'z3c.caching',
-        'five.globalrequest'
+          'setuptools',
+          'plone.app.controlpanel',
+          'plone.scale [storage]',
+          'Products.Archetypes',
+          'z3c.caching',
+          'five.globalrequest'
       ],
       extras_require = {'test':
           ['plone.app.testing',
-           'Products.ATContentTypes' ]},
+           'Products.ATContentTypes']},
       platforms = 'Any',
       zip_safe = False,
       entry_points = '''
         [z3c.autoinclude.plugin]
         target = plone
       ''',
-)
+      )
