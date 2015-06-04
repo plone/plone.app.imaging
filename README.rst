@@ -111,6 +111,22 @@ much flexibility/convenience you need:
    However, it's recommended to use the ``tag`` method of the image
    scales view directly because it avoids loading the image into memory.
 
+Scaled image direction
+~~~~~~~~~~~~~~~~~~~~~~
+
+Three different scaling options are supported with the ``direction`` parameter.
+
+* ``up`` scaling scales the smallest dimension up to the required size
+  and crops the other dimension if needed.
+
+* ``down`` scaling starts by scaling the largest dimension to the required
+  size and crops the other dimension if needed.
+
+* ``thumbnail`` scales to the requested dimensions without cropping. The
+  resulting image may have a different size than requested. This option
+  requires both width and height to be specified. `keep` is accepted as
+  an alternative spelling for this option, but its use is deprecated.
+
 Scaled image quality
 ~~~~~~~~~~~~~~~~~~~~
 
