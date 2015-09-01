@@ -10,6 +10,9 @@ New:
 
 Fixes:
 
+- Fixed incompatibilities with five.pt and chameleon (closes `#16`_).
+  [rodfersou, maurits]
+
 - Fixed 404 NotFound error when accessing image scales via webdav.
   [maurits]
 
@@ -268,3 +271,5 @@ Fixes:
 
 - Initial package structure.
   [zopeskel]
+
+.. _`#16`: https://github.com/plone/plone.app.imaging/issues/16
