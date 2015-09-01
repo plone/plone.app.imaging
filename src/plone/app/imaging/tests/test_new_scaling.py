@@ -5,7 +5,19 @@ from re import match
 from unittest import TestSuite, makeSuite
 
 
-class ImageTraverseTests(ImagingTestCase):
+class ImageStandardTraverseTests(ImagingTestCase):
+    # Note: this class is subclassed by ImageChameleonTraverseTests, which
+    # inherits our tests but uses a different traverser.  We use the standard
+    # Zope pagetemplate traverser.
+
+    def traverser(self, view, path=''):
+        # Standard Zope page template traversal uses a list as path.
+        # This is a simplified version specialised for the scaling view.
+        stack = path.split('/')
+        while stack:
+            name = stack.pop(0)
+            view = view.traverse(name, stack)
+        return view
 
     def afterSetUp(self):
         self.data = self.getImage()
@@ -16,9 +28,7 @@ class ImageTraverseTests(ImagingTestCase):
 
     def traverse(self, path=''):
         view = self.image.unrestrictedTraverse('@@images')
-        stack = path.split('/')
-        name = stack.pop(0)
-        tag = view.traverse(name, stack)
+        tag = self.traverser(view, path)
         base = self.image.absolute_url()
         expected = r'<img src="%s/@@images/([-0-9a-f]{36}).(jpeg|gif|png)" ' \
             r'alt="foo" title="foo" height="(\d+)" width="(\d+)" />' % base
@@ -68,6 +78,35 @@ class ImageTraverseTests(ImagingTestCase):
         self.assertEqual(width, 42)
         self.assertEqual(height, 42)
         self.assertNotEqual(uid1, uid2, 'scale not updated?')
+
+
+class ImageChameleonTraverseTests(ImageStandardTraverseTests):
+    # This class inherits all test methods from its parent, but uses the
+    # Chameleon/five.pt traverser.
+
+    def traverser(self, view, path=''):
+        # five.pt/chameleon uses a tuple as path.  This is a simplified
+        # version of BoboAwareZopeTraverse.traverse from five.pt.expressions,
+        # specialised for the scaling view.
+        path_items = tuple(path.split('/'))
+        length = len(path_items)
+        if length:
+            i = 0
+            while i < length:
+                name = path_items[i]
+                i += 1
+                view = view.traverse(name, path_items[i:])
+        return view
+
+
+class ImageTagTests(ImagingTestCase):
+
+    def afterSetUp(self):
+        self.data = self.getImage()
+        self.image = self.folder[self.folder.invokeFactory(
+            'Image', id='foo', image=self.data)]
+        field = self.image.getField('image')
+        self.available = field.getAvailableSizes(self.image)
 
     def testViewTagMethod(self):
         folder = self.folder
@@ -315,7 +354,9 @@ class ScalesAdapterTests(ImagingTestCase):
 
 def test_suite():
     return TestSuite([
-        makeSuite(ImageTraverseTests),
+        makeSuite(ImageStandardTraverseTests),
+        makeSuite(ImageChameleonTraverseTests),
+        makeSuite(ImageTagTests),
         makeSuite(ImagePublisherTests),
         makeSuite(ScalesAdapterTests),
     ])
