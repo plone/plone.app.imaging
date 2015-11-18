@@ -114,6 +114,28 @@ class ImagePublisherTests(ImagingFunctionalTestCase):
         self.assertEqual(response.getHeader('Content-Type'), 'image/jpeg')
         self.assertImage(response.getBody(), 'JPEG', (64, 64))
 
+    def testPublishWebDavScaleViaUID(self):
+        scale = self.view.scale('image', width=64, height=64)
+        # make sure the referenced image scale is available
+        url = scale.url.replace('http://nohost', '') + '/manage_DAVget'
+        response = self.publish(url, basic=self.getCredentials())
+        self.assertEqual(response.getStatus(), 200)
+        # We get a very different response.  In the end it works out.
+        self.assertEqual(response.getHeader('Content-Type'),
+                         'text/plain; charset=iso-8859-15')
+        self.assertImage(response.getBody(), 'JPEG', (64, 64))
+
+    def testPublishFTPScaleViaUID(self):
+        scale = self.view.scale('image', width=64, height=64)
+        # make sure the referenced image scale is available
+        url = scale.url.replace('http://nohost', '') + '/manage_FTPget'
+        response = self.publish(url, basic=self.getCredentials())
+        self.assertEqual(response.getStatus(), 200)
+        # We get a very different response.  In the end it works out.
+        self.assertEqual(response.getHeader('Content-Type'),
+                         'text/plain; charset=iso-8859-15')
+        self.assertImage(response.getBody(), 'JPEG', (64, 64))
+
     def testPublishThumbViaUID(self):
         scale = self.view.scale('image', 'thumb')
         # make sure the referenced image scale is available
@@ -169,6 +191,16 @@ class ImagePublisherTests(ImagingFunctionalTestCase):
         url = url.replace('.jpeg', 'x.jpeg')
         response = self.publish(url, basic=self.getCredentials())
         self.assertEqual(response.getStatus(), 404)
+
+    def testPublishScaleWithInvalidScale(self):
+        scale = self.view.scale('image', 'no-such-scale')
+        self.assertEqual(scale, None)
+
+    def test_getAvailableSizesWithInvalidScale(self):
+        self.assertEqual(self.view.getAvailableSizes('no-such-scale'), {})
+
+    def test_getImageSizeWithInvalidScale(self):
+        self.assertEqual(self.view.getImageSize('no-such-scale'), (0, 0))
 
 
 class ScalesAdapterTests(ImagingTestCase):
