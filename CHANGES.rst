@@ -10,7 +10,8 @@ New:
 
 Fixes:
 
-- *add item here*
+- Fixed 404 NotFound error when accessing image scales via webdav.
+  [maurits]
 
 
 2.0.0 (2015-05-11)

@@ -52,11 +52,14 @@ class ImageScaleFactory(object):
 class ImageScaling(BrowserView):
     """ view used for generating (and storing) image scales """
     implements(IImageScaling, ITraversable, IPublishTraverse)
+    # Ignore some stacks to help with accessing via webdav, otherwise you get a
+    # 404 NotFound error.
+    _ignored_stacks = ('manage_DAVget', 'manage_FTPget')
 
     def publishTraverse(self, request, name):
         """ used for traversal via publisher, i.e. when using as a url """
         stack = request.get('TraversalRequestNameStack')
-        if stack:
+        if stack and stack[-1] not in self._ignored_stacks:
             # field and scale name were given...
             scale = stack.pop()
             image = self.scale(name, scale)             # this is aq-wrapped
@@ -209,10 +212,14 @@ class ImageScaling(BrowserView):
 
     def getAvailableSizes(self, fieldname=None):
         field = self.field(fieldname)
+        if field is None:
+            return {}
         return field.getAvailableSizes(self.context)
 
     def getImageSize(self, fieldname=None):
         field = self.field(fieldname)
+        if field is None:
+            return (0, 0)
         return field.getSize(self.context)
 
     def getInfo(self, fieldname=None, scale=None, height=None, width=None,
