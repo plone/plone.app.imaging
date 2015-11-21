@@ -81,13 +81,54 @@ class ImageScaling(BrowserView):
         raise NotFound(self, name, self.request)
 
     def traverse(self, name, furtherPath):
-        """ used for path traversal, i.e. in zope page templates """
+        """Used for path traversal, i.e. in zope page templates.
+
+        This method is called when you have something like this in a
+        page template:
+
+        <img tal:replace="structure context/@@images/image/mini" />
+
+        What then happens during traversal, is that the traverse method
+        gets called twice: we first traverse to name='image' and then to
+        name='mini'.  The traversal is done by the Zope page template
+        machinery.  There are differences between standard
+        zope.pagetemplate and five.pt (chameleon).  Roughly, it happens
+        like follows.
+
+        With zope.pagetemplate:
+
+        view = <the @@images view for this context>
+        new_view = view.traverse('image', ['mini'])
+        tag = new_view.traverse('mini', [])
+
+        And with five.pt:
+
+        view = <the @@images view for this context>
+        new_view = view.traverse('image', ('mini', ))
+        tag = new_view.traverse('mini', ())
+        """
         if not furtherPath:
+            if hasattr(self, '_image_fieldname'):
+                # We have been here before, with the current name argument in
+                # the furtherPath.
+                scale_name = name
+                name = self._image_fieldname
+            else:
+                scale_name = None
             field = self.context.getField(name)
-            return field.get(self.context).tag()
-        image = self.scale(name, furtherPath.pop())
-        if image is not None:
-            return image.tag()
+            image = self.scale(name, scale_name)
+            if image is not None:
+                return image.tag()
+            raise TraversalError(self, name)
+        field = self.field(name)
+        if field is not None:
+            # We have an image field of this name.  Store the scale name on
+            # self and return it.  Since there is a furtherPath, we will get
+            # called again in a moment, with this same 'self' with the
+            # _image_fieldname attribute, and with the current furtherPath as
+            # name, and an empty furtherPath.
+            self._image_fieldname = name
+            return self
         raise TraversalError(self, name)
 
     def make(self, info):
