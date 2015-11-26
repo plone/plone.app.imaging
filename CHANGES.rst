@@ -4,10 +4,6 @@ Changelog
 2.0.1 (unreleased)
 ------------------
 
-New:
-
-- *add item here*
-
 Fixes:
 
 - Fixed incompatibilities with five.pt and chameleon (closes `#16`_).
