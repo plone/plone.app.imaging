@@ -10,7 +10,8 @@ New:
 
 Fixes:
 
-- *add item here*
+- Disable csrf protection when scale is generated and traversed to.
+  [vangheem]
 
 
 1.0.12 (2015-11-26)
