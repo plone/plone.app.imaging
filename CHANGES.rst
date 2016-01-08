@@ -6,11 +6,8 @@ Changelog
 
 New:
 
-- *add item here*
-
-Fixes:
-
-- *add item here*
+- Added documentation for what the 'direction' parameter actually
+  does.  [shadowmint]
 
 
 2.0.1 (2015-11-26)
