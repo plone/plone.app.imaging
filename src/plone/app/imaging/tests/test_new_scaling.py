@@ -160,8 +160,9 @@ class ImagePublisherTests(ImagingFunctionalTestCase):
         response = self.publish(url, basic=self.getCredentials())
         self.assertEqual(response.getStatus(), 200)
         # We get a very different response.  In the end it works out.
-        self.assertEqual(response.getHeader('Content-Type'),
-                         'text/plain; charset=iso-8859-15')
+        self.assertTrue(
+            'text/plain; charset=' in response.getHeader('Content-Type')
+        )
         self.assertImage(response.getBody(), 'JPEG', (64, 64))
 
     def testPublishFTPScaleViaUID(self):
@@ -171,8 +172,9 @@ class ImagePublisherTests(ImagingFunctionalTestCase):
         response = self.publish(url, basic=self.getCredentials())
         self.assertEqual(response.getStatus(), 200)
         # We get a very different response.  In the end it works out.
-        self.assertEqual(response.getHeader('Content-Type'),
-                         'text/plain; charset=iso-8859-15')
+        self.assertTrue(
+            'text/plain; charset=' in response.getHeader('Content-Type')
+        )
         self.assertImage(response.getBody(), 'JPEG', (64, 64))
 
     def testPublishThumbViaUID(self):

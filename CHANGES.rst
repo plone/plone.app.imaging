@@ -10,7 +10,9 @@ New:
 
 Fixes:
 
-- *add item here*
+- Fix test to not check for the concrete WebDAV content type header.
+  Needed for Zope 4 compatibility.
+  [thet]
 
 
 2.0.2 (2016-01-08)
