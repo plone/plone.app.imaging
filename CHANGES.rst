@@ -4,10 +4,6 @@ Changelog
 2.0.3 (unreleased)
 ------------------
 
-New:
-
-- *add item here*
-
 Fixes:
 
 - Fix test to not check for the concrete WebDAV content type header.
