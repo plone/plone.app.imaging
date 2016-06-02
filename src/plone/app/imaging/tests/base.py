@@ -26,7 +26,7 @@ class ImagingTestCase(PloneTestCase):
 
     layer = testing.imaging
 
-    def getImage(self, name='image.gif'):
+    def getImage(self, name='image.png'):
         return getData(name)
 
     def assertImage(self, data, format, size):
