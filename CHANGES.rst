@@ -10,7 +10,9 @@ New:
 
 Fixes:
 
-- *add item here*
+- Fix tests to not scale ``gif`` images, which were converted to ``jpeg`` imaged until ``plone.scale`` version < 2.
+  Use ``png`` images for testing instead, which works for all versions of plone.scale.
+  [thet]
 
 
 2.0.3 (2016-02-20)

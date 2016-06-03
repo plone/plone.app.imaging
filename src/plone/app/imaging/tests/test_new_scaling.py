@@ -44,7 +44,7 @@ class ImageStandardTraverseTests(ImagingTestCase):
         self.assertTrue('thumb' in self.available.keys())
         uid, ext, width, height = self.traverse('image/thumb')
         self.assertEqual((width, height), self.available['thumb'])
-        self.assertEqual(ext, 'jpeg')
+        self.assertEqual(ext, 'png')
 
     def testCustomSizes(self):
         # set custom image sizes
@@ -150,8 +150,8 @@ class ImagePublisherTests(ImagingFunctionalTestCase):
         url = scale.url.replace('http://nohost', '')
         response = self.publish(url, basic=self.getCredentials())
         self.assertEqual(response.getStatus(), 200)
-        self.assertEqual(response.getHeader('Content-Type'), 'image/jpeg')
-        self.assertImage(response.getBody(), 'JPEG', (64, 64))
+        self.assertEqual(response.getHeader('Content-Type'), 'image/png')
+        self.assertImage(response.getBody(), 'PNG', (64, 64))
 
     def testPublishWebDavScaleViaUID(self):
         scale = self.view.scale('image', width=64, height=64)
@@ -163,7 +163,7 @@ class ImagePublisherTests(ImagingFunctionalTestCase):
         self.assertTrue(
             'text/plain; charset=' in response.getHeader('Content-Type')
         )
-        self.assertImage(response.getBody(), 'JPEG', (64, 64))
+        self.assertImage(response.getBody(), 'PNG', (64, 64))
 
     def testPublishFTPScaleViaUID(self):
         scale = self.view.scale('image', width=64, height=64)
@@ -175,7 +175,7 @@ class ImagePublisherTests(ImagingFunctionalTestCase):
         self.assertTrue(
             'text/plain; charset=' in response.getHeader('Content-Type')
         )
-        self.assertImage(response.getBody(), 'JPEG', (64, 64))
+        self.assertImage(response.getBody(), 'PNG', (64, 64))
 
     def testPublishThumbViaUID(self):
         scale = self.view.scale('image', 'thumb')
@@ -183,8 +183,8 @@ class ImagePublisherTests(ImagingFunctionalTestCase):
         url = scale.url.replace('http://nohost', '')
         response = self.publish(url, basic=self.getCredentials())
         self.assertEqual(response.getStatus(), 200)
-        self.assertEqual(response.getHeader('Content-Type'), 'image/jpeg')
-        self.assertImage(response.getBody(), 'JPEG', (128, 128))
+        self.assertEqual(response.getHeader('Content-Type'), 'image/png')
+        self.assertImage(response.getBody(), 'PNG', (128, 128))
 
     def testPublishCustomSizeViaUID(self):
         # set custom image sizes
@@ -195,8 +195,8 @@ class ImagePublisherTests(ImagingFunctionalTestCase):
         url = scale.url.replace('http://nohost', '')
         response = self.publish(url, basic=self.getCredentials())
         self.assertEqual(response.getStatus(), 200)
-        self.assertEqual(response.getHeader('Content-Type'), 'image/jpeg')
-        self.assertImage(response.getBody(), 'JPEG', (23, 23))
+        self.assertEqual(response.getHeader('Content-Type'), 'image/png')
+        self.assertImage(response.getBody(), 'PNG', (23, 23))
 
     def testPublishThumbViaName(self):
         # make sure traversing works as is and with scaling
@@ -206,12 +206,12 @@ class ImagePublisherTests(ImagingFunctionalTestCase):
         browser.open(base + '/foo/@@images/image')
         self.assertEqual(browser.headers['status'], '200 Ok')
         self.assertEqual(browser.contents, self.getImage())
-        self.assertEqual(browser.headers['Content-Type'], 'image/gif')
+        self.assertEqual(browser.headers['Content-Type'], 'image/png')
         # and last a scaled version
         browser.open(base + '/foo/@@images/image/thumb')
         self.assertEqual(browser.headers['status'], '200 Ok')
-        self.assertImage(browser.contents, 'JPEG', (128, 128))
-        self.assertEqual(browser.headers['Content-Type'], 'image/jpeg')
+        self.assertImage(browser.contents, 'PNG', (128, 128))
+        self.assertEqual(browser.headers['Content-Type'], 'image/png')
 
     def testPublishCustomSizeViaName(self):
         # set custom image sizes
@@ -223,13 +223,13 @@ class ImagePublisherTests(ImagingFunctionalTestCase):
         response = self.publish(base + '/foo/@@images/image/foo',
                                 basic=credentials)
         self.assertEqual(response.getStatus(), 200)
-        self.assertImage(response.getBody(), 'JPEG', (23, 23))
+        self.assertImage(response.getBody(), 'PNG', (23, 23))
 
     def testPublishScaleWithInvalidUID(self):
         scale = self.view.scale('image', width=64, height=64)
         url = scale.url.replace('http://nohost', '')
         # change the url so it's invalid...
-        url = url.replace('.jpeg', 'x.jpeg')
+        url = url.replace('.png', 'x.png')
         response = self.publish(url, basic=self.getCredentials())
         self.assertEqual(response.getStatus(), 404)
 
@@ -258,10 +258,10 @@ class ScalesAdapterTests(ImagingTestCase):
     def testCreateScale(self):
         foo = self.adapter.scale('image', width=100, height=80)
         self.assertTrue(foo.uid)
-        self.assertEqual(foo.mimetype, 'image/jpeg')
+        self.assertEqual(foo.mimetype, 'image/png')
         self.assertEqual(foo.width, 80)
         self.assertEqual(foo.height, 80)
-        self.assertImage(foo.data, 'JPEG', (80, 80))
+        self.assertImage(foo.data, 'PNG', (80, 80))
 
     def testCreateScaleWithoutData(self):
         folder = self.folder
@@ -286,10 +286,10 @@ class ScalesAdapterTests(ImagingTestCase):
     def testGetScaleByName(self):
         foo = self.adapter.scale('image', scale='foo')
         self.assertTrue(foo.uid)
-        self.assertEqual(foo.mimetype, 'image/jpeg')
+        self.assertEqual(foo.mimetype, 'image/png')
         self.assertEqual(foo.width, 60)
         self.assertEqual(foo.height, 60)
-        self.assertImage(foo.data, 'JPEG', (60, 60))
+        self.assertImage(foo.data, 'PNG', (60, 60))
 
     def testGetUnknownScale(self):
         foo = self.adapter.scale('image', scale='foo?')

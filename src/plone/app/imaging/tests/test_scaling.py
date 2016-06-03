@@ -34,8 +34,8 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         sizes = image.getField('image').getAvailableSizes(image)
         self.assertTrue('thumb' in sizes.keys())
         thumb = traverse(image, 'image_thumb')
-        self.assertEqual(thumb.getContentType(), 'image/gif')
-        self.assertEqual(thumb.data[:6], 'GIF87a')
+        self.assertEqual(thumb.getContentType(), 'image/png')
+        self.assertEqual(thumb.data[1:4], 'PNG')
         width, height = sizes['thumb']
         self.assertEqual(thumb.width, width)
         self.assertEqual(thumb.height, height)
@@ -58,8 +58,8 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         # make sure traversing works with the new sizes
         traverse = folder.REQUEST.traverseName
         foo = traverse(image, 'image_foo')
-        self.assertEqual(foo.getContentType(), 'image/gif')
-        self.assertEqual(foo.data[:6], 'GIF87a')
+        self.assertEqual(foo.getContentType(), 'image/png')
+        self.assertEqual(foo.data[1:4], 'PNG')
         self.assertEqual(foo.width, 23)
         self.assertEqual(foo.height, 23)
         # also check the generated tag
@@ -68,8 +68,8 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         self.assertEqual(foo.tag(), tag % url)
         # and the other specified size
         bar = traverse(image, 'image_bar')
-        self.assertEqual(bar.getContentType(), 'image/gif')
-        self.assertEqual(bar.data[:6], 'GIF87a')
+        self.assertEqual(bar.getContentType(), 'image/png')
+        self.assertEqual(bar.data[1:4], 'PNG')
         self.assertEqual(bar.width, 6)
         self.assertEqual(bar.height, 6)
         # make sure the traversal adapter was called in fact
@@ -86,8 +86,8 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         # make sure traversing works with the new sizes
         traverse = folder.REQUEST.traverseName
         foo = traverse(newsitem, 'image_foo')
-        self.assertEqual(foo.getContentType(), 'image/gif')
-        self.assertEqual(foo.data[:6], 'GIF87a')
+        self.assertEqual(foo.getContentType(), 'image/png')
+        self.assertEqual(foo.data[1:4], 'PNG')
         self.assertEqual(foo.width, 23)
         self.assertEqual(foo.height, 23)
 
@@ -101,8 +101,8 @@ class ImageTraverseTests(TraverseCounterMixin, ImagingTestCase):
         # make sure traversing works with the new sizes
         traverse = folder.REQUEST.traverseName
         foo_bar = traverse(image, 'image_foo_bar')
-        self.assertEqual(foo_bar.getContentType(), 'image/gif')
-        self.assertEqual(foo_bar.data[:6], 'GIF87a')
+        self.assertEqual(foo_bar.getContentType(), 'image/png')
+        self.assertEqual(foo_bar.data[1:4], 'PNG')
         self.assertEqual(foo_bar.width, 23)
         self.assertEqual(foo_bar.height, 23)
         # also check the generated tag
@@ -163,19 +163,19 @@ class ImagePublisherTests(TraverseCounterMixin, ImagingFunctionalTestCase):
         browser.open(base + '/foo')
         self.assertEqual(browser.headers['status'], '200 Ok')
         self.assertEqual(browser.contents, data)
-        self.assertEqual(browser.headers['Content-Type'], 'image/gif')
+        self.assertEqual(browser.headers['Content-Type'], 'image/png')
         # then the field without a scale name
         browser.open(base + '/foo/image')
         self.assertEqual(browser.headers['status'], '200 Ok')
         self.assertEqual(browser.contents, data)
-        self.assertEqual(browser.headers['Content-Type'], 'image/gif')
+        self.assertEqual(browser.headers['Content-Type'], 'image/png')
         # and last a scaled version
         # get a authenticated browser session
         browser = self.getBrowser()
         browser.open(base + '/foo/image_thumb')
         self.assertEqual(browser.headers['status'], '200 Ok')
-        self.assertEqual(browser.contents[:6], 'GIF87a')
-        self.assertEqual(browser.headers['Content-Type'], 'image/gif')
+        self.assertEqual(browser.contents[1:4], 'PNG')
+        self.assertEqual(browser.headers['Content-Type'], 'image/png')
         # make sure the traversal adapter was call in fact
         self.assertEqual(self.counter, 9)
 
@@ -192,7 +192,7 @@ class ImagePublisherTests(TraverseCounterMixin, ImagingFunctionalTestCase):
         response = self.publish(base + '/foo/image_foo', basic=credentials)
         self.assertEqual(response.getStatus(), 200)
         foo = open(StringIO(response.getBody()))
-        self.assertEqual(foo.format, 'GIF')
+        self.assertEqual(foo.format, 'PNG')
         self.assertEqual(foo.size, (23, 23))
         # make sure the traversal adapter was call in fact
         self.assertEqual(self.counter, 3)
@@ -212,8 +212,8 @@ class DefaultAdapterTests(ImagingTestCase):
     def testCreateScale(self):
         foo = self.handler.createScale(self.image, 'foo', 100, 80)
         self.assertEqual(foo['id'], 'image_foo')
-        self.assertEqual(foo['content_type'], 'image/gif')
-        self.assertEqual(foo['data'][:6], 'GIF87a')
+        self.assertEqual(foo['content_type'], 'image/png')
+        self.assertEqual(foo['data'][1:4], 'PNG')
 
     def testCreateScaleWithZeroWidth(self):
         foo = self.handler.createScale(self.image, 'foo', 100, 0)
@@ -230,8 +230,8 @@ class DefaultAdapterTests(ImagingTestCase):
     def testGetScale(self):
         foo = self.handler.getScale(self.image, 'foo')
         self.assertEqual(foo.getId(), 'image_foo')
-        self.assertEqual(foo.getContentType(), 'image/gif')
-        self.assertEqual(foo.data[:6], 'GIF87a')
+        self.assertEqual(foo.getContentType(), 'image/png')
+        self.assertEqual(foo.data[1:4], 'PNG')
         self.assertEqual(foo.width, 60)
         self.assertEqual(foo.height, 60)
 
