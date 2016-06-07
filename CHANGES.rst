@@ -4,10 +4,6 @@ Changelog
 2.0.4 (unreleased)
 ------------------
 
-New:
-
-- *add item here*
-
 Fixes:
 
 - Fix tests to not scale ``gif`` images, which were converted to ``jpeg`` imaged until ``plone.scale`` version < 2.
