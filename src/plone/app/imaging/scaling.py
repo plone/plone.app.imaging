@@ -11,7 +11,7 @@ from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
 from plone.app.imaging.scale import ImageScale
 from Products.Five import BrowserView
 from zope.interface import alsoProvides
-from zope.interface import implements
+from zope.interface import implementer
 from zope.traversing.interfaces import ITraversable, TraversalError
 from zope.publisher.interfaces import IPublishTraverse, NotFound
 from ZODB.POSException import ConflictError
@@ -28,9 +28,9 @@ except ImportError:
                 "Can't scale images.")
 
 
+@implementer(IImageScaleFactory)
 class ImageScaleFactory(object):
     """ adapter for image fields that allows generating scaled images """
-    implements(IImageScaleFactory)
 
     def __init__(self, field):
         self.field = field
@@ -49,9 +49,9 @@ class ImageScaleFactory(object):
             return scaleImage(data, **parameters)
 
 
+@implementer(IImageScaling, ITraversable, IPublishTraverse)
 class ImageScaling(BrowserView):
     """ view used for generating (and storing) image scales """
-    implements(IImageScaling, ITraversable, IPublishTraverse)
     # Ignore some stacks to help with accessing via webdav, otherwise you get a
     # 404 NotFound error.
     _ignored_stacks = ('manage_DAVget', 'manage_FTPget')
