@@ -1,13 +1,13 @@
-from zope.interface import implements
+from zope.interface import implementer
 from Products.Archetypes.Field import Image
 from plone.app.imaging.interfaces import IImageScale
 
 
+@implementer(IImageScale)
 class ImageScale(Image):
     """ extend image class from `Archetypes.Field` by making sure the title
         gets always computed and not calling `_get_content_type` even though
         an explicit type has been passed """
-    implements(IImageScale)
 
     def __init__(self, id, data, content_type, **kw):
         self.__name__ = id

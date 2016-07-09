@@ -1,6 +1,6 @@
 from logging import exception
 from zope.component import adapts
-from zope.interface import implements
+from zope.interface import implementer
 from zope.publisher.interfaces import IRequest
 from Products.Archetypes.interfaces import IImageField
 from Products.Archetypes.Field import HAS_PIL
@@ -36,9 +36,9 @@ class ImageTraverser(DefaultPublishTraverse):
         return self.fallback(request, name)
 
 
+@implementer(IImageScaleHandler)
 class DefaultImageScaleHandler(object):
     """ default handler for creating and storing scaled version of images """
-    implements(IImageScaleHandler)
     adapts(IImageField)
 
     def __init__(self, context):
