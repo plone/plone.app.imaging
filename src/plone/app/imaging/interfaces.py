@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Products.Archetypes.interfaces import IBaseObject as IATBaseObject
 from zope.i18nmessageid import MessageFactory
 from zope.interface import Interface, Attribute

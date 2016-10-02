@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from zope.interface import implementer
 from Products.Archetypes.Field import Image
 from plone.app.imaging.interfaces import IImageScale

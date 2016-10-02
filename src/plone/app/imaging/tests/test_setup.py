@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from unittest import defaultTestLoader
 from Products.Archetypes.interfaces import IImageField
 from Products.ATContentTypes.content.image import ATImageSchema, ATImage

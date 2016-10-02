@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from logging import exception
 from zope.component import adapts
 from zope.interface import implementer

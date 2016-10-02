@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.app.imaging.tests.base import ImagingTestCase
 from plone.app.imaging.tests.base import ImagingFunctionalTestCase
 from plone.app.imaging.tests.base import getSettings

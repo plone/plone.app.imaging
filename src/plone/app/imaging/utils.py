@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from re import compile
 from zope.component import queryUtility
 from plone.registry.interfaces import IRegistry
