@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.app.testing.bbb import PloneTestCase
 from plone.testing.z2 import Browser
 from plone.app.imaging import testing

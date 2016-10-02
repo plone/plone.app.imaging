@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.app.imaging.monkey import unpatchImageField
 from plone.app import testing
 from plone.app.testing.bbb import PloneTestCaseFixture

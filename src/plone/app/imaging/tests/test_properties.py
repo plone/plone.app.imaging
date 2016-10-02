@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from plone.app.imaging.tests.base import ImagingTestCase
 from plone.app.imaging.utils import getAllowedSizes, getQuality
 from unittest import defaultTestLoader

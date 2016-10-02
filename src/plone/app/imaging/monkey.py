@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Acquisition import aq_base
 from cStringIO import StringIO
 from logging import getLogger
