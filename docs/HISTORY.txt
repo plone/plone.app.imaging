@@ -41,9 +41,8 @@ Fixes:
 1.0.11 (2014-10-22)
 -------------------
 
- - explicit include zcml of ``z3c.caching`` in order to make testrunner
-   happy
-   [jensens]
+- Explicitly include zcml of ``z3c.caching`` in order to make testrunner happy.
+  [jensens]
 
 - Cache image scales using the plone.stableResource ruleset
   when they are accessed via UID-based URLs.
