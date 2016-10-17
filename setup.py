@@ -34,7 +34,6 @@ setup(name = name,
       include_package_data = True,
       install_requires = [
           'setuptools',
-          'plone.app.controlpanel',
           'plone.scale [storage]',
           'Products.Archetypes',
           'z3c.caching',

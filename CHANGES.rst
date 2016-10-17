@@ -17,6 +17,10 @@ Bug fixes:
 - Add coding headers on python files.
   [gforcada]
 
+- Remove vestigial requirement of plone.app.controlpanel.
+  [davisagli]
+
+
 2.0.5 (2016-08-17)
 ------------------
 
