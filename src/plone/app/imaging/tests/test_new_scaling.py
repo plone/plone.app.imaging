@@ -205,12 +205,12 @@ class ImagePublisherTests(ImagingFunctionalTestCase):
         browser = self.getBrowser()
         # first the field without a scale name
         browser.open(base + '/foo/@@images/image')
-        self.assertEqual(browser.headers['status'], '200 Ok')
+        self.assertEqual(browser.headers['status'].upper(), '200 OK')
         self.assertEqual(browser.contents, self.getImage())
         self.assertEqual(browser.headers['Content-Type'], 'image/png')
         # and last a scaled version
         browser.open(base + '/foo/@@images/image/thumb')
-        self.assertEqual(browser.headers['status'], '200 Ok')
+        self.assertEqual(browser.headers['status'].upper(), '200 OK')
         self.assertImage(browser.contents, 'PNG', (128, 128))
         self.assertEqual(browser.headers['Content-Type'], 'image/png')
 
