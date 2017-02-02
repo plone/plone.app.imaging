@@ -162,19 +162,19 @@ class ImagePublisherTests(TraverseCounterMixin, ImagingFunctionalTestCase):
         # first the image itself...
         browser = self.getBrowser(loggedIn=False)
         browser.open(base + '/foo')
-        self.assertEqual(browser.headers['status'], '200 Ok')
+        self.assertEqual(browser.headers['status'].upper(), '200 OK')
         self.assertEqual(browser.contents, data)
         self.assertEqual(browser.headers['Content-Type'], 'image/png')
         # then the field without a scale name
         browser.open(base + '/foo/image')
-        self.assertEqual(browser.headers['status'], '200 Ok')
+        self.assertEqual(browser.headers['status'].upper(), '200 OK')
         self.assertEqual(browser.contents, data)
         self.assertEqual(browser.headers['Content-Type'], 'image/png')
         # and last a scaled version
         # get a authenticated browser session
         browser = self.getBrowser()
         browser.open(base + '/foo/image_thumb')
-        self.assertEqual(browser.headers['status'], '200 Ok')
+        self.assertEqual(browser.headers['status'].upper(), '200 OK')
         self.assertEqual(browser.contents[1:4], 'PNG')
         self.assertEqual(browser.headers['Content-Type'], 'image/png')
         # make sure the traversal adapter was call in fact
