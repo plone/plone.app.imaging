@@ -20,9 +20,12 @@ def getAllowedSizes():
     for line in settings.allowed_sizes:
         line = line.strip()
         if line:
-            name, width, height = pattern.match(line).groups()
-            name = name.strip().replace(' ', '_')
-            sizes[name] = int(width), int(height)
+	    try:
+                name, width, height = pattern.match(line).groups()
+                name = name.strip().replace(' ', '_')
+                sizes[name] = int(width), int(height)
+	    except AttributeError:
+		continue
     return sizes
 
 

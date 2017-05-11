@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- catch errors caused by invalid image scale
+  [obct537]
 
 
 2.0.6 (2016-12-19)
