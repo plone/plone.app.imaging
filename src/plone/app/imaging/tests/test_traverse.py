@@ -84,6 +84,11 @@ class TraverseTests(TestCase):
         traverser = ImageTraverser(context, None)
         self.failUnless(traverser.publishTraverse(None, 'field_mini') is data_marker)
 
+    def testKnownScaleInBar(self):
+        context = MockContext()
+        context.field_2 = MockField()
+        traverser = ImageTraverser(context, None)
+        self.failUnless(traverser.publishTraverse(None, 'field_2_mini') is data_marker)
 
 def test_suite():
     return defaultTestLoader.loadTestsFromName(__name__)
