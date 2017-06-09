@@ -14,7 +14,7 @@ New features:
 
 Bug fixes:
 
-- * Bugfix for field name in `_`
+- * Bugfix for field name in ``_``
   [terapyon]
 
 
