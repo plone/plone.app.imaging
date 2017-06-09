@@ -141,6 +141,10 @@ Fixes:
 
 * Avoid hard dependency on ATContentTypes.
   [davisagli]
+1.0.6-cmscom (2017-06-09)
+----------------------------
+
+* Bugfix for field name in `_` [terapyon]
 
 1.0.6 (2012-04-15)
 ------------------
