@@ -20,7 +20,9 @@ class ImageTraverser(DefaultPublishTraverse):
 
     def publishTraverse(self, request, name):
         schema = self.context.Schema()
-        if '_' in name:
+        if schema == name:
+            fieldname, scale = name, None
+        elif '_' in name:
             fieldname, scale = name.rsplit('_', 1)
         else:
             fieldname, scale = name, None
