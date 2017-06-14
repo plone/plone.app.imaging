@@ -73,6 +73,12 @@ class TraverseTests(TestCase):
         traverser = ImageTraverser(context, None)
         self.assertTrue(traverser.publishTraverse(None, 'field') is data_marker)
 
+    def testFullImageInBar(self):
+        context = MockContext()
+        context.field_2 = MockField()
+        traverser = ImageTraverser(context, None)
+        self.failUnless(traverser.publishTraverse(None, 'field_2') is data_marker)
+
     def testUnknownScale(self):
         context = MockContext()
         context.field = MockField()
