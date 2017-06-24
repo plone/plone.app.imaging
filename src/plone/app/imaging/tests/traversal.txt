@@ -45,7 +45,7 @@ Now check the scaled version:
   >>> image.format
   'GIF'
   >>> image.size
-  (128, 128)
+  (200, 200)
 
 We also want to be able to traverse to the image scale in path expressions,
 which don't use publish traversal:
