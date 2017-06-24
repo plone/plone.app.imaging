@@ -185,7 +185,7 @@ class ImagePublisherTests(ImagingFunctionalTestCase):
         response = self.publish(url, basic=self.getCredentials())
         self.assertEqual(response.getStatus(), 200)
         self.assertEqual(response.getHeader('Content-Type'), 'image/png')
-        self.assertImage(response.getBody(), 'PNG', (128, 128))
+        self.assertImage(response.getBody(), 'PNG', (200, 200))
 
     def testPublishCustomSizeViaUID(self):
         # set custom image sizes
@@ -211,7 +211,7 @@ class ImagePublisherTests(ImagingFunctionalTestCase):
         # and last a scaled version
         browser.open(base + '/foo/@@images/image/thumb')
         self.assertEqual(browser.headers['status'].upper(), '200 OK')
-        self.assertImage(browser.contents, 'PNG', (128, 128))
+        self.assertImage(browser.contents, 'PNG', (200, 200))
         self.assertEqual(browser.headers['Content-Type'], 'image/png')
 
     def testPublishCustomSizeViaName(self):

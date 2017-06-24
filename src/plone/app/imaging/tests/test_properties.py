@@ -11,10 +11,10 @@ class PropertiesTests(ImagingTestCase):
         # test the defaults
         # for readability, pep8 is not applied to the dict below
         self.assertEqual(getAllowedSizes(), dict(
-            large=(768, 768),
-            preview=(400, 400),
-            mini=(200, 200),
-            thumb=(128, 128),
+            large=(1200, 1200),
+            preview=(768, 768),
+            mini=(400, 400),
+            thumb=(200, 200),
             tile=(64, 64),
             icon=(32, 32),
             listing=(16, 16)))
@@ -28,6 +28,7 @@ class PropertiesTests(ImagingTestCase):
         settings = getSettings()
         settings.quality = 42
         self.assertEqual(getQuality(), 42)
+
 
 def test_suite():
     return defaultTestLoader.loadTestsFromName(__name__)
