@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_base
-from cStringIO import StringIO
 from logging import getLogger
 from plone.app.imaging.interfaces import IImageScaleHandler
-from plone.app.imaging.utils import getAllowedSizes, getQuality
+from plone.app.imaging.utils import getAllowedSizes
+from plone.app.imaging.utils import getQuality
+from plone.app.imaging._compat import StringIO
 from Products.Archetypes.Field import ImageField
 from Products.Archetypes.utils import shasattr
 from Products.ATContentTypes.content.image import ATImageSchema
 from Products.ATContentTypes.content.newsitem import ATNewsItemSchema
+
 
 logger = getLogger(__name__)
 

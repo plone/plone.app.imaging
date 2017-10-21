@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
-from plone.app.testing.bbb import PloneTestCase
-from plone.testing.z2 import Browser
+from os.path import dirname
+from os.path import join
+from plone.app.imaging._compat import StringIO
 from plone.app.imaging import testing
-from StringIO import StringIO
-from os.path import dirname, join
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
-from zope.component import queryUtility
+from plone.app.testing.bbb import PloneTestCase
 from plone.registry.interfaces import IRegistry
+from plone.testing.z2 import Browser
 from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
+from zope.component import queryUtility
 
 
 def getSettings():
