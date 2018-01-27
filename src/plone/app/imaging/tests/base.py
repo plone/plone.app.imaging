@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from os.path import dirname
 from os.path import join
-from plone.app.imaging._compat import StringIO
 from plone.app.imaging import testing
 from plone.app.testing import TEST_USER_NAME
 from plone.app.testing import TEST_USER_PASSWORD
@@ -9,6 +8,7 @@ from plone.app.testing.bbb import PloneTestCase
 from plone.registry.interfaces import IRegistry
 from plone.testing.z2 import Browser
 from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
+from six import StringIO
 from zope.component import queryUtility
 
 

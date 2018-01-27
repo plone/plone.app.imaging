@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from PIL.Image import open
-from plone.app.imaging._compat import StringIO
+from six import StringIO
 from plone.app.imaging.tests.base import getSettings
 from plone.app.imaging.tests.base import ImagingFunctionalTestCase
 from plone.app.imaging.tests.base import ImagingTestCase
