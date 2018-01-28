@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-from plone.app.imaging.tests.base import ImagingTestCase
-from plone.app.imaging.tests.base import ImagingFunctionalTestCase
-from plone.app.imaging.traverse import ImageTraverser
-from plone.app.imaging.traverse import DefaultImageScaleHandler
-from StringIO import StringIO
 from PIL.Image import open
-import transaction
+from six import StringIO
 from plone.app.imaging.tests.base import getSettings
+from plone.app.imaging.tests.base import ImagingFunctionalTestCase
+from plone.app.imaging.tests.base import ImagingTestCase
+from plone.app.imaging.traverse import DefaultImageScaleHandler
+from plone.app.imaging.traverse import ImageTraverser
+
+import transaction
 
 
 class TraverseCounterMixin:

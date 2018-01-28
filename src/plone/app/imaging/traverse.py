@@ -15,6 +15,9 @@ from zope.interface import alsoProvides
 from zope.globalrequest import getRequest
 
 
+import six
+
+
 class ImageTraverser(DefaultPublishTraverse):
     """ traversal adapter for scaled down versions of image content """
     adapts(IBaseObject, IRequest)
@@ -57,7 +60,7 @@ class DefaultImageScaleHandler(object):
                 if data is not None:
                     self.storeScale(instance, scale, **data)
                     image = self.retrieveScale(instance, scale=scale)
-            if image is not None and not isinstance(image, basestring):
+            if image is not None and not isinstance(image, six.string_types):
                 return image
         return None
 

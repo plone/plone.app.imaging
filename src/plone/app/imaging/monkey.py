@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
 from Acquisition import aq_base
-from cStringIO import StringIO
 from logging import getLogger
 from plone.app.imaging.interfaces import IImageScaleHandler
-from plone.app.imaging.utils import getAllowedSizes, getQuality
+from plone.app.imaging.utils import getAllowedSizes
+from plone.app.imaging.utils import getQuality
 from Products.Archetypes.Field import ImageField
 from Products.Archetypes.utils import shasattr
 from Products.ATContentTypes.content.image import ATImageSchema
 from Products.ATContentTypes.content.newsitem import ATNewsItemSchema
+from six import StringIO
+
+import six
+
 
 logger = getLogger(__name__)
 
@@ -29,7 +33,7 @@ def getAvailableSizes(self, instance):
     sizes = getattr(aq_base(self), 'sizes', None)
     if isinstance(sizes, dict):
         return sizes
-    elif isinstance(sizes, basestring):
+    elif isinstance(sizes, six.string_types):
         assert(shasattr(instance, sizes))
         method = getattr(instance, sizes)
         data = method()
@@ -60,7 +64,7 @@ def scale(self, data, w, h, default_format='PNG'):
     """ use our quality setting as pil_quality """
     pil_quality = getQuality()
 
-    #make sure we have valid int's
+    # make sure we have valid int's
     size = int(w), int(h)
 
     original_file = StringIO(data)
