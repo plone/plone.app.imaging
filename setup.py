@@ -6,7 +6,7 @@ readme = open("README.rst").read()
 history = open("CHANGES.rst").read()
 
 setup(name = name,
-      version='2.0.8.dev0',
+      version='2.1.0.dev0',
       description = 'User-configurable, blob-aware image scaling for Plone.',
       long_description = readme[readme.find('\n\n'):] + '\n' + history,
       classifiers=[
@@ -14,6 +14,7 @@ setup(name = name,
           "Framework :: Plone",
           "Framework :: Plone :: 5.0",
           "Framework :: Plone :: 5.1",
+          "Framework :: Plone :: 5.2",
           "Framework :: Zope2",
           'Intended Audience :: Developers',
           'Intended Audience :: Other Audience',
