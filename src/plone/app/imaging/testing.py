@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from plone.app.imaging.monkey import unpatchImageField
 from plone.app import testing
-from plone.app.testing.bbb import PloneTestCaseFixture
+from plone.app.testing.bbb_at import PloneTestCaseFixture
 from plone.testing import z2
 
 
@@ -21,7 +21,6 @@ class ImagingFixture(PloneTestCaseFixture):
         super(ImagingFixture, self).tearDownZope(app)
         unpatchImageField()
         z2.uninstallProduct(app, 'plone.app.imaging')
-
 
 
 PTC_FIXTURE = ImagingFixture()
