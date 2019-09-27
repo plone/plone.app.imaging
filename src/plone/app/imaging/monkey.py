@@ -104,6 +104,12 @@ def scale(self, data, w, h, default_format='PNG'):
     # for GIF, could also use image.format in ('GIF','PNG')
     if original_mode == 'P' and img_format == 'GIF':
         image = image.convert('P')
+
+    # Avoid - IOError: cannot write mode RGBA as JPEG
+    # See https://github.com/python-pillow/Pillow/issues/2609#issuecomment-313841918
+    if original_mode in ('CMYK', 'RGBA', 'LA') and target_format in ('JPG', 'JPEG'):
+        target_format = 'PNG'
+
     thumbnail_file = StringIO()
     # quality parameter doesn't affect lossless formats
     image.save(thumbnail_file, target_format, quality=pil_quality, progressive=True)
