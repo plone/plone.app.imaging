@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fix IOError: cannot write mode RGBA as JPEG on ImageField scale
+  [avoinea]
 
 
 2.0.7 (2018-02-05)
