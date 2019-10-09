@@ -4,14 +4,6 @@ Changelog
 1.0.14 (unreleased)
 -------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Fix IOError: cannot write mode RGBA as JPEG on ImageField scale
