@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+"""
+Common, internal, `plone.app.imaging` testing support.
+"""
+
 from os.path import dirname
 from os.path import join
 from plone.app.imaging import testing
@@ -10,6 +14,8 @@ from plone.testing.z2 import Browser
 from Products.CMFPlone.interfaces.controlpanel import IImagingSchema
 from six import StringIO
 from zope.component import queryUtility
+
+TESTS_PATH = dirname(__file__)
 
 
 def getSettings():
