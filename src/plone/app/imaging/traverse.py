@@ -1,17 +1,21 @@
 from logging import exception
-from zope.component import adapts
+
+from zope.interface import alsoProvides
 from zope.interface import implements
+from zope.component import adapts
+from zope.globalrequest import getRequest
 from zope.publisher.interfaces import IRequest
-from Products.Archetypes.interfaces import IImageField
-from Products.Archetypes.Field import HAS_PIL
+
 from ZODB.POSException import ConflictError
 from ZPublisher.BaseRequest import DefaultPublishTraverse
+from OFS import interfaces as ofs_ifaces
+
+from Products.Archetypes.interfaces import IImageField
+from Products.Archetypes.Field import HAS_PIL
 from plone.app.imaging.interfaces import IBaseObject
 from plone.app.imaging.interfaces import IImageScaleHandler
 from plone.app.imaging.scale import ImageScale
 from plone.protect.interfaces import IDisableCSRFProtection
-from zope.interface import alsoProvides
-from zope.globalrequest import getRequest
 
 
 class ImageTraverser(DefaultPublishTraverse):
@@ -22,6 +26,12 @@ class ImageTraverser(DefaultPublishTraverse):
         return super(ImageTraverser, self).publishTraverse(request, name)
 
     def publishTraverse(self, request, name):
+        if (
+                ofs_ifaces.IObjectManager.providedBy(self.context)
+                and name in self.context.objectIds()
+        ):
+            # The name is for an actual subobject of this folderish context.
+            return self.fallback(request, name)
         schema = self.context.Schema()
         if '_' in name:
             fieldname, scale = name.split('_', 1)
