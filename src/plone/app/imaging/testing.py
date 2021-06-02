@@ -1,6 +1,7 @@
 from Testing.ZopeTestCase import installPackage
 from Products.Five import zcml
 from Products.Five import fiveconfigure
+
 from collective.testcaselayer.ptc import BasePTCLayer, ptc_layer
 from plone.app.imaging.monkey import unpatchImageField
 
@@ -14,6 +15,7 @@ class ImagingLayer(BasePTCLayer):
         zcml.load_config('testing.zcml', imaging)
         fiveconfigure.debug_mode = False
         installPackage('plone.app.imaging', quiet=True)
+        installPackage('plone.app.imaging.tests')
         self.addProfile('plone.app.imaging:default')
 
     def beforeTearDown(self):

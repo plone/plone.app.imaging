@@ -1,9 +1,16 @@
+"""
+Common, internal, `plone.app.imaging` testing support.
+"""
+
+import os
+from StringIO import StringIO
+
 from Products.Five.testbrowser import Browser
 from Products.PloneTestCase import ptc
 from plone.app.imaging import testing
 from plone.app.imaging.tests.utils import getData
-from StringIO import StringIO
 
+TESTS_PATH = os.path.dirname(__file__)
 
 ptc.setupPloneSite()
 

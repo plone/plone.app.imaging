@@ -14,7 +14,8 @@ New features:
 
 Bug fixes:
 
-- *add item here*
+- Fix traversal handling of subobjects with ids that may also be image scales.
+  [rpatterson]
 
 
 1.0.14 (2019-10-09)

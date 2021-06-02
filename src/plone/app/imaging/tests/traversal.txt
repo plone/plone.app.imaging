@@ -53,3 +53,47 @@ expression:
 
   >>> bool(eval_expression('exists:portal/foo/image_thumb'))
   True
+
+Content can be added with ids that correspond to field names and scales:
+
+  >>> import os
+  >>> import shutil
+  >>> from plone.app.imaging.tests import base
+  >>> test_image_scale_name = os.path.join(
+  ...     base.TESTS_PATH,
+  ...     "tmp",
+  ...     "image_thumb.jpg",
+  ... )
+  >>> shutil.copyfile(
+  ...     os.path.join(base.TESTS_PATH, "image.jpg"),
+  ...     test_image_scale_name,
+  ... )
+
+  >>> import __builtin__
+  >>> portal.portal_setup.runAllImportStepsFromProfile("plone.app.imaging:testing")
+  {...types: 'News Item Folder'...}
+  >>> with __builtin__.open(test_image_scale_name) as test_image_scale_name_opened:
+  ...     portal.invokeFactory(
+  ...         "News Item Folder",
+  ...         id="bar-folder",
+  ...         title="Bar Folder",
+  ...         image=test_image_scale_name_opened,
+  ...     )
+  'bar-folder'
+
+  >>> browser.handleErrors = False
+  >>> browser.open("http://nohost/plone/bar-folder/")
+  >>> browser.getLink(url="createObject?type_name=Image").click()
+  >>> with __builtin__.open(test_image_scale_name) as test_image_scale_name_opened:
+  ...     browser.getControl(name="id").value = "image_thumb"
+  ...     browser.getControl(name="image_file").add_file(
+  ...         test_image_scale_name_opened, "image/jpg", "image_thumb.jpg")
+  ...     browser.getControl("Save").click()
+  >>> browser.url
+  'http://nohost/plone/bar-folder/image_thumb/view'
+  >>> print(browser.contents)
+  <!DOCTYPE html>
+  <html...
+  >>> browser.open("http://nohost/plone/bar-folder/image_thumb")
+  >>> browser.contents
+  '\xff\xd8\xff\xe0\x00\x10JFIF...
