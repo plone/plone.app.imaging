@@ -11,8 +11,9 @@ class ImagingFixture(PloneTestCaseFixture):
     def setUpZope(self, app, configurationContext):
         super(ImagingFixture, self).setUpZope(app, configurationContext)
         import plone.app.imaging
-        self.loadZCML(package=plone.app.imaging)
+        self.loadZCML(name='testing.zcml', package=plone.app.imaging)
         z2.installProduct(app, 'plone.app.imaging')
+        z2.installProduct(app, 'plone.app.imaging.tests')
 
     def setUpPloneSite(self, portal):
         super(ImagingFixture, self).setUpPloneSite(portal)
