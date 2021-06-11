@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.0.9 (unreleased)
+2.0.9 (2021-06-11)
 ------------------
 
 Breaking changes:
