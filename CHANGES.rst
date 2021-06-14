@@ -13,14 +13,6 @@ Bug fixes:
 2.0.9 (2021-06-11)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Fix traversal handling of subobjects with ids that may also be image scales.
