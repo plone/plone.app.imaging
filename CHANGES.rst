@@ -4,7 +4,10 @@ Changelog
 2.0.10 (unreleased)
 -------------------
 
-- Nothing changed yet.
+Bug fixes:
+
+- Fix clean checkout error in scale traverser tests.
+  [rpatterson]
 
 
 2.0.9 (2021-06-11)
