@@ -4,14 +4,6 @@ Changelog
 2.1.2 (unreleased)
 ------------------
 
-Breaking changes:
-
-- *add item here*
-
-New features:
-
-- *add item here*
-
 Bug fixes:
 
 - Fix traversal handling of subobjects with ids that may also be image scales.
